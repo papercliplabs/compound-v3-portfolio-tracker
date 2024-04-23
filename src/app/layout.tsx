@@ -1,11 +1,15 @@
-import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import WalletProvider from "@/providers/WalletProvider";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Analytics } from "@vercel/analytics/react";
+import "@/theme/globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
 
 export const metadata: Metadata = {
   title: "Compound v3 User Portfolio Tracker",
@@ -41,7 +45,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={inter.variable}>
         <WalletProvider>
           <div className="flex min-h-screen w-full flex-col overflow-hidden">
             <Header />

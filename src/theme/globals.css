@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-background-surface text-content-primary font-inter;
+  }
+
+  /* TODO(spennyp): these are not done yet in design, come back */
+  .title-1 {
+    @apply text-[36px] font-bold leading-[48px] tracking-[-0.54px];
+  }
+
+  .title-2 {
+    @apply text-[30px] font-bold leading-[40px] tracking-[-0.3px];
+  }
+
+  .title-3 {
+    @apply text-[24px] font-bold leading-[32px] tracking-[-0.2px];
+  }
+
+  .title-4 {
+    @apply text-[24px] font-[650px] leading-[32px] tracking-[-0.2px];
+  }
+
+  .body-lg {
+    @apply text-[18px] font-normal leading-[32px] tracking-[-0.2px];
+  }
+
+  .body-md {
+    @apply text-[16px] font-normal leading-[32px] tracking-[-0.2px];
+  }
+
+  .body-sm {
+    @apply text-[16px] font-normal leading-[32px] tracking-[-0.2px];
+  }
+
+  .body-xs {
+    @apply text-[14px] font-normal leading-[32px] tracking-[-0.2px];
+  }
+
+  h1 {
+    @apply title-1;
+  }
+
+  h2 {
+    @apply title-2;
+  }
+
+  h3 {
+    @apply title-3;
+  }
+
+  h4 {
+    @apply title-4;
+  }
+}

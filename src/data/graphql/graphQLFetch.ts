@@ -1,22 +1,26 @@
 import { GraphQLError } from "graphql";
 import { TypedDocumentString } from "./generated/graphql";
 
+export const DEFAULT_REVALIDATION_TIME_S = 100;
+
 type GraphQLResponse<Data> = { data: Data } | { errors: GraphQLError[] };
 
-interface CacheConfig {
+export interface CacheConfig {
   cache?: RequestCache;
   next?: NextFetchRequestConfig;
 }
 
-interface GraphQLFetchParams<Result, Variables> {
+export interface GraphQLFetchParams<Result, Variables> {
   url: string;
   query: TypedDocumentString<Result, Variables>;
+  variables: Variables;
   cacheConfig?: CacheConfig;
 }
 
 export async function graphQLFetch<Result, Variables>({
   url,
   query,
+  variables,
   cacheConfig,
 }: GraphQLFetchParams<Result, Variables>): Promise<Result> {
   const response = await fetch(url, {
@@ -26,14 +30,15 @@ export async function graphQLFetch<Result, Variables>({
     },
     body: JSON.stringify({
       query,
+      variables,
     }),
-    ...cacheConfig,
+    cache: cacheConfig?.cache,
+    next: cacheConfig?.next ?? { revalidate: DEFAULT_REVALIDATION_TIME_S },
   });
 
   const result = (await response.json()) as GraphQLResponse<Result>;
 
   if ("errors" in result) {
-    // TODO: handle
     throw new Error(result.errors[0].message);
   }
 

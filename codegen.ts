@@ -1,11 +1,14 @@
 import type { CodegenConfig } from "@graphql-codegen/cli";
 import { loadEnvConfig } from "@next/env";
+import { GraphQLScalarType } from "graphql";
+import { GraphQLBigInt, BigIntResolver } from "graphql-scalars";
 loadEnvConfig(process.cwd());
 
 // Paths relative to project root
 const config: CodegenConfig = {
   overwrite: true,
-  schema: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/subgraphs/id/5nwMCSHaTqG3Kd2gHznbTXEnZ9QNWsssQfbHhDqQSQFp`, // Just used to get schema
+  // schema: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/subgraphs/id/5nwMCSHaTqG3Kd2gHznbTXEnZ9QNWsssQfbHhDqQSQFp`, // Just used to get schema
+  schema: `http://192.168.1.64:8000/subgraphs/name/papercliplabs/compound-v3-local`,
   documents: "src/data/**",
   generates: {
     "src/data/graphql/generated/": {
@@ -14,11 +17,11 @@ const config: CodegenConfig = {
         documentMode: "string",
         scalars: {
           BigDecimal: {
-            input: "any",
+            input: "string",
             output: "string",
           },
           BigInt: {
-            input: "any",
+            input: "string",
             output: "string",
           },
           Int8: {
@@ -30,8 +33,10 @@ const config: CodegenConfig = {
             output: "string",
           },
         },
+        mappers: {
+          BigInt: "bigint",
+        },
       },
-      plugins: [],
     },
   },
 };

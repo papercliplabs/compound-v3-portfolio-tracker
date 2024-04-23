@@ -1,21 +1,30 @@
 "use client";
 import "@rainbow-me/rainbowkit/styles.css";
-import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import {
+  Chain,
+  getDefaultConfig,
+  RainbowKitProvider,
+} from "@rainbow-me/rainbowkit";
 import { WagmiProvider } from "wagmi";
-import { mainnet, polygon, arbitrum, base } from "wagmi/chains";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import { http } from "viem";
+import { fallback, http } from "viem";
+import { getAllChainConfigs } from "@/utils/configs";
+
+const allConfigs = getAllChainConfigs();
 
 const config = getDefaultConfig({
   appName: "Compound v3 Portfolio Tracker",
   projectId: "d6eee3c7568a60e86be82a1f3a728e5a",
-  chains: [mainnet, arbitrum, base, polygon],
-  transports: {
-    [mainnet.id]: http(process.env.MAINNET_RPC_URL!),
-    [arbitrum.id]: http(process.env.ARBITRUM_RPC_URL!),
-    [base.id]: http(process.env.BASE_RPC_URL!),
-    [polygon.id]: http(process.env.POLYGON_RPC_URL!),
-  },
+  chains: allConfigs.map((config) => config.chain) as [Chain, ...Chain[]],
+  transports: Object.fromEntries(
+    allConfigs.map((config) => [
+      config.chain.id,
+      fallback([
+        http(config.rpcUrl.primary),
+        ...(config.rpcUrl.fallback ? [http(config.rpcUrl.fallback)] : []),
+      ]),
+    ]),
+  ),
   ssr: true,
 });
 
@@ -34,3 +43,13 @@ export default function WalletProvider({
     </WagmiProvider>
   );
 }
+
+// TODO: move elsewhere
+// Override console.error
+// This is a hack to suppress the warning about missing defaultProps in recharts library as of version 2.12
+// @link https://github.com/recharts/recharts/issues/3615
+const error = console.error;
+console.error = (...args: any) => {
+  if (/defaultProps/.test(args[0])) return;
+  error(...args);
+};
