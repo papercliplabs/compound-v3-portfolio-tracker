@@ -1,3 +1,4 @@
+"use server";
 import { DataGranularity } from "@/utils/types";
 import { Address } from "viem";
 import { getMarketsForAccountCached } from "./getMarketsForAccount";
@@ -30,7 +31,7 @@ async function getPortfolioHistoricalData({
   const positionHistoricalDataPromises = markets?.map((market) =>
     getPositionHistoricalDataCached({
       network: market.network,
-      marketAddress: market.id,
+      marketAddress: market.address,
       accountAddress,
       granularity,
     }),

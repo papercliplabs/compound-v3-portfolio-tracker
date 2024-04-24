@@ -1,6 +1,8 @@
 import Chart from "@/components/Chart";
 import { getMarketsForAccountCached } from "@/data/queries/getMarketsForAccount";
+import { getPortfolioActivityCached } from "@/data/queries/getPortfolioActivity";
 import { getPortfolioHistoricalDataCached } from "@/data/queries/getPortfolioHistoricalData";
+import { getPositionActivityCached } from "@/data/queries/getPositionActivity";
 import { getPositionHistoricalDataCached } from "@/data/queries/getPositionHistoricalData";
 import "@/utils/bigIntPolyfill";
 import { getAddress } from "viem";
@@ -37,6 +39,12 @@ export default async function Home() {
     granularity,
   });
 
+  const portfolioActivity = await getPortfolioActivityCached({
+    accountAddress,
+  });
+
+  console.log("PORT", portfolioActivity);
+
   return (
     <div className="flex h-full w-full grow flex-col items-start justify-start bg-green-200">
       <Chart data={portfolio!} dataKey="balanceUsd" />
@@ -44,10 +52,16 @@ export default async function Home() {
       {markets.map(async (market) => {
         const positionData = await getPositionHistoricalDataCached({
           network: market.network,
-          marketAddress: market.id,
+          marketAddress: market.address,
           accountAddress,
           granularity,
         });
+        const positionActivity = await getPositionActivityCached({
+          network: market.network,
+          marketAddress: market.address,
+          accountAddress,
+        });
+        // console.log(positionActivity);
         return (
           <>
             <Chart data={positionData!} dataKey="balanceUsd" />

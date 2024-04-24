@@ -81,7 +81,7 @@ async function getPositionAccountingSnapshots({
 }
 
 // TODO(spennyp): we should pagenate this query (highly unlikely position has >1000 interactions tho)
-const snapshotQuery = graphql(`
+const snapshotQuery = graphql(/* GraphQL */ `
   query PositionSnapshotQuery($positionId: ID!) {
     position(id: $positionId) {
       id

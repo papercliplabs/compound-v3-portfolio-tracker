@@ -1,8 +1,5 @@
-import {
-  SupportedNetwork,
-  getAllChainConfigs,
-  getSupportedNetworks,
-} from "@/utils/configs";
+"use server";
+import { SupportedNetwork, getSupportedNetworks } from "@/utils/configs";
 import { querySubgraph } from "../dataUtils";
 import { graphql } from "../graphql/generated";
 import { unstable_cache } from "next/cache";
@@ -10,7 +7,7 @@ import { DEFAULT_REVALIDATION_TIME_S } from "../graphql/graphQLFetch";
 import { Address, getAddress } from "viem";
 
 interface Market {
-  id: string;
+  address: Address;
   network: SupportedNetwork;
   baseTokenAddress: Address;
   baseTokenSymbol: string;
@@ -18,6 +15,7 @@ interface Market {
 
 interface GetMarketsForAccountParams {
   accountAddress: Address;
+  // name: string;
 }
 
 export async function getMarketsForAccount({
@@ -39,7 +37,7 @@ export async function getMarketsForAccount({
     const response = responses[i];
     for (let position of response.account?.positions ?? []) {
       markets.push({
-        id: position.market.id,
+        address: getAddress(position.market.id),
         network: supportedNetworks[i],
         baseTokenAddress: getAddress(
           position.market.configuration.baseToken.token.address,
@@ -52,7 +50,7 @@ export async function getMarketsForAccount({
   return markets;
 }
 
-const query = graphql(`
+const query = graphql(/* GraphQL */ `
   query accountMarkets($accountId: ID!) {
     account(id: $accountId) {
       positions {

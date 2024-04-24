@@ -35,7 +35,7 @@ interface PositionDataEntry {
 
 interface GetPositionHistoricalDataParams {
   network: SupportedNetwork;
-  marketAddress: string;
+  marketAddress: Address;
   accountAddress: string;
   granularity: DataGranularity;
 }

@@ -69,7 +69,7 @@ async function getMarketRewardConfig({
   };
 }
 
-const rewardConfigQuery = graphql(`
+const rewardConfigQuery = graphql(/* GraphQL */ `
   query MarketRewardConfig($marketAddress: ID!) {
     market(id: $marketAddress) {
       rewardConfiguration {
@@ -82,7 +82,7 @@ const rewardConfigQuery = graphql(`
   }
 `);
 
-const tokenQuery = graphql(`
+const tokenQuery = graphql(/* GraphQL */ `
   query Token($tokenId: ID!) {
     token(id: $tokenId) {
       decimals

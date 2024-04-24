@@ -67,7 +67,7 @@ async function getMarketConfigSnapshots({
   });
 }
 
-const query = graphql(`
+const query = graphql(/* GraphQL */ `
   query MarketHistoricalConfig($marketAddress: ID!) {
     market(id: $marketAddress) {
       configurationSnapshots(

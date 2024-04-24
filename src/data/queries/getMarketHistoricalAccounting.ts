@@ -110,7 +110,7 @@ async function getMarketHistoricalAccounting({
     : undefined;
 }
 
-const hourlyQuery = graphql(`
+const hourlyQuery = graphql(/* GraphQL */ `
   query MarketHourlyQuery($marketAddress: ID!, $first: Int!) {
     market(id: $marketAddress) {
       id
@@ -150,7 +150,7 @@ const hourlyQuery = graphql(`
   }
 `);
 
-const dailyQuery = graphql(`
+const dailyQuery = graphql(/* GraphQL */ `
   query MarketDailyQuery($marketAddress: ID!, $first: Int!) {
     market(id: $marketAddress) {
       id
@@ -190,7 +190,7 @@ const dailyQuery = graphql(`
   }
 `);
 
-const weeklyQuery = graphql(`
+const weeklyQuery = graphql(/* GraphQL */ `
   query MarketWeeklyQuery($marketAddress: ID!, $first: Int!) {
     market(id: $marketAddress) {
       id
