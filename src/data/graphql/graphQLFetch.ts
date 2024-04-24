@@ -13,7 +13,7 @@ export interface CacheConfig {
 export interface GraphQLFetchParams<Result, Variables> {
   url: string;
   query: TypedDocumentString<Result, Variables>;
-  variables: Variables;
+  variables?: Variables;
   cacheConfig?: CacheConfig;
 }
 

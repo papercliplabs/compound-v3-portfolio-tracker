@@ -29,6 +29,8 @@ interface MarketAccountingEntry {
     assetAddress: Address;
     usdExchangeRate: bigint;
   }[];
+  supplyApr: { base: number; reward: number; net: number };
+  borrowApr: { base: number; reward: number; net: number };
 }
 
 interface GetMarketHistoricalAccountingParams {
@@ -77,8 +79,6 @@ async function getMarketHistoricalAccounting({
     marketData = data.market?.dailyMarketAccounting.map(
       mapHistoricalEntryToData,
     );
-
-    // console.log("DATA", marketData);
 
     expectedLastKey = Math.floor(Date.now() / 1000 / SECONDS_PER_DAY);
     expectedLength = DAILY_DATA_MAX_NUM_POINTS;
@@ -138,6 +138,12 @@ const hourlyQuery = graphql(`
             balance
             balanceUsd
           }
+          supplyApr
+          borrowApr
+          rewardSupplyApr
+          rewardBorrowApr
+          netSupplyApr
+          netBorrowApr
         }
       }
     }
@@ -172,6 +178,12 @@ const dailyQuery = graphql(`
             balance
             balanceUsd
           }
+          supplyApr
+          borrowApr
+          rewardSupplyApr
+          rewardBorrowApr
+          netSupplyApr
+          netBorrowApr
         }
       }
     }
@@ -206,6 +218,12 @@ const weeklyQuery = graphql(`
             balance
             balanceUsd
           }
+          supplyApr
+          borrowApr
+          rewardSupplyApr
+          rewardBorrowApr
+          netSupplyApr
+          netBorrowApr
         }
       }
     }
@@ -236,6 +254,12 @@ function mapHistoricalEntryToData({
       balance: string;
       balanceUsd: string;
     }[];
+    supplyApr: string;
+    borrowApr: string;
+    rewardSupplyApr: string;
+    rewardBorrowApr: string;
+    netSupplyApr: string;
+    netBorrowApr: string;
   };
 }): MarketAccountingEntry {
   const totalBaseSupplyUsd = Number(accounting.totalBaseSupplyUsd);
@@ -262,6 +286,16 @@ function mapHistoricalEntryToData({
         ),
       }),
     ),
+    supplyApr: {
+      base: Number(accounting.supplyApr),
+      reward: Number(accounting.rewardSupplyApr),
+      net: Number(accounting.netSupplyApr),
+    },
+    borrowApr: {
+      base: -Number(accounting.borrowApr),
+      reward: Number(accounting.rewardSupplyApr),
+      net: -Number(accounting.netBorrowApr),
+    },
   };
 }
 
@@ -291,6 +325,18 @@ function interpolate(data: MarketAccountingEntry[]): MarketAccountingEntry[] {
         BigInt(keyDelta);
       const stepRewardTokenPriceUsd =
         (entry.rewardTokenUsdPrice - lastEntry.rewardTokenUsdPrice) / keyDelta;
+      const stepBaseSupplyApr =
+        (entry.supplyApr.base - lastEntry.supplyApr.base) / keyDelta;
+      const stepRewardSupplyApr =
+        (entry.supplyApr.reward - lastEntry.supplyApr.reward) / keyDelta;
+      const stepNetSupplyApr =
+        (entry.supplyApr.net - lastEntry.supplyApr.net) / keyDelta;
+      const stepBaseBorrowApr =
+        (entry.borrowApr.base - lastEntry.borrowApr.base) / keyDelta;
+      const stepRewardBorrowApr =
+        (entry.borrowApr.reward - lastEntry.borrowApr.reward) / keyDelta;
+      const stepNetBorrowApr =
+        (entry.borrowApr.net - lastEntry.borrowApr.net) / keyDelta;
 
       for (let i = 1; i < keyDelta; i++) {
         interpolated.push({
@@ -317,6 +363,16 @@ function interpolate(data: MarketAccountingEntry[]): MarketAccountingEntry[] {
                     .usdExchangeRate) /
                 BigInt(keyDelta),
             })),
+          supplyApr: {
+            base: lastEntry.supplyApr.base + stepBaseSupplyApr * i,
+            reward: lastEntry.supplyApr.reward + stepRewardSupplyApr * i,
+            net: lastEntry.supplyApr.net + stepNetSupplyApr * i,
+          },
+          borrowApr: {
+            base: lastEntry.borrowApr.base + stepBaseBorrowApr * i,
+            reward: lastEntry.borrowApr.reward + stepRewardBorrowApr * i,
+            net: lastEntry.borrowApr.net + stepNetBorrowApr * i,
+          },
         });
         numInterpolated += 1;
       }
@@ -364,6 +420,18 @@ function extrapolate(
       lastEntry.baseUsdExchangeRate - secondLastEntry.baseUsdExchangeRate;
     const stepRewardTokenPriceUsd =
       lastEntry.rewardTokenUsdPrice - secondLastEntry.rewardTokenUsdPrice;
+    const stepBaseSupplyApr =
+      lastEntry.supplyApr.base - secondLastEntry.supplyApr.base;
+    const stepRewardSupplyApr =
+      lastEntry.supplyApr.reward - secondLastEntry.supplyApr.reward;
+    const stepNetSupplyApr =
+      lastEntry.supplyApr.net - secondLastEntry.supplyApr.net;
+    const stepBaseBorrowApr =
+      lastEntry.borrowApr.base - secondLastEntry.borrowApr.base;
+    const stepRewardBorrowApr =
+      lastEntry.borrowApr.reward - secondLastEntry.borrowApr.reward;
+    const stepNetBorrowApr =
+      lastEntry.borrowApr.net - secondLastEntry.borrowApr.net;
 
     for (let i = 1; i < keyDelta + 1; i++) {
       data.push({
@@ -390,6 +458,16 @@ function extrapolate(
                   .usdExchangeRate) /
               BigInt(keyDelta),
           })),
+        supplyApr: {
+          base: lastEntry.supplyApr.base + stepBaseSupplyApr * i,
+          reward: lastEntry.supplyApr.reward + stepRewardSupplyApr * i,
+          net: lastEntry.supplyApr.net + stepNetSupplyApr,
+        },
+        borrowApr: {
+          base: lastEntry.borrowApr.base + stepBaseBorrowApr * i,
+          reward: lastEntry.borrowApr.reward + stepRewardBorrowApr * i,
+          net: lastEntry.borrowApr.net + stepNetBorrowApr,
+        },
       });
       numExtrapolated += 1;
     }

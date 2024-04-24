@@ -56,8 +56,6 @@ async function getPositionAccountingSnapshots({
 
   snapshots.reverse(); // Reverse so that first points in array are the oldest
 
-  console.log(snapshots.slice(800));
-
   return snapshots.map((snapshot) => ({
     timestamp: Number(snapshot.timestamp),
     basePrincipal: BigInt(snapshot.accounting.basePrincipal),

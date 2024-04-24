@@ -54,3 +54,7 @@ export function getChainConfig(network: SupportedNetwork): ChainConfig {
 export function getAllChainConfigs(): ChainConfig[] {
   return Object.keys(CONFIGS).map((key) => CONFIGS[key as SupportedNetwork]);
 }
+
+export function getSupportedNetworks(): SupportedNetwork[] {
+  return Object.keys(CONFIGS).map((key) => key as SupportedNetwork);
+}

@@ -30,7 +30,7 @@ interface PositionDataEntry {
 
   healthFactor: number;
 
-  // TODO(spennyp): APY?
+  apr: { base: number; reward: number; net: number };
 }
 
 interface GetPositionHistoricalDataParams {
@@ -53,11 +53,6 @@ async function getPositionHistoricalData({
       accountAddress,
     });
 
-  console.log(
-    "SNAP",
-    positionAccountingSnapshots?.map((item) => item.collateralAssetBalances),
-  );
-
   const marketHistoricalData = await getMarketHistoricalAccountingCached({
     network,
     marketAddress,
@@ -73,12 +68,6 @@ async function getPositionHistoricalData({
     network,
     marketAddress,
   });
-
-  // console.log(
-  //   positionAccountingSnapshots?.slice(
-  //     Math.max(positionAccountingSnapshots.length - 100, 0),
-  //   ),
-  // );
 
   if (
     !positionAccountingSnapshots ||
@@ -118,6 +107,7 @@ async function getPositionHistoricalData({
       borrowCapUsd: 0,
       liquidationThresholdUsd: 0,
       healthFactor: 0,
+      apr: { base: 0, reward: 0, net: 0 },
     };
 
     // Find the corresponding position snapshot index
@@ -256,9 +246,14 @@ async function getPositionHistoricalData({
       }
 
       positionEntry.healthFactor =
-        positionEntry.balanceUsd > 0
-          ? 0
+        positionEntry.balanceUsd >= 0
+          ? NaN // Not borrowing, health factor doesn't make sense
           : positionEntry.liquidationThresholdUsd / -positionEntry.balanceUsd;
+
+      positionEntry.apr =
+        positionEntry.balanceUsd >= 0
+          ? marketEntry.supplyApr
+          : marketEntry.borrowApr;
     }
 
     positionHistoricalData.push(positionEntry);
