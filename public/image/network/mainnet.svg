@@ -1,0 +1,11 @@
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Type=Mainnet">
+<path d="M0 4C0 1.79086 1.79086 0 4 0H12C14.2091 0 16 1.79086 16 4V12C16 14.2091 14.2091 16 12 16H4C1.79086 16 0 14.2091 0 12V4Z" fill="#2F2F2E"/>
+<path id="Vector" d="M7.99994 2.40039L4.3999 8.11139L7.99994 6.54119V2.40039Z" fill="white"/>
+<path id="Vector_2" d="M7.99994 10.1291L4.3999 8.10402L7.99994 6.54102V10.1291Z" fill="white"/>
+<path id="Vector_3" d="M7.99966 10.7913L4.3999 8.76562L7.99966 13.5998V10.7913Z" fill="white"/>
+<path id="Vector_4" d="M8 2.40039L11.6 8.11139L8 6.54119V2.40039Z" fill="white"/>
+<path id="Vector_5" d="M8 10.1291L11.6 8.11122L8 6.54102V10.1291Z" fill="white"/>
+<path id="Vector_6" d="M8 10.7918L11.5999 8.80273L8 13.6003V10.7918Z" fill="white"/>
+</g>
+</svg>

@@ -3,56 +3,39 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply bg-background-surface text-content-primary font-inter;
+  .title-lg {
+    @apply text-[24px] font-bold leading-[36px] tracking-[0px] md:text-[32px] md:leading-[44px];
   }
 
-  /* TODO(spennyp): these are not done yet in design, come back */
-  .title-1 {
-    @apply text-[36px] font-bold leading-[48px] tracking-[-0.54px];
+  .title-md {
+    @apply text-[20px] font-bold leading-[30px] tracking-[0px] md:text-[24px] md:leading-[32px];
   }
 
-  .title-2 {
-    @apply text-[30px] font-bold leading-[40px] tracking-[-0.3px];
-  }
-
-  .title-3 {
-    @apply text-[24px] font-bold leading-[32px] tracking-[-0.2px];
-  }
-
-  .title-4 {
-    @apply text-[24px] font-[650px] leading-[32px] tracking-[-0.2px];
-  }
-
-  .body-lg {
-    @apply text-[18px] font-normal leading-[32px] tracking-[-0.2px];
+  .title-sm {
+    @apply text-[18px] font-bold leading-[28px] tracking-[0px];
   }
 
   .body-md {
-    @apply text-[16px] font-normal leading-[32px] tracking-[-0.2px];
+    @apply text-[14px] font-medium leading-[20px] tracking-[0px];
   }
 
-  .body-sm {
-    @apply text-[16px] font-normal leading-[32px] tracking-[-0.2px];
-  }
-
-  .body-xs {
-    @apply text-[14px] font-normal leading-[32px] tracking-[-0.2px];
+  .caption-md {
+    @apply text-[12px] font-medium leading-[18px] tracking-[0px];
   }
 
   h1 {
-    @apply title-1;
+    @apply title-lg;
   }
 
   h2 {
-    @apply title-2;
+    @apply title-md;
   }
 
   h3 {
-    @apply title-3;
+    @apply title-sm;
   }
 
-  h4 {
-    @apply title-4;
+  body {
+    @apply bg-background-surface text-content-primary font-inter body-md border-border-primary;
   }
 }

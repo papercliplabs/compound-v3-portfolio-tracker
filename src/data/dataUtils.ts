@@ -1,4 +1,4 @@
-import { getChainConfig, SupportedNetwork } from "@/utils/configs";
+import { getNetworkConfig, SupportedNetwork } from "@/utils/configs";
 import { GraphQLFetchParams, graphQLFetch } from "./graphql/graphQLFetch";
 
 type QuerySubgraphParams<Result, Variables> = {
@@ -10,7 +10,7 @@ export async function querySubgraph<Result, Variables>({
   ...queryParams
 }: QuerySubgraphParams<Result, Variables>) {
   return graphQLFetch({
-    url: getChainConfig(network).subgraphUrl,
+    url: getNetworkConfig(network).subgraphUrl,
     ...queryParams,
   });
 }

@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import WalletProvider from "@/providers/WalletProvider";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Analytics } from "@vercel/analytics/react";
 import "@/theme/globals.css";
+import Token from "@/components/Token";
+import LearnMore from "@/components/LearnMore";
+import ConnectWallet from "@/components/ConnectWallet";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -27,9 +29,12 @@ export const metadata: Metadata = {
 
 function Header() {
   return (
-    <header className="flex w-full flex-row items-center justify-between bg-red-500 px-12 py-6">
-      HEADER
-      <ConnectButton />
+    <header className="shadow-1 flex h-16 w-full flex-row items-center justify-between bg-white px-10  py-2">
+      LOGO
+      <div className="flex h-full flex-row items-center gap-2">
+        <LearnMore />
+        <ConnectWallet />
+      </div>
     </header>
   );
 }
@@ -49,7 +54,7 @@ export default function RootLayout({
         <WalletProvider>
           <div className="flex min-h-screen w-full flex-col overflow-hidden">
             <Header />
-            <main className="grow bg-pink-400 p-12">{children}</main>
+            <main className="bg-background-surface grow">{children}</main>
             <Footer />
           </div>
         </WalletProvider>

@@ -6,7 +6,7 @@ import { unstable_cache } from "next/cache";
 import { DEFAULT_REVALIDATION_TIME_S } from "../graphql/graphQLFetch";
 import { Address, getAddress } from "viem";
 
-interface Market {
+export interface Market {
   address: Address;
   network: SupportedNetwork;
   baseTokenAddress: Address;
@@ -15,15 +15,17 @@ interface Market {
 
 interface GetMarketsForAccountParams {
   accountAddress: Address;
+  network?: SupportedNetwork;
   // name: string;
 }
 
 export async function getMarketsForAccount({
   accountAddress,
+  network,
 }: GetMarketsForAccountParams): Promise<Market[]> {
-  const supportedNetworks = getSupportedNetworks();
+  const networks = network ? [network] : getSupportedNetworks();
 
-  let queriesPromises = supportedNetworks.map((network) =>
+  let queriesPromises = networks.map((network) =>
     querySubgraph({
       network,
       query,
@@ -33,12 +35,12 @@ export async function getMarketsForAccount({
   const responses = await Promise.all(queriesPromises);
 
   const markets: Market[] = [];
-  for (let i = 0; i < supportedNetworks.length; i++) {
+  for (let i = 0; i < networks.length; i++) {
     const response = responses[i];
     for (let position of response.account?.positions ?? []) {
       markets.push({
         address: getAddress(position.market.id),
-        network: supportedNetworks[i],
+        network: networks[i],
         baseTokenAddress: getAddress(
           position.market.configuration.baseToken.token.address,
         ),
