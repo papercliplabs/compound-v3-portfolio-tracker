@@ -1,14 +1,29 @@
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import { Chain, Client, createPublicClient, http } from "viem";
-import { arbitrum, base, mainnet, polygon } from "viem/chains";
+import {
+  arbitrum,
+  base,
+  mainnet,
+  optimism,
+  polygon,
+  scroll,
+} from "viem/chains";
 
 import MainnetIcon from "@/image/network/mainnet.svg";
 import PolygonIcon from "@/image/network/polygon.svg";
 import BaseIcon from "@/image/network/base.svg";
 import ArbitrumIcon from "@/image/network/arbitrum.svg";
+import OptimismIcon from "@/image/network/optimism.svg";
+import ScrollIcon from "@/image/network/scroll.svg";
 
-export type SupportedNetwork = "mainnet" | "polygon" | "base" | "arbitrum";
+export type SupportedNetwork =
+  | "mainnet"
+  | "polygon"
+  | "base"
+  | "arbitrum"
+  | "optimism"
+  | "scroll";
 
 interface ChainConfig {
   chain: Chain;
@@ -26,9 +41,9 @@ const CONFIGS: Record<SupportedNetwork, ChainConfig> = {
       fallback: undefined,
     },
     icon: MainnetIcon,
-    // subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/subgraphs/id/5nwMCSHaTqG3Kd2gHznbTXEnZ9QNWsssQfbHhDqQSQFp`,
-    subgraphUrl:
-      "http://192.168.1.64:8000/subgraphs/name/papercliplabs/compound-v3-local",
+    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/subgraphs/id/5nwMCSHaTqG3Kd2gHznbTXEnZ9QNWsssQfbHhDqQSQFp`,
+    // subgraphUrl:
+    //   "http://192.168.1.64:8000/subgraphs/name/papercliplabs/compound-v3-local",
   },
   polygon: {
     chain: polygon,
@@ -56,6 +71,24 @@ const CONFIGS: Record<SupportedNetwork, ChainConfig> = {
     },
     icon: ArbitrumIcon,
     subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/subgraphs/id/Ff7ha9ELmpmg81D6nYxy4t8aGP26dPztqD1LDJNPqjLS`,
+  },
+  optimism: {
+    chain: optimism,
+    rpcUrl: {
+      primary: process.env.OPTIMISM_RPC_URL!,
+      fallback: undefined,
+    },
+    icon: OptimismIcon,
+    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/subgraphs/id/FhHNkfh5z6Z2WCEBxB6V3s8RPxnJfWZ9zAfM5bVvbvbb`,
+  },
+  scroll: {
+    chain: scroll,
+    rpcUrl: {
+      primary: process.env.SCROLL_RPC_URL!,
+      fallback: undefined,
+    },
+    icon: ScrollIcon,
+    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/subgraphs/id/6aRGn6noEdin1krLfYTnLMYaCoTujL7cHekARE4Ndxng`,
   },
 };
 

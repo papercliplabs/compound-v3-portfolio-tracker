@@ -20,7 +20,7 @@ export default function Chart<DataEntry>({
 }: ChartProps<DataEntry>) {
   return (
     <LineChart
-      width={800}
+      width={500}
       height={800}
       margin={{ left: 100, top: 100 }}
       data={data}

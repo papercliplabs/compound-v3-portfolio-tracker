@@ -4,12 +4,15 @@ import {
 } from "@/data/queries/getMarketsForAccount";
 import { Address } from "viem";
 import Token from "./Token";
-import { SupportedNetwork } from "@/utils/configs";
+import { SupportedNetwork, getNetworkConfig } from "@/utils/configs";
 import Link from "next/link";
-import { Card } from "./ui/card";
 import { Separator } from "./ui/separator";
-import clsx from "clsx";
-import { ReactNode } from "react";
+import React, { Suspense } from "react";
+import { Stack } from "@phosphor-icons/react/dist/ssr";
+import { twMerge } from "tailwind-merge";
+import AccountAvatar from "./AccountAvatar";
+import AccountName from "./AccountName";
+import { Skeleton } from "./ui/skeleton";
 
 interface NavProps {
   accountAddress: Address;
@@ -23,15 +26,43 @@ export default async function Nav({
   accountAddress,
   selectedPositionParams,
 }: NavProps) {
-  const markets = await getMarketsForAccountCached({ accountAddress });
-
-  console.log(markets, selectedPositionParams);
-
   return (
-    <div className=" flex w-[480px] flex-col  px-6 py-[56px]">
-      ACCOUNT: {accountAddress} <Separator className="my-6" />
-      <NavItem href={`/${accountAddress}`} active={!selectedPositionParams}>
-        ALL POSITIONS
+    <div className=" flex w-[480px] shrink-0 flex-col gap-3 px-6 py-[56px]">
+      <div className="flex flex-row items-center gap-4">
+        <AccountAvatar address={accountAddress} size="lg" />
+        <div className="flex h-full flex-col justify-between">
+          <Suspense fallback={<Skeleton className="h-[30px] w-full shrink" />}>
+            <h2 className="shrink">
+              <AccountName address={accountAddress} />
+            </h2>
+          </Suspense>
+          <div className="body-md text-content-secondary">
+            <AccountName address={accountAddress} disableEns />
+          </div>
+        </div>
+      </div>
+      <Separator className="my-6" />
+      <Suspense fallback="LOADING">
+        <NavBody
+          accountAddress={accountAddress}
+          selectedPositionParams={selectedPositionParams}
+        />
+      </Suspense>
+    </div>
+  );
+}
+
+async function NavBody({ accountAddress, selectedPositionParams }: NavProps) {
+  const markets = await getMarketsForAccountCached({ accountAddress });
+  return (
+    <>
+      <NavItem
+        href={`/${accountAddress}`}
+        active={!selectedPositionParams}
+        className="gap-4"
+      >
+        <Stack size={16} className="stroke-content-primary" weight="bold" />
+        All Positions
       </NavItem>
       {markets.map((market, i) => (
         <NavPositionLink
@@ -41,7 +72,7 @@ export default async function Nav({
           key={i}
         />
       ))}
-    </div>
+    </>
   );
 }
 
@@ -65,29 +96,29 @@ function NavPositionLink({
         size={32}
         showNetworkIcon
       />
-      {market.baseTokenSymbol} • {market.network}
+      {market.baseTokenSymbol} • {getNetworkConfig(market.network).chain.name}
     </NavItem>
   );
 }
 
-function NavItem({
-  active,
-  children,
-  href,
-}: {
-  active: boolean;
-  children: ReactNode;
-  href: string;
-}) {
+const NavItem = React.forwardRef<
+  HTMLAnchorElement,
+  React.HTMLAttributes<HTMLAnchorElement> & {
+    active: boolean;
+    href: string;
+  }
+>(({ active, href, className, ...props }, ref) => {
   return (
     <Link
+      ref={ref}
       href={href}
-      className={clsx(
-        "flex w-full flex-row rounded-md px-4 py-2 ",
+      className={twMerge(
+        "flex h-[48px] w-full flex-row items-center gap-[10px] rounded-md px-4 py-2",
         active ? "bg-white" : "hover:bg-white/30",
+        className,
       )}
-    >
-      {children}
-    </Link>
+      {...props}
+    />
   );
-}
+});
+NavItem.displayName = "NavItem";

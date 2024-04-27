@@ -7,8 +7,10 @@ import {
 } from "@rainbow-me/rainbowkit";
 import { WagmiProvider } from "wagmi";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import { fallback, http } from "viem";
+import { fallback, getAddress, http } from "viem";
 import { getAllChainConfigs } from "@/utils/configs";
+import AccountAvatar from "@/components/AccountAvatar";
+import { Suspense } from "react";
 
 const allConfigs = getAllChainConfigs();
 
@@ -38,7 +40,13 @@ export default function WalletProvider({
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider>{children}</RainbowKitProvider>
+        <RainbowKitProvider
+          avatar={({ address }) => (
+            <AccountAvatar address={getAddress(address)} size="lg" />
+          )}
+        >
+          {children}
+        </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
   );

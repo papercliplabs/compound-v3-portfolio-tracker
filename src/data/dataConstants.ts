@@ -6,7 +6,3 @@ export const DAILY_DATA_MAX_NUM_POINTS = 190;
 
 // Max is 1000
 export const WEEKLY_DATA_MAX_NUM_POINTS = 1000;
-
-export const SECONDS_PER_HOUR = 3600;
-export const SECONDS_PER_DAY = 86400;
-export const SECONDS_PER_WEEK = 604800;

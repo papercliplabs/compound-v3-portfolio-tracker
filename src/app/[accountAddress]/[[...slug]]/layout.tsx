@@ -1,6 +1,7 @@
 import Nav from "@/components/Nav";
 import { SupportedNetwork, getNetworkConfig } from "@/utils/configs";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 import { getAddress, isAddress } from "viem";
 
 export default function Layout({
@@ -48,7 +49,11 @@ export default function Layout({
             : undefined
         }
       />
-      {isPosition ? position : portfolio}
+      <div className="flex grow flex-col gap-4 border-l px-16 py-14">
+        <Suspense fallback="LOADING!!!">
+          {isPosition ? position : portfolio}
+        </Suspense>
+      </div>
     </div>
   );
 }

@@ -7,8 +7,7 @@ loadEnvConfig(process.cwd());
 // Paths relative to project root
 const config: CodegenConfig = {
   overwrite: true,
-  // schema: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/subgraphs/id/5nwMCSHaTqG3Kd2gHznbTXEnZ9QNWsssQfbHhDqQSQFp`, // Just used to get schema
-  schema: `http://192.168.1.64:8000/subgraphs/name/papercliplabs/compound-v3-local`,
+  schema: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/subgraphs/id/5nwMCSHaTqG3Kd2gHznbTXEnZ9QNWsssQfbHhDqQSQFp`, // Just used to get schema
   documents: "src/data/**",
   generates: {
     "src/data/graphql/generated/": {

@@ -10,11 +10,13 @@ import {
   HOURLY_DATA_MAX_NUM_POINTS,
   DAILY_DATA_MAX_NUM_POINTS,
   WEEKLY_DATA_MAX_NUM_POINTS,
-  SECONDS_PER_HOUR,
-  SECONDS_PER_DAY,
-  SECONDS_PER_WEEK,
 } from "../dataConstants";
 import { Address, getAddress } from "viem";
+import {
+  SECONDS_PER_DAY,
+  SECONDS_PER_HOUR,
+  SECONDS_PER_WEEK,
+} from "@/utils/constants";
 
 interface MarketAccountingEntry {
   key: number; // hour / day / week

@@ -1,4 +1,5 @@
 import Chart from "@/components/Chart";
+import { Card } from "@/components/ui/card";
 import { getMarketsForAccountCached } from "@/data/queries/getMarketsForAccount";
 import { getPortfolioActivityCached } from "@/data/queries/getPortfolioActivity";
 import { getPortfolioHistoricalDataCached } from "@/data/queries/getPortfolioHistoricalData";
@@ -37,13 +38,15 @@ export default async function PortfolioPage({
     accountAddress,
   });
 
-  // console.log("PORT", portfolioActivity);
-
   return (
-    <div className="shadow-0 flex h-full w-full grow flex-col items-start justify-start bg-green-200">
-      <Chart data={portfolio!} dataKey="balanceUsd" />
-      <Chart data={portfolio!} dataKey="avgApr.net" />
-      {markets.map(async (market) => {
+    <>
+      <Card>
+        <Chart data={portfolio!} dataKey="balanceUsd" />
+      </Card>
+      <Card>
+        <Chart data={portfolio!} dataKey="avgApr.net" />
+      </Card>
+      {markets.map(async (market, i) => {
         const positionData = await getPositionHistoricalDataCached({
           network: market.network,
           marketAddress: market.address,
@@ -55,17 +58,16 @@ export default async function PortfolioPage({
           marketAddress: market.address,
           accountAddress,
         });
-        // console.log(positionActivity);
         return (
-          <>
+          <Card key={i}>
             <Chart data={positionData!} dataKey="balanceUsd" />
-          </>
+          </Card>
         );
       })}
       {/* <Chart data={positionData!} dataKey="balanceUsd" />
       <Chart data={positionData!} dataKey="healthFactor" />
       <Chart data={positionData!} dataKey="profitAndLossUsd" />
       <Chart data={positionData!} dataKey="apr.net" /> */}
-    </div>
+    </>
   );
 }
