@@ -16,7 +16,10 @@ export interface EnsInfoParams {
 const mainnetConfig = getNetworkConfig("mainnet");
 const mainnetClient = createPublicClient({
   chain: mainnetConfig.chain,
-  transport: fallback([http(mainnetConfig.rpcUrl.primary), http()]),
+  transport: fallback([
+    http(mainnetConfig.rpcUrl.primary),
+    http(mainnetConfig.rpcUrl.fallback),
+  ]),
 });
 
 async function getEnsName({ address }: EnsInfoParams): Promise<string | null> {

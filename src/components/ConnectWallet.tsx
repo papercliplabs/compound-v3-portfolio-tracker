@@ -1,31 +1,39 @@
 "use client";
 import { ConnectButton as RainbowConnectButton } from "@rainbow-me/rainbowkit";
 import { Button } from "./ui/button";
-import { useConfig } from "wagmi";
+import { useAccount, useConfig } from "wagmi";
 import { useRouter } from "next/navigation";
 import { watchAccount } from "@wagmi/core";
 import { usePathname } from "next/navigation";
 import { getAddress } from "viem";
 import AccountAvatar from "./AccountAvatar";
+import { useEffect } from "react";
 
 export default function ConnectWallet() {
   const router = useRouter();
   const config = useConfig();
   const pathname = usePathname();
 
+  const { address } = useAccount();
+
+  useEffect(() => {
+    console.log("USE EEFFFECT", address);
+  }, [address]);
+
   // Redirect to correct page when the account changes
   watchAccount(config, {
-    onChange(data) {
-      if (data.address) {
+    onChange(account, prevAccount) {
+      console.log("CHANGE", account, prevAccount);
+      if (account.address) {
         const pathnamePieces = pathname.split("/");
         router.push(
-          `/${data.address}` +
+          `/${account.address}` +
             (pathnamePieces.length == 3
               ? `/${pathnamePieces[1]}/${pathnamePieces[2]}`
               : ""),
         );
       } else {
-        router.push(`/`);
+        // router.push(`/`);
       }
     },
   });

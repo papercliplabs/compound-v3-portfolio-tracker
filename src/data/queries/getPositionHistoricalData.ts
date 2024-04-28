@@ -28,6 +28,7 @@ interface PositionDataEntry {
   borrowCapUsd: number;
   liquidationThresholdUsd: number;
 
+  utilization: number;
   healthFactor: number;
 
   apr: { base: number; reward: number; net: number };
@@ -106,6 +107,7 @@ async function getPositionHistoricalData({
       collateral: [],
       borrowCapUsd: 0,
       liquidationThresholdUsd: 0,
+      utilization: 0,
       healthFactor: 0,
       apr: { base: 0, reward: 0, net: 0 },
     };
@@ -244,6 +246,11 @@ async function getPositionHistoricalData({
             collateralBalanceUsd * config.liquidateCollateralFactor;
         }
       }
+
+      positionEntry.utilization =
+        positionEntry.balanceUsd >= 0
+          ? 0
+          : -positionEntry.balanceUsd / positionEntry.borrowCapUsd;
 
       positionEntry.healthFactor =
         positionEntry.balanceUsd >= 0
