@@ -5,7 +5,7 @@ import { getMarketsForAccountCached } from "./getMarketsForAccount";
 import { DEFAULT_REVALIDATION_TIME_S } from "../graphql/graphQLFetch";
 import { unstable_cache } from "next/cache";
 
-interface PortfolioActivity extends Activity {
+export interface PortfolioActivity extends Activity {
   network: SupportedNetwork;
   marketAddress: Address;
   baseTokenSymbol: string;

@@ -28,6 +28,7 @@ const config = getDefaultConfig({
     ]),
   ),
   ssr: true,
+  // storage: null, // Causes react hydration erorr to enable...
 });
 
 const queryClient = new QueryClient();

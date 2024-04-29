@@ -16,10 +16,6 @@ export default function ConnectWallet() {
 
   const { address } = useAccount();
 
-  useEffect(() => {
-    console.log("USE EEFFFECT", address);
-  }, [address]);
-
   // Redirect to correct page when the account changes
   watchAccount(config, {
     onChange(account, prevAccount) {

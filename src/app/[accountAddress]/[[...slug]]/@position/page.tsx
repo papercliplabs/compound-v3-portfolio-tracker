@@ -34,12 +34,12 @@ export default async function Position({
     <>
       <Card>TEST</Card>
       <Card>TEST</Card>
-      <Card>
+      {/* <Card>
         <Chart data={positionHistoricalData!} dataKey="balanceUsd" />
       </Card>
       <Card>
         <Chart data={positionHistoricalData!} dataKey="profitAndLossUsd" />
-      </Card>
+      </Card> */}
     </>
   );
 }

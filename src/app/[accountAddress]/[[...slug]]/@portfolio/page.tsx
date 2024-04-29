@@ -1,4 +1,7 @@
+import ActivityTable from "@/components/ActivityTable";
+import { Columns } from "@/components/ActivityTable/Columns";
 import Chart from "@/components/Chart";
+import Test from "@/components/Test";
 import { Card } from "@/components/ui/card";
 import { getMarketsForAccountCached } from "@/data/queries/getMarketsForAccount";
 import { getPortfolioActivityCached } from "@/data/queries/getPortfolioActivity";
@@ -40,7 +43,7 @@ export default async function PortfolioPage({
 
   return (
     <>
-      <Card>
+      {/* <Card>
         <Chart data={portfolio!} dataKey="balanceUsd" />
       </Card>
       <Card>
@@ -63,11 +66,9 @@ export default async function PortfolioPage({
             <Chart data={positionData!} dataKey="balanceUsd" />
           </Card>
         );
-      })}
-      {/* <Chart data={positionData!} dataKey="balanceUsd" />
-      <Chart data={positionData!} dataKey="healthFactor" />
-      <Chart data={positionData!} dataKey="profitAndLossUsd" />
-      <Chart data={positionData!} dataKey="apr.net" /> */}
+      })} */}
+      <ActivityTable data={portfolioActivity} columns={Columns} />
+      <Test />
     </>
   );
 }
