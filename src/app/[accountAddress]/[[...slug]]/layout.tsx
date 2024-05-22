@@ -1,4 +1,5 @@
 import Nav from "@/components/Nav";
+import NavDrawer from "@/components/Nav/NavDrawer";
 import { SupportedNetwork, getNetworkConfig } from "@/utils/configs";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
@@ -49,7 +50,7 @@ export default function Layout({
             : undefined
         }
       />
-      <div className="flex h-full min-w-0 grow flex-col gap-4 border-l px-4 py-8 md:px-16 md:py-14">
+      <div className="flex h-full min-w-0 grow flex-col gap-4 border-l px-4 pb-[132px] pt-8 md:px-16 md:pb-14 md:pt-14">
         <Suspense fallback="LOADING!!!">
           {isPosition ? position : portfolio}
         </Suspense>

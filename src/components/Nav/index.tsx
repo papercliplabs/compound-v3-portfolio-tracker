@@ -5,6 +5,7 @@ import React, { Suspense } from "react";
 import { Skeleton } from "../ui/skeleton";
 import NavHeader from "./NavHeader";
 import { NavBody } from "./NavBody";
+import NavSwitcher from "./NavSwitcher";
 
 export interface NavProps {
   accountAddress: Address;
@@ -19,15 +20,15 @@ export default async function Nav({
   selectedPositionParams,
 }: NavProps) {
   return (
-    <div className="flex w-full min-w-[380px] max-w-[500px] flex-col gap-3 px-6 py-[56px]">
+    <NavSwitcher>
       <NavHeader accountAddress={accountAddress} />
-      <Separator className="my-6" />
+      <Separator className="my-2 hidden md:flex" />
       <Suspense fallback={<Skeleton className="h-[300px] w-full" />}>
         <NavBody
           accountAddress={accountAddress}
           selectedPositionParams={selectedPositionParams}
         />
       </Suspense>
-    </div>
+    </NavSwitcher>
   );
 }

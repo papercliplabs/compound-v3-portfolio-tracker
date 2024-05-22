@@ -35,14 +35,11 @@ export const getEnsNameCached = unstable_cache(getEnsName, ["get-ens-name"], {
 async function getEnsAvatar({
   address,
 }: EnsInfoParams): Promise<string | null> {
-  console.log("GET START");
   const ensName = await getEnsNameCached({ address });
-  console.log("GET NAME", ensName);
   const ensAvatar = ensName
     ? await getViemEnsAvatar(mainnetClient, { name: normalize(ensName) })
     : undefined;
 
-  console.log("GET DOEN", ensName, ensAvatar);
   return ensAvatar ?? null;
 }
 

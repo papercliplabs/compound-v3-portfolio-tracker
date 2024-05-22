@@ -83,7 +83,6 @@ export default async function PortfolioPage({
 }
 
 function NoPositions() {
-  console.log("NONE!");
   return (
     <div className="m-auto flex h-full w-full max-w-[500px] flex-col items-center justify-between text-center">
       <div className="flex flex-col items-center gap-3 pt-[108px]">

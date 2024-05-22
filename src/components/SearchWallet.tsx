@@ -8,6 +8,7 @@ import { useFormStatus } from "react-dom";
 import { CircleNotch } from "@phosphor-icons/react/dist/ssr";
 import { useRouter } from "next/navigation";
 import { Router } from "lucide-react";
+import { useScreenBreakpoint } from "@/hooks/useScreenBreakpoint";
 
 const ADDRESS_OR_ENS_FORM_NAME = "addressOrEns";
 
@@ -50,7 +51,7 @@ export function SearchWallet() {
       ref={formRef}
     >
       <Input
-        placeholder="Search wallet address or ENS name"
+        placeholder={"Search wallet address or ENS name"}
         className="max-w-[400px] grow"
         required
         type="text"

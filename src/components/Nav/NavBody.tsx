@@ -71,7 +71,7 @@ export async function NavBody({
   }
 
   return (
-    <>
+    <div className="flex flex-col gap-3 overflow-auto">
       <NavItem
         href={`/${accountAddress}`}
         active={!selectedPositionParams}
@@ -109,7 +109,7 @@ export async function NavBody({
           ))}{" "}
         </>
       )}
-    </>
+    </div>
   );
 }
 
@@ -125,8 +125,10 @@ const NavItem = React.forwardRef<
       ref={ref}
       href={href}
       className={twMerge(
-        "flex h-[48px] w-full flex-row items-center gap-[10px] rounded-md px-4 py-2",
-        active ? "bg-white" : "hover:bg-white/30",
+        "flex h-[48px] w-full flex-row items-center gap-[10px] rounded-md bg-transparent px-4 py-2",
+        active
+          ? "bg-background-surface md:bg-white"
+          : "hover:bg-background-surface/30 md:hover:bg-white/30",
         className,
       )}
       {...props}

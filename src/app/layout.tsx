@@ -30,12 +30,12 @@ export const metadata: Metadata = {
 
 function Header() {
   return (
-    <header className="shadow-1 grid h-16 w-full grid-cols-[minmax(max-content,0.3fr)_1fr_minmax(max-content,0.3fr)] flex-row items-center justify-between gap-4 bg-white px-10 py-2">
+    <header className="shadow-1 grid h-16 w-full grid-cols-[minmax(max-content,0.3fr)_1fr_minmax(max-content,0.3fr)] flex-row items-center justify-between gap-4 bg-white px-4 py-2 md:px-10">
       <HeaderHomeButton />
       <SearchWallet />
       <div className="flex  flex-row items-center justify-end gap-2">
         <LearnMore />
-        <ConnectWallet />
+        <ConnectWallet responsive />
       </div>
     </header>
   );
@@ -48,9 +48,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable}`}>
+      <body className={`${inter.variable} antialiased`}>
         <WalletProvider>
-          <div className="grid min-h-screen w-full grid-rows-[min-content_1fr] overflow-x-hidden">
+          <div className="grid h-screen min-h-screen w-full grid-rows-[min-content_1fr] overflow-x-hidden">
             <Header />
             <main className="bg-background-surface mx-auto w-screen max-w-[2560px]">
               {children}

@@ -5,17 +5,21 @@ import { getLinearGradientForAddress } from "@/utils/address";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useEnsAvatar } from "@/hooks/useEnsAvatar";
 import { useMemo } from "react";
+import { useScreenBreakpoint } from "@/hooks/useScreenBreakpoint";
 
 interface AccountAvatarProps {
   address: Address;
-  size: "sm" | "lg";
+  size: "sm" | "lg" | "dynamic";
 }
 
 export default function AccountAvatar({ address, size }: AccountAvatarProps) {
   const ensAvatarQuery = useEnsAvatar({ address });
-  const width = useMemo(() => (size == "sm" ? 20 : 64), [size]);
-
-  console.log(ensAvatarQuery.data, ensAvatarQuery.isLoading);
+  const breakpoint = useScreenBreakpoint();
+  const width = useMemo(() => {
+    const sizeInternal =
+      size == "dynamic" ? (breakpoint == "lg" ? "lg" : "sm") : size;
+    return sizeInternal == "sm" ? 20 : 64;
+  }, [size, breakpoint]);
 
   return ensAvatarQuery.isLoading ? (
     <Skeleton
