@@ -1,59 +1,66 @@
-/**
- * Format a number so it can nicely be rendered
- * @param num the number to be formatted, this can be a number or a string representation of a number. It should be less than 1 quintillion (10^15)
- * @param decimals the number of decimals to keep after formatting, if not specified it will keep 2
- * @param trimTrailingZeros if the number should have trailing zeros trimmed
- * @returns nicely formatted number, for example if number is 11023 this will return 1.10K
- */
+import { DataGranularity, Unit } from "./types";
+
 export function formatNumber(
-  num: number | string | undefined,
-  decimals: number = 2,
-  prefix: string = "",
+  input: number | bigint,
+  unit?: Unit,
+  maxSigFigs: number = 4,
 ): string {
-  const suffixes = ["", "", "M", "B", "T"];
+  const style = unit == "$" ? "currency" : unit == "%" ? "percent" : "decimal";
+  return Intl.NumberFormat("en", {
+    notation: "compact",
+    maximumSignificantDigits: maxSigFigs,
+    style,
+    currency: "USD",
+  }).format(input);
+}
 
-  let formattedNum = num;
+export function formatTimestamp(
+  timestamp: number,
+  granularity: DataGranularity,
+  full?: boolean,
+): string {
+  const date = new Date(timestamp * 1000);
 
-  if (formattedNum == undefined || isNaN(Number(num))) {
-    return "--";
+  switch (granularity) {
+    case "weekly":
+      // MMM, YYYY and MMM DD, YYYY for full
+      return new Intl.DateTimeFormat("en-US", {
+        month: "short",
+        year: "numeric",
+        ...(full
+          ? ({
+              day: "numeric",
+            } as Intl.DateTimeFormatOptions)
+          : {}),
+      }).format(date);
+
+    case "daily":
+      // MMM DD and MMM DD, YYYY for full
+      return new Intl.DateTimeFormat("en-US", {
+        month: "short",
+        day: "numeric",
+        ...(full
+          ? [
+              {
+                year: "numeric",
+              } as Intl.DateTimeFormatOptions,
+            ]
+          : []),
+      }).format(date);
+    case "hourly":
+      // MMM DD and MMM DD, YYYY MM:HH for full
+      return new Intl.DateTimeFormat("en-US", {
+        month: "short",
+        day: "numeric",
+        ...(full
+          ? [
+              {
+                year: "numeric",
+                hour: "numeric",
+                minute: "numeric",
+              } as Intl.DateTimeFormatOptions,
+            ]
+          : []),
+      }).format(date);
   }
-
-  // If it is represented as a sting, convert to number first
-  if (typeof formattedNum === "string") {
-    formattedNum = parseFloat(formattedNum);
-
-    if (isNaN(formattedNum)) {
-      return num as string; // It isn't a number
-    }
-  }
-
-  const isNeg = formattedNum < 0;
-  if (isNeg) {
-    formattedNum = -formattedNum;
-  }
-
-  let suffixIndex = Math.floor(
-    (formattedNum.toFixed(0).toString().length - 1) / 3,
-  );
-
-  // Clamp to max suffix
-  if (suffixIndex >= suffixes.length) {
-    suffixIndex = 0;
-  }
-
-  // Don't format below 1M
-  if (formattedNum > 1e6) {
-    formattedNum /= 10 ** (3 * suffixIndex);
-  }
-
-  if (formattedNum < 10 ** -decimals && formattedNum > 0) {
-    formattedNum = "<" + prefix + 10 ** -decimals;
-  } else {
-    let nf = new Intl.NumberFormat("en-US", {
-      maximumFractionDigits: decimals,
-    });
-    formattedNum = prefix + nf.format(formattedNum);
-  }
-
-  return (isNeg ? "-" : "") + formattedNum + suffixes[suffixIndex];
 }

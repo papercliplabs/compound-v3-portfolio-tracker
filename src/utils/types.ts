@@ -1,9 +1,11 @@
-export type TimeSelection = "1D" | "7D" | "1M" | "3M" | "1Y" | "MAX";
+export type TimeSelection = "7D" | "1M" | "3M" | "1Y" | "MAX";
 
 export type DataGranularity = "hourly" | "daily" | "weekly";
 
-// MAX: weekly
-// 1Y: weekly
-// 3M: daily
-// 1M: daily
-// 7D: hourly
+export type Unit = "%" | "$";
+
+export type NestedKeyOf<ObjectType extends object> = {
+  [Key in keyof ObjectType & (string | number)]: ObjectType[Key] extends object
+    ? `${Key}` | `${Key}.${NestedKeyOf<ObjectType[Key]>}`
+    : `${Key}`;
+}[keyof ObjectType & (string | number)];

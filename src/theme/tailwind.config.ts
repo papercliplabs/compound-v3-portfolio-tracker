@@ -12,7 +12,7 @@ const config = {
       colors: {
         background: {
           body: "#F1F1F1",
-          surface: "#F2F0EF",
+          surface: "#F4F2F1",
           orange: "#FFEADE",
           disabled: "#F4F4F5",
           muted: "#34343419",
@@ -28,7 +28,7 @@ const config = {
         semantic: {
           brand: "#1D8CD2",
           info: "#0570DE",
-          success: "#2B8887",
+          success: "#2CA237",
           warning: "#C84801",
           critical: "#DF1B41",
         },

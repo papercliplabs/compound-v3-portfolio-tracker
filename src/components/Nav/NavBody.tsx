@@ -81,7 +81,7 @@ export async function NavBody({
           <Stack size={16} className="stroke-content-primary" weight="bold" />
           All Positions
         </div>
-        ${formatNumber(totalBalanceUsd)}
+        {formatNumber(totalBalanceUsd, "$")}
       </NavItem>
       {borrowPositionProps.length > 0 && (
         <>
@@ -179,14 +179,14 @@ function NavPositionLink({
           </span>
           {balanceUsd < 0 && (
             <span className="caption-md text-content-secondary">
-              {formatNumber(utilization * 100)}% utilized
+              {formatNumber(utilization, "%")} utilized
             </span>
           )}
         </div>
         <div className="flex flex-col items-end">
           <span>${formatNumber(Math.abs(balanceUsd))}</span>
           <span className="caption-md text-content-secondary">
-            {formatNumber(apr * 100)}% APR (7D)
+            {formatNumber(apr, "%")} APR (7D)
           </span>
         </div>
       </div>

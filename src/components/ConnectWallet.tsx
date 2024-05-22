@@ -41,7 +41,7 @@ export default function ConnectWallet({
     }, 1000);
 
     return () => clearTimeout(timeout);
-  }, []);
+  });
 
   return (
     <RainbowConnectButton.Custom>

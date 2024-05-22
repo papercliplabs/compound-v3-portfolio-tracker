@@ -2,7 +2,7 @@
 import { PortfolioActivity } from "@/data/queries/getPortfolioActivity";
 import { Activity, ActivityType } from "@/data/queries/getPositionActivity";
 import { ColumnDef } from "@tanstack/react-table";
-import { selectItems } from ".";
+import { selectItems } from "./ClientActivityTable";
 
 import {
   Select,
@@ -11,12 +11,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { formatNumber } from "@/utils/format";
 import {
   SECONDS_PER_DAY,
   SECONDS_PER_HOUR,
   SECONDS_PER_MONTH,
-  SECONDS_PER_WEEK,
   SECONDS_PER_YEAR,
 } from "@/utils/constants";
 import { getNetworkConfig } from "@/utils/configs";

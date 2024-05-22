@@ -5,7 +5,6 @@ import { querySubgraph } from "../dataUtils";
 import { SupportedNetwork } from "@/utils/configs";
 import { unstable_cache } from "next/cache";
 import { DEFAULT_REVALIDATION_TIME_S } from "../graphql/graphQLFetch";
-import { bigIntSafeDiv } from "@/utils/bigInt";
 import {
   HOURLY_DATA_MAX_NUM_POINTS,
   DAILY_DATA_MAX_NUM_POINTS,
@@ -17,6 +16,7 @@ import {
   SECONDS_PER_HOUR,
   SECONDS_PER_WEEK,
 } from "@/utils/constants";
+import { safeDiv } from "@/utils/safeMath";
 
 export interface MarketAccountingEntry {
   key: number; // hour / day / week
@@ -272,7 +272,7 @@ function mapHistoricalEntryToData({
     baseSupplyIndex: BigInt(accounting.baseSupplyIndex),
     trackingBorrowIndex: BigInt(accounting.trackingBorrowIndex),
     trackingSupplyIndex: BigInt(accounting.trackingSupplyIndex),
-    baseUsdExchangeRate: bigIntSafeDiv(
+    baseUsdExchangeRate: safeDiv(
       BigInt(accounting.totalBaseSupply),
       BigInt(totalBaseSupplyUsd.toFixed(0)),
     ),
@@ -282,7 +282,7 @@ function mapHistoricalEntryToData({
         assetAddress: getAddress(
           collateralBalance.collateralToken.token.address,
         ),
-        usdExchangeRate: bigIntSafeDiv(
+        usdExchangeRate: safeDiv(
           BigInt(collateralBalance.balance),
           BigInt(Number(collateralBalance.balanceUsd).toFixed(0)),
         ),

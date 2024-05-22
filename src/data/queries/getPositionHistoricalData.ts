@@ -7,7 +7,7 @@ import {
   MarketAccountingEntry,
   getMarketHistoricalAccountingCached,
 } from "./getMarketHistoricalAccounting";
-import { bigIntAbs, bigIntSafeDiv } from "@/utils/bigInt";
+import { bigIntAbs } from "@/utils/bigInt";
 import {
   MarketRewardConfig,
   getMarketRewardConfigCached,
@@ -21,6 +21,7 @@ import {
   PositionAccountingSnapshot,
   getPositionAccountingSnapshotsCached,
 } from "./getPositionAccountingSnapshots";
+import { safeDiv } from "@/utils/safeMath";
 
 const BASE_INDEX_SCALE = BigInt(1e15);
 const USD_DECIMALS_SCALER = 1e4;
@@ -181,7 +182,7 @@ async function aggregatePositionHistoricalData(
 
       positionEntry.balanceUsd =
         Number(
-          bigIntSafeDiv(
+          safeDiv(
             positionEntry.balance * BigInt(USD_DECIMALS_SCALER),
             marketEntry.baseUsdExchangeRate,
           ),
@@ -255,7 +256,7 @@ async function aggregatePositionHistoricalData(
         } else {
           const collateralBalanceUsd =
             Number(
-              bigIntSafeDiv(
+              safeDiv(
                 positionCollateralBalance.balance * BigInt(USD_DECIMALS_SCALER),
                 exchangeRate.usdExchangeRate,
               ),

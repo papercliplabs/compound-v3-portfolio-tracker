@@ -7,6 +7,7 @@ import {
   PositionDataEntry,
   getPositionHistoricalDataCached,
 } from "./getPositionHistoricalData";
+import { safeDiv } from "@/utils/safeMath";
 
 interface PortfolioDataEntry {
   key: number; // hour / day / week
@@ -90,10 +91,18 @@ async function aggregatePortfolioData(
     }
 
     // Divide out to get average for apr
-    // TODO(spennyp): safe division here
-    portfolioDataEntry.avgApr.base /= portfolioDataEntry.balanceUsd;
-    portfolioDataEntry.avgApr.reward /= portfolioDataEntry.balanceUsd;
-    portfolioDataEntry.avgApr.net /= portfolioDataEntry.balanceUsd;
+    portfolioDataEntry.avgApr.base = safeDiv(
+      portfolioDataEntry.avgApr.base,
+      portfolioDataEntry.balanceUsd,
+    );
+    portfolioDataEntry.avgApr.reward = safeDiv(
+      portfolioDataEntry.avgApr.reward,
+      portfolioDataEntry.balanceUsd,
+    );
+    portfolioDataEntry.avgApr.net = safeDiv(
+      portfolioDataEntry.avgApr.net,
+      portfolioDataEntry.balanceUsd,
+    );
 
     portfolioHistoricalData.push(portfolioDataEntry);
   }
