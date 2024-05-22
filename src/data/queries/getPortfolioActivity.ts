@@ -2,8 +2,6 @@ import { SupportedNetwork } from "@/utils/configs";
 import { Address } from "viem";
 import { Activity, getPositionActivityCached } from "./getPositionActivity";
 import { getMarketsForAccountCached } from "./getMarketsForAccount";
-import { DEFAULT_REVALIDATION_TIME_S } from "../graphql/graphQLFetch";
-import { unstable_cache } from "next/cache";
 
 export interface PortfolioActivity extends Activity {
   network: SupportedNetwork;
@@ -15,7 +13,7 @@ interface GetPortfolioActivityParams {
   accountAddress: Address;
 }
 
-async function getPortfolioActivity({
+export async function getPortfolioActivity({
   accountAddress,
 }: GetPortfolioActivityParams): Promise<PortfolioActivity[]> {
   const markets = await getMarketsForAccountCached({ accountAddress });
@@ -50,12 +48,3 @@ async function getPortfolioActivity({
 
   return portfolioActivity;
 }
-
-// Cache here instead of on fetch (fetch is still cached) to avoid doing the data transformations every time
-export const getPortfolioActivityCached = unstable_cache(
-  getPortfolioActivity,
-  ["get-portfolio-activity"],
-  {
-    revalidate: DEFAULT_REVALIDATION_TIME_S,
-  },
-);

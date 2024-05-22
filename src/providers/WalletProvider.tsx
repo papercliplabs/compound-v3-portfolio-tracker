@@ -10,7 +10,6 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { fallback, getAddress, http } from "viem";
 import { getAllChainConfigs } from "@/utils/configs";
 import AccountAvatar from "@/components/AccountAvatar";
-import { Suspense } from "react";
 
 const allConfigs = getAllChainConfigs();
 
@@ -28,7 +27,6 @@ const config = getDefaultConfig({
     ]),
   ),
   ssr: true,
-  // storage: null, // Causes react hydration erorr to enable...
 });
 
 const queryClient = new QueryClient();

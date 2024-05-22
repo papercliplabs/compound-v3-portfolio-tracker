@@ -182,7 +182,7 @@ function NavPositionLink({
           )}
         </div>
         <div className="flex flex-col items-end">
-          <span>${formatNumber(-balanceUsd)}</span>
+          <span>${formatNumber(Math.abs(balanceUsd))}</span>
           <span className="caption-md text-content-secondary">
             {formatNumber(apr * 100)}% APR (7D)
           </span>

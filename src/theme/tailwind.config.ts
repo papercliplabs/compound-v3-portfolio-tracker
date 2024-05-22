@@ -11,6 +11,7 @@ const config = {
           surface: "#F2F0EF",
           orange: "#FFEADE",
           disabled: "#F4F4F5",
+          muted: "#34343419",
         },
         border: {
           primary: "#E2E2E2",

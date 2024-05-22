@@ -37,7 +37,7 @@ export default function Layout({
   }
 
   return (
-    <div className="flex flex-row justify-between">
+    <div className="flex h-full flex-col justify-between md:flex-row">
       <Nav
         accountAddress={accountAddress}
         selectedPositionParams={
@@ -49,7 +49,7 @@ export default function Layout({
             : undefined
         }
       />
-      <div className="flex grow flex-col gap-4 border-l px-16 py-14">
+      <div className="flex h-full min-w-0 grow flex-col gap-4 border-l px-4 py-8 md:px-16 md:py-14">
         <Suspense fallback="LOADING!!!">
           {isPosition ? position : portfolio}
         </Suspense>

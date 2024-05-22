@@ -6,7 +6,7 @@ import { querySubgraph } from "../dataUtils";
 import { unstable_cache } from "next/cache";
 import { DEFAULT_REVALIDATION_TIME_S } from "../graphql/graphQLFetch";
 
-interface MarketRewardConfig {
+export interface MarketRewardConfig {
   rewardTokenAddress: Address;
   rewardTokenDecimals: number;
   rescaleFactor: bigint;

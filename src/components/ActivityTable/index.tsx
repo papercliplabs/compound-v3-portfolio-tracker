@@ -106,7 +106,7 @@ export default function ActivityTable<TData, TValue>({
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
-          Previousss
+          Previous
         </Button>
         <Button
           variant="ghost"

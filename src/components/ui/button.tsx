@@ -17,7 +17,7 @@ const buttonVariants = cva(
         ghost: "bg-transparent hover:bg-background-surface",
       },
       size: {
-        default: "h-fit w-fit px-3 py-1",
+        default: "h-8 w-fit px-3 py-1",
         icon: "h-fit w-fit p-[6px]",
       },
     },

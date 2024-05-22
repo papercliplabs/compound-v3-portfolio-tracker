@@ -1,15 +1,23 @@
-import { ReactNode } from "react";
+import { AnchorHTMLAttributes, forwardRef } from "react";
 
-export default function ExternalLink({
-  href,
-  children,
-}: {
-  href: string;
-  children: ReactNode;
-}) {
+export interface ExternalLinkProps
+  extends AnchorHTMLAttributes<HTMLAnchorElement> {}
+
+const ExternalLink = forwardRef<
+  HTMLAnchorElement,
+  AnchorHTMLAttributes<HTMLAnchorElement>
+>(({ href, children, ...props }, ref) => {
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer nofollow">
+    <a
+      {...props}
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer nofollow"
+    >
       {children}
     </a>
   );
-}
+});
+ExternalLink.displayName = "ExternalLink";
+
+export default ExternalLink;

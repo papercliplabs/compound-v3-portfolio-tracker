@@ -1,7 +1,7 @@
 "use client";
 import { ConnectButton as RainbowConnectButton } from "@rainbow-me/rainbowkit";
 import { Button } from "./ui/button";
-import { useAccount, useConfig } from "wagmi";
+import { useConfig } from "wagmi";
 import { useRouter } from "next/navigation";
 import { watchAccount } from "@wagmi/core";
 import { usePathname } from "next/navigation";
@@ -14,25 +14,27 @@ export default function ConnectWallet() {
   const config = useConfig();
   const pathname = usePathname();
 
-  const { address } = useAccount();
+  useEffect(() => {
+    // Only start watching 1s after load to prevent immediate navigation from reconnect
+    const timeout = setTimeout(() => {
+      // Redirect to correct page when the account changes
+      watchAccount(config, {
+        onChange(account, prevAccount) {
+          if (account.address) {
+            const pathnamePieces = pathname.split("/");
+            router.push(
+              `/${account.address}` +
+                (pathnamePieces.length == 3
+                  ? `/${pathnamePieces[1]}/${pathnamePieces[2]}`
+                  : ""),
+            );
+          }
+        },
+      });
+    }, 1000);
 
-  // Redirect to correct page when the account changes
-  watchAccount(config, {
-    onChange(account, prevAccount) {
-      console.log("CHANGE", account, prevAccount);
-      if (account.address) {
-        const pathnamePieces = pathname.split("/");
-        router.push(
-          `/${account.address}` +
-            (pathnamePieces.length == 3
-              ? `/${pathnamePieces[1]}/${pathnamePieces[2]}`
-              : ""),
-        );
-      } else {
-        // router.push(`/`);
-      }
-    },
-  });
+    return () => clearTimeout(timeout);
+  }, []);
 
   return (
     <RainbowConnectButton.Custom>

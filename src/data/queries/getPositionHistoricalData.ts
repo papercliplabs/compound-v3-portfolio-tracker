@@ -3,18 +3,30 @@ import { DataGranularity } from "@/utils/types";
 import { SupportedNetwork } from "@/utils/configs";
 import { unstable_cache } from "next/cache";
 import { DEFAULT_REVALIDATION_TIME_S } from "../graphql/graphQLFetch";
-import { getMarketHistoricalAccountingCached } from "./getMarketHistoricalAccounting";
+import {
+  MarketAccountingEntry,
+  getMarketHistoricalAccountingCached,
+} from "./getMarketHistoricalAccounting";
 import { bigIntAbs, bigIntSafeDiv } from "@/utils/bigInt";
-import { getMarketRewardConfigCached } from "./getMarketRewardConfig";
-import { getMarketConfigSnapshotsCached } from "./getMarketConfigSnapshots";
+import {
+  MarketRewardConfig,
+  getMarketRewardConfigCached,
+} from "./getMarketRewardConfig";
+import {
+  MarketConfig,
+  getMarketConfigSnapshotsCached,
+} from "./getMarketConfigSnapshots";
 import { Address, formatUnits, isAddressEqual } from "viem";
-import { getPositionAccountingSnapshotsCached } from "./getPositionAccountingSnapshots";
+import {
+  PositionAccountingSnapshot,
+  getPositionAccountingSnapshotsCached,
+} from "./getPositionAccountingSnapshots";
 
 const BASE_INDEX_SCALE = BigInt(1e15);
 const USD_DECIMALS_SCALER = 1e4;
 const FACTOR_SCALE = BigInt(1e18);
 
-interface PositionDataEntry {
+export interface PositionDataEntry {
   key: number; // hour / day / week
   timestamp: number; // time since unix epoch
   balance: bigint;
@@ -89,7 +101,20 @@ async function getPositionHistoricalData({
     return undefined;
   }
 
-  // Stitch together
+  return aggregatePositionHistoricalDataCached(
+    marketHistoricalData,
+    positionAccountingSnapshots,
+    marketConfigSnapshots,
+    marketRewardConfig,
+  );
+}
+
+async function aggregatePositionHistoricalData(
+  marketHistoricalData: MarketAccountingEntry[],
+  positionAccountingSnapshots: PositionAccountingSnapshot[],
+  marketConfigSnapshots: MarketConfig[],
+  marketRewardConfig: MarketRewardConfig,
+): Promise<PositionDataEntry[]> {
   const positionHistoricalData: PositionDataEntry[] = [];
 
   let currentPositionSnapshotIndex = 0;
@@ -268,6 +293,11 @@ async function getPositionHistoricalData({
 
   return positionHistoricalData;
 }
+
+const aggregatePositionHistoricalDataCached = unstable_cache(
+  aggregatePositionHistoricalData,
+  ["aggregate-position-historical-data"],
+);
 
 function presentValue(
   supplyIndex: bigint,

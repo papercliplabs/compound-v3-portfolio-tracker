@@ -3,11 +3,10 @@ import { Inter } from "next/font/google";
 import WalletProvider from "@/providers/WalletProvider";
 import { Analytics } from "@vercel/analytics/react";
 import "@/theme/globals.css";
-import Token from "@/components/Token";
 import LearnMore from "@/components/LearnMore";
 import ConnectWallet from "@/components/ConnectWallet";
-import Link from "next/link";
 import HeaderHomeButton from "@/components/HeaderHomeButton";
+import { SearchWallet } from "@/components/SearchWallet";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -31,18 +30,15 @@ export const metadata: Metadata = {
 
 function Header() {
   return (
-    <header className="shadow-1 flex h-16 w-full flex-row items-center justify-between bg-white px-10 py-2">
+    <header className="shadow-1 grid h-16 w-full grid-cols-[minmax(max-content,0.3fr)_1fr_minmax(max-content,0.3fr)] flex-row items-center justify-between gap-4 bg-white px-10 py-2">
       <HeaderHomeButton />
-      <div className="flex h-full flex-row items-center gap-2">
+      <SearchWallet />
+      <div className="flex  flex-row items-center justify-end gap-2">
         <LearnMore />
         <ConnectWallet />
       </div>
     </header>
   );
-}
-
-function Footer() {
-  return <footer className="w-full bg-blue-500 px-12 py-6">FOOTER</footer>;
 }
 
 export default function RootLayout({
@@ -52,17 +48,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.variable}>
+      <body className={`${inter.variable}`}>
         <WalletProvider>
-          <div className="flex min-h-screen w-full flex-col overflow-hidden">
+          <div className="grid min-h-screen w-full grid-rows-[min-content_1fr] overflow-x-hidden">
             <Header />
-            <main className="bg-background-surface grow overflow-y-scroll">
+            <main className="bg-background-surface mx-auto w-screen max-w-[2560px]">
               {children}
             </main>
-            <Footer />
           </div>
+          <Analytics />
         </WalletProvider>
-        <Analytics />
       </body>
     </html>
   );

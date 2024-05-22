@@ -8,7 +8,7 @@ import { Address, getAddress } from "viem";
 
 const BASE_ACCRUAL_SCALE = 1e6;
 
-interface MarketConfig {
+export interface MarketConfig {
   timestamp: number; // time since unix epoch
   trackingIndexScale: bigint;
   accrualDescaleFactor: bigint;

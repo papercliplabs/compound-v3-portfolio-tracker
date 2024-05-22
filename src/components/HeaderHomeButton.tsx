@@ -8,7 +8,7 @@ export default function HeaderHomeButton() {
 
   return (
     <Link href={address ? `/${address}` : "/"}>
-      <Button variant="ghost">LOGO</Button>
+      <Button variant="ghost">Ollio</Button>
     </Link>
   );
 }

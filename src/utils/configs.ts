@@ -31,13 +31,12 @@ interface ChainConfig {
   subgraphUrl: string;
 }
 
-// TODO: add rpc url's ehre if we need
 const CONFIGS: Record<SupportedNetwork, ChainConfig> = {
   mainnet: {
     chain: mainnet,
     rpcUrl: {
       primary: process.env.MAINNET_RPC_URL!,
-      fallback: "https://eth.llamarpc.com	",
+      // fallback: "https://eth.llamarpc.com	",
     },
     icon: MainnetIcon,
     subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/deployments/id/Qma9vGcUHz6pUeRTcHzU64yuS4i4dBxKh3TKKrXY3ckNas`,

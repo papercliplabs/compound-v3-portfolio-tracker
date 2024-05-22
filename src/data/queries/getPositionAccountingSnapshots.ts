@@ -6,7 +6,7 @@ import { unstable_cache } from "next/cache";
 import { DEFAULT_REVALIDATION_TIME_S } from "../graphql/graphQLFetch";
 import { Address, getAddress } from "viem";
 
-interface PositionAccountingSnapshot {
+export interface PositionAccountingSnapshot {
   timestamp: number;
   basePrincipal: bigint;
   baseTrackingAccrued: bigint;

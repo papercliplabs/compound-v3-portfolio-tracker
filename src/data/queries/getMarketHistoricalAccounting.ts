@@ -18,7 +18,7 @@ import {
   SECONDS_PER_WEEK,
 } from "@/utils/constants";
 
-interface MarketAccountingEntry {
+export interface MarketAccountingEntry {
   key: number; // hour / day / week
   timestamp: number; // time since unix epoch
   baseBorrowIndex: bigint;

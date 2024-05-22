@@ -3,8 +3,10 @@ import { DataGranularity } from "@/utils/types";
 import { Address } from "viem";
 import { getMarketsForAccountCached } from "./getMarketsForAccount";
 import { unstable_cache } from "next/cache";
-import { DEFAULT_REVALIDATION_TIME_S } from "../graphql/graphQLFetch";
-import { getPositionHistoricalDataCached } from "./getPositionHistoricalData";
+import {
+  PositionDataEntry,
+  getPositionHistoricalDataCached,
+} from "./getPositionHistoricalData";
 
 interface PortfolioDataEntry {
   key: number; // hour / day / week
@@ -20,7 +22,7 @@ interface GetPortfolioHistoricalDataParams {
   granularity: DataGranularity;
 }
 
-async function getPortfolioHistoricalData({
+export async function getPortfolioHistoricalData({
   accountAddress,
   granularity,
 }: GetPortfolioHistoricalDataParams): Promise<
@@ -41,7 +43,14 @@ async function getPortfolioHistoricalData({
     positionHistoricalDataPromises,
   );
 
-  const maxLength = positionHistoricalDataResponses.reduce(
+  return aggregatePortfolioDataCached(positionHistoricalDataResponses);
+}
+
+// Needs to be a promise for unstable cache
+async function aggregatePortfolioData(
+  positionHistoricalDataArray: (PositionDataEntry[] | undefined)[],
+): Promise<PortfolioDataEntry[]> {
+  const maxLength = positionHistoricalDataArray.reduce(
     (prevMax, response) => Math.max(prevMax, response?.length ?? 0),
     0,
   );
@@ -56,7 +65,7 @@ async function getPortfolioHistoricalData({
       avgApr: { base: 0, reward: 0, net: 0 },
     };
 
-    for (let response of positionHistoricalDataResponses) {
+    for (let response of positionHistoricalDataArray) {
       const responseEntry = response?.[response.length - 1 - i];
 
       if (responseEntry) {
@@ -81,7 +90,7 @@ async function getPortfolioHistoricalData({
     }
 
     // Divide out to get average for apr
-    // TODO(spennyp): save division here
+    // TODO(spennyp): safe division here
     portfolioDataEntry.avgApr.base /= portfolioDataEntry.balanceUsd;
     portfolioDataEntry.avgApr.reward /= portfolioDataEntry.balanceUsd;
     portfolioDataEntry.avgApr.net /= portfolioDataEntry.balanceUsd;
@@ -94,11 +103,6 @@ async function getPortfolioHistoricalData({
   return portfolioHistoricalData;
 }
 
-// Cache here instead of on fetch (fetch is still cached) to avoid doing the data transformations every time
-export const getPortfolioHistoricalDataCached = unstable_cache(
-  getPortfolioHistoricalData,
-  ["get-portfolio-historical-data"],
-  {
-    revalidate: DEFAULT_REVALIDATION_TIME_S,
-  },
-);
+const aggregatePortfolioDataCached = unstable_cache(aggregatePortfolioData, [
+  "aggregate-portfolio-data",
+]);

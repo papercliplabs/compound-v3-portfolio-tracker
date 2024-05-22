@@ -15,6 +15,8 @@ export default function AccountAvatar({ address, size }: AccountAvatarProps) {
   const ensAvatarQuery = useEnsAvatar({ address });
   const width = useMemo(() => (size == "sm" ? 20 : 64), [size]);
 
+  console.log(ensAvatarQuery.data, ensAvatarQuery.isLoading);
+
   return ensAvatarQuery.isLoading ? (
     <Skeleton
       style={{ width: width, height: width }}
@@ -25,7 +27,8 @@ export default function AccountAvatar({ address, size }: AccountAvatarProps) {
       src={ensAvatarQuery.data}
       width={width}
       height={width}
-      className="rounded-full"
+      className="rounded-full object-cover"
+      style={{ width, height: width }}
       alt=""
     />
   ) : (
