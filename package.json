@@ -27,6 +27,7 @@
     "add": "^2.0.6",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "framer-motion": "^11.2.6",
     "graphql": "^16.8.1",
     "graphql-scalars": "^1.22.4",
     "lucide-react": "^0.331.0",

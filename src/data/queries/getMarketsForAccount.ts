@@ -4,7 +4,8 @@ import { querySubgraph } from "../dataUtils";
 import { graphql } from "../graphql/generated";
 import { unstable_cache } from "next/cache";
 import { DEFAULT_REVALIDATION_TIME_S } from "../graphql/graphQLFetch";
-import { Address, getAddress } from "viem";
+import { Address, getAddress, isAddressEqual } from "viem";
+import { getPositionsForAccount } from "./getPositionsForAccount";
 
 export interface Market {
   address: Address;
@@ -80,3 +81,21 @@ export const getMarketsForAccountCached = unstable_cache(
     revalidate: DEFAULT_REVALIDATION_TIME_S,
   },
 );
+
+interface GetMarketForAccountParams {
+  network: SupportedNetwork;
+  marketAddress: Address;
+  accountAddress: Address;
+}
+
+export async function getMarketForAccount({
+  network,
+  marketAddress,
+  accountAddress,
+}: GetMarketForAccountParams): Promise<Market | undefined> {
+  return (await getMarketsForAccount({ accountAddress })).find(
+    (market) =>
+      isAddressEqual(market.address, marketAddress) &&
+      market.network == network,
+  );
+}

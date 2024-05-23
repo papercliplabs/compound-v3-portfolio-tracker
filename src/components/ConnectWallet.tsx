@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 import { getAddress } from "viem";
 import AccountAvatar from "./AccountAvatar";
 import { useEffect } from "react";
-import { useScreenBreakpoint } from "@/hooks/useScreenBreakpoint";
+import { useScreenSize } from "@/hooks/useScreenSize";
 import { Wallet } from "@phosphor-icons/react/dist/ssr";
 
 export default function ConnectWallet({
@@ -19,7 +19,7 @@ export default function ConnectWallet({
   const router = useRouter();
   const config = useConfig();
   const pathname = usePathname();
-  const screenBreakpoint = useScreenBreakpoint();
+  const screenSize = useScreenSize();
 
   useEffect(() => {
     // Only start watching 1s after load to prevent immediate navigation from reconnect
@@ -71,7 +71,7 @@ export default function ConnectWallet({
               if (!connected) {
                 return (
                   <Button onClick={openConnectModal}>
-                    {screenBreakpoint == "lg" || !responsive ? (
+                    {screenSize == "lg" || !responsive ? (
                       "Connect Wallet"
                     ) : (
                       <Wallet width={20} height={20} className="p-0" />
@@ -98,8 +98,7 @@ export default function ConnectWallet({
                     address={getAddress(account.address)}
                     size="sm"
                   />
-                  {(screenBreakpoint == "lg" || !responsive) &&
-                    account.displayName}
+                  {(screenSize == "lg" || !responsive) && account.displayName}
                 </Button>
               );
             })()}

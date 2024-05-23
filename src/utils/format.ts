@@ -40,12 +40,10 @@ export function formatTimestamp(
         month: "short",
         day: "numeric",
         ...(full
-          ? [
-              {
-                year: "numeric",
-              } as Intl.DateTimeFormatOptions,
-            ]
-          : []),
+          ? ({
+              year: "numeric",
+            } as Intl.DateTimeFormatOptions)
+          : {}),
       }).format(date);
     case "hourly":
       // MMM DD and MMM DD, YYYY MM:HH for full
@@ -53,14 +51,11 @@ export function formatTimestamp(
         month: "short",
         day: "numeric",
         ...(full
-          ? [
-              {
-                year: "numeric",
-                hour: "numeric",
-                minute: "numeric",
-              } as Intl.DateTimeFormatOptions,
-            ]
-          : []),
+          ? ({
+              hour: "numeric",
+              minute: "numeric",
+            } as Intl.DateTimeFormatOptions)
+          : {}),
       }).format(date);
   }
 }

@@ -52,7 +52,7 @@ export default function Layout({
             : undefined
         }
       />
-      <div className="flex h-full min-w-0 grow flex-col gap-4 border-l px-4 pb-[132px] pt-8 md:px-16 md:pb-14 md:pt-14">
+      <div className="flex h-full min-w-0 grow flex-col justify-start gap-4 border-l px-4 pb-[132px] pt-8 md:px-16 md:pb-14 md:pt-14">
         <Card>
           <TimeSelector />
         </Card>

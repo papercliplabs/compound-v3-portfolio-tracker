@@ -5,11 +5,12 @@ import { Address } from "viem";
 import { NoPositions } from "@/components/NoPositions";
 import "@/utils/bigIntPolyfill";
 import { TimeSelection } from "@/utils/types";
-import { GRANULARITY_FOR_TIME_SELECTOR } from "@/utils/constants";
+import { DATA_FOR_TIME_SELECTOR } from "@/utils/constants";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ActivityTable } from "@/components/ActivityTable";
 import ChartCard from "@/components/Chart/ChartCard";
+import PositionsAtRisk from "@/components/PositionsAtRisk";
 
 export default async function PortfolioPage({
   params,
@@ -20,7 +21,7 @@ export default async function PortfolioPage({
 }) {
   const { accountAddress } = params;
   const timeSelector = (searchParams.timeSelector ?? "MAX") as TimeSelection;
-  const granularity = GRANULARITY_FOR_TIME_SELECTOR[timeSelector];
+  const granularity = DATA_FOR_TIME_SELECTOR[timeSelector].granularity;
 
   const markets = await getMarketsForAccountCached({
     accountAddress,
@@ -32,13 +33,17 @@ export default async function PortfolioPage({
 
   return (
     <>
+      <h1>All Positions</h1>
+      <Suspense fallback={null} key={accountAddress + "positions-at-risk"}>
+        <PositionsAtRisk accountAddress={accountAddress} />
+      </Suspense>
       <ChartCard
         query={getPortfolioHistoricalData}
         queryArgs={[{ accountAddress, granularity }]}
         name="Base asset balance"
         popoverDescription="TODO"
         dataKey="balanceUsd"
-        granularity={granularity}
+        timeSelection={timeSelector}
         unit="$"
         style={{
           lineColor: tailwindFullTheme.theme.colors.data.series1,
@@ -51,7 +56,7 @@ export default async function PortfolioPage({
         name="Profit and loss"
         popoverDescription="TODO"
         dataKey="profitAndLossUsd"
-        granularity={granularity}
+        timeSelection={timeSelector}
         unit="$"
         style={{
           lineColor: tailwindFullTheme.theme.colors.data.series2,
@@ -61,11 +66,12 @@ export default async function PortfolioPage({
       <ChartCard
         query={getPortfolioHistoricalData}
         queryArgs={[{ accountAddress, granularity }]}
-        name="Average APR"
+        name="APR"
         popoverDescription="TODO"
         dataKey="avgApr.net"
-        granularity={granularity}
+        timeSelection={timeSelector}
         unit="%"
+        showAverage
         style={{
           lineColor: tailwindFullTheme.theme.colors.data.series3,
           areaGradient: false,

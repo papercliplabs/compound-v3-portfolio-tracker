@@ -7,8 +7,6 @@ import { getAddressForEnsName } from "@/data/getEns";
 import { useFormStatus } from "react-dom";
 import { CircleNotch } from "@phosphor-icons/react/dist/ssr";
 import { useRouter } from "next/navigation";
-import { Router } from "lucide-react";
-import { useScreenBreakpoint } from "@/hooks/useScreenBreakpoint";
 
 const ADDRESS_OR_ENS_FORM_NAME = "addressOrEns";
 

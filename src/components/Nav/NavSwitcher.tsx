@@ -1,12 +1,14 @@
 "use client";
-import { useScreenBreakpoint } from "@/hooks/useScreenBreakpoint";
+import { useScreenSize } from "@/hooks/useScreenSize";
 import { ReactNode } from "react";
 import NavDrawer from "./NavDrawer";
+import { motion } from "framer-motion";
 
 export default function NavSwitcher({ children }: { children: ReactNode }) {
-  const breakpoint = useScreenBreakpoint();
-  return breakpoint == "lg" ? (
-    <div className="flex w-full min-w-[380px] max-w-[500px] flex-col gap-3 px-6 py-[56px]">
+  const screenSize = useScreenSize();
+
+  return screenSize == "lg" ? (
+    <div className="flex w-full max-w-[500px] flex-col gap-3 overflow-hidden px-6 py-[56px]">
       {children}
     </div>
   ) : (

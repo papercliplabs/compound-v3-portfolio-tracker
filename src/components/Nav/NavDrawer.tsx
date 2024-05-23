@@ -1,14 +1,19 @@
 "use client";
-import { Hamburger, List, X } from "@phosphor-icons/react/dist/ssr";
-import { ReactNode, useState } from "react";
+import { List, X } from "@phosphor-icons/react/dist/ssr";
+import { ReactNode, useRef, useState } from "react";
 import { Drawer } from "vaul";
 import { Button } from "../ui/button";
+import { useScreen } from "usehooks-ts";
 
 const CLOSED_SNAP = "100px";
 const OPEN_SNAP = 0.7;
 
 export default function NavDrawer({ children }: { children: ReactNode }) {
   const [snap, setSnap] = useState<number | string | null>(CLOSED_SNAP);
+
+  // Makes the component re-render when the height changes
+  const screen = useScreen();
+  const ref = useRef<HTMLDivElement>(null);
 
   return (
     <Drawer.Root
@@ -18,12 +23,15 @@ export default function NavDrawer({ children }: { children: ReactNode }) {
       activeSnapPoint={snap}
       setActiveSnapPoint={setSnap}
       modal={false}
+      fadeFromIndex={0}
     >
-      <Drawer.Overlay className="fixed inset-0 bg-black/40" />
       <Drawer.Portal>
         <Drawer.Content
-          className="shadow-2 border-b-none border-border-primary fixed bottom-1/2 left-0 right-0 mx-[-1px] flex flex-col gap-3 rounded-t-[12px] border bg-white px-4 py-5"
+          className="shadow-2 border-b-none border-border-primary fixed left-0 right-0 mx-[-1px] flex flex-col gap-3 rounded-t-[12px] border bg-white px-4 py-5"
           style={{ height: `${OPEN_SNAP * 100}%`, top: 30 }}
+          autoFocus={false}
+          onFocus={() => ref.current?.blur()} // Prevent initial focus
+          ref={ref}
         >
           <Button
             variant="ghost"

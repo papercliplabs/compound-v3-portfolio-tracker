@@ -1,19 +1,15 @@
-import {
-  Market,
-  getMarketsForAccountCached,
-} from "@/data/queries/getMarketsForAccount";
-import Token from "../Token";
-import { getNetworkConfig } from "@/utils/configs";
-import Link from "next/link";
+import { getMarketsForAccountCached } from "@/data/queries/getMarketsForAccount";
 import React from "react";
 import { Stack } from "@phosphor-icons/react/dist/ssr";
-import { twMerge } from "tailwind-merge";
 import { getPositionHistoricalDataCached } from "@/data/queries/getPositionHistoricalData";
 import { NavProps } from ".";
-import { Address } from "viem";
 import { Separator } from "../ui/separator";
 import { formatNumber } from "@/utils/format";
-import clsx from "clsx";
+import {
+  NavItem,
+  NavPositionLink,
+  NavPositionLinkProps,
+} from "./NavPositionLink";
 
 export async function NavBody({
   accountAddress,
@@ -110,86 +106,5 @@ export async function NavBody({
         </>
       )}
     </div>
-  );
-}
-
-const NavItem = React.forwardRef<
-  HTMLAnchorElement,
-  React.HTMLAttributes<HTMLAnchorElement> & {
-    active: boolean;
-    href: string;
-  }
->(({ active, href, className, ...props }, ref) => {
-  return (
-    <Link
-      ref={ref}
-      href={href}
-      className={twMerge(
-        "flex h-[48px] w-full flex-row items-center gap-[10px] rounded-md bg-transparent px-4 py-2",
-        active
-          ? "bg-background-surface md:bg-white"
-          : "hover:bg-background-surface/30 md:hover:bg-white/30",
-        className,
-      )}
-      {...props}
-    />
-  );
-});
-NavItem.displayName = "NavItem";
-
-interface NavPositionLinkProps {
-  accountAddress: Address;
-  market: Market;
-  active: boolean;
-
-  balanceUsd: number;
-  utilization: number;
-  apr: number;
-}
-
-function NavPositionLink({
-  accountAddress,
-  market,
-  active,
-  balanceUsd,
-  utilization,
-  apr,
-}: NavPositionLinkProps) {
-  return (
-    <NavItem
-      active={active}
-      href={`/${accountAddress}/${market.network}/${market.address}`}
-    >
-      <Token
-        symbol={market.baseTokenSymbol}
-        network={market.network}
-        size={32}
-        showNetworkIcon
-      />
-      <div className="flex w-full flex-row justify-between">
-        <div
-          className={clsx(
-            "flex flex-col",
-            balanceUsd < 0 ? "justify-between" : "justify-center",
-          )}
-        >
-          <span>
-            {market.baseTokenSymbol} •{" "}
-            {getNetworkConfig(market.network).chain.name}
-          </span>
-          {balanceUsd < 0 && (
-            <span className="caption-md text-content-secondary">
-              {formatNumber(utilization, "%")} utilized
-            </span>
-          )}
-        </div>
-        <div className="flex flex-col items-end">
-          <span>${formatNumber(Math.abs(balanceUsd))}</span>
-          <span className="caption-md text-content-secondary">
-            {formatNumber(apr, "%")} APR (7D)
-          </span>
-        </div>
-      </div>
-    </NavItem>
   );
 }

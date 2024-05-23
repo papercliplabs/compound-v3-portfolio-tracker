@@ -6,13 +6,15 @@ export const SECONDS_PER_WEEK = 604800;
 export const SECONDS_PER_MONTH = 2600640;
 export const SECONDS_PER_YEAR = 31207680;
 
-export const GRANULARITY_FOR_TIME_SELECTOR: Record<
+export const DATA_FOR_TIME_SELECTOR: Record<
   TimeSelection,
-  DataGranularity
+  { granularity: DataGranularity; rangeS: number | undefined }
 > = {
-  "7D": "hourly",
-  "1M": "daily",
-  "3M": "daily",
-  "1Y": "weekly",
-  MAX: "weekly",
+  "7D": { granularity: "hourly", rangeS: SECONDS_PER_WEEK },
+  "1M": { granularity: "daily", rangeS: SECONDS_PER_MONTH },
+  "3M": { granularity: "daily", rangeS: SECONDS_PER_MONTH * 3 },
+  "1Y": { granularity: "weekly", rangeS: SECONDS_PER_YEAR },
+  MAX: { granularity: "weekly", rangeS: undefined },
 };
+
+export const AT_RISK_HEALTH_FACTOR_THRESHOLD = 1.5;
