@@ -52,7 +52,6 @@ async function getMarketHistoricalAccounting({
   let marketData: MarketAccountingEntry[] | undefined;
 
   let expectedLastKey;
-  let expectedLength;
 
   if (granularity == "hourly") {
     const data = await querySubgraph({
@@ -68,7 +67,6 @@ async function getMarketHistoricalAccounting({
     );
 
     expectedLastKey = Math.floor(Date.now() / 1000 / SECONDS_PER_HOUR);
-    expectedLength = HOURLY_DATA_MAX_NUM_POINTS;
   } else if (granularity == "daily") {
     const data = await querySubgraph({
       network,
@@ -83,7 +81,6 @@ async function getMarketHistoricalAccounting({
     );
 
     expectedLastKey = Math.floor(Date.now() / 1000 / SECONDS_PER_DAY);
-    expectedLength = DAILY_DATA_MAX_NUM_POINTS;
   } else {
     const data = await querySubgraph({
       network,
@@ -98,17 +95,28 @@ async function getMarketHistoricalAccounting({
     );
 
     expectedLastKey = Math.floor(Date.now() / 1000 / SECONDS_PER_WEEK);
-    expectedLength = WEEKLY_DATA_MAX_NUM_POINTS;
   }
 
-  // Reverse so first points are oldest (time in increasing with index)
+  // Get date chronologically increasing
+  marketData?.reverse();
+
+  // Add on the most recent data point to the end
+  const currentData = await querySubgraph({
+    network,
+    query: currentQuery,
+    variables: {
+      marketAddress: marketAddress.toLowerCase(),
+    },
+  });
+  const currentAccountingEntry = mapHistoricalEntryToData({
+    key: (expectedLastKey + 1).toString(), // Take as the next key, this will introduce a slight interpolation error if previous point is missing
+    timestamp: Math.floor(Date.now() / 1000).toString(),
+    accounting: currentData.market!.accounting,
+  });
+  marketData?.push(currentAccountingEntry);
+
   return marketData && marketData.length > 2
-    ? // ? interpolate(marketData.reverse())
-      extrapolate(
-        interpolate(marketData.reverse()),
-        expectedLastKey,
-        expectedLength,
-      )
+    ? interpolate(marketData)
     : undefined;
 }
 
@@ -227,6 +235,39 @@ const weeklyQuery = graphql(/* GraphQL */ `
           netSupplyApr
           netBorrowApr
         }
+      }
+    }
+  }
+`);
+
+const currentQuery = graphql(/* GraphQL */ `
+  query MarketCurrentQuery($marketAddress: ID!) {
+    market(id: $marketAddress) {
+      id
+      accounting {
+        lastAccountingUpdatedBlockNumber
+        baseBorrowIndex
+        baseSupplyIndex
+        trackingBorrowIndex
+        trackingSupplyIndex
+        totalBaseSupply
+        totalBaseSupplyUsd
+        rewardTokenUsdPrice
+        collateralBalances {
+          collateralToken {
+            token {
+              address
+            }
+          }
+          balance
+          balanceUsd
+        }
+        supplyApr
+        borrowApr
+        rewardSupplyApr
+        rewardBorrowApr
+        netSupplyApr
+        netBorrowApr
       }
     }
   }
@@ -393,97 +434,6 @@ function interpolate(data: MarketAccountingEntry[]): MarketAccountingEntry[] {
   }
 
   return interpolated;
-}
-
-function extrapolate(
-  data: MarketAccountingEntry[], // Assumes size >= 2
-  expectedLastKey: number,
-  expectedLength: number,
-): MarketAccountingEntry[] {
-  const keyDelta = expectedLastKey - data[data.length - 1].key;
-  let numExtrapolated = 0;
-
-  const lastEntry = data[data.length - 1];
-  const secondLastEntry = data[data.length - 2];
-  const stepTimestamp = lastEntry.timestamp - secondLastEntry.timestamp;
-
-  // Right end extrapolation
-  if (keyDelta > 0) {
-    // Extrapolate
-    const stepBaseBorrowIndex =
-      lastEntry.baseBorrowIndex - secondLastEntry.baseBorrowIndex;
-    const stepBaseSupplyIndex =
-      lastEntry.baseSupplyIndex - secondLastEntry.baseSupplyIndex;
-    const stepTrackingBorrowIndex =
-      lastEntry.trackingBorrowIndex - secondLastEntry.trackingBorrowIndex;
-    const stepTrackingSupplyIndex =
-      lastEntry.trackingSupplyIndex - secondLastEntry.trackingSupplyIndex;
-    const stepBaseUsdExchangeRate =
-      lastEntry.baseUsdExchangeRate - secondLastEntry.baseUsdExchangeRate;
-    const stepRewardTokenPriceUsd =
-      lastEntry.rewardTokenUsdPrice - secondLastEntry.rewardTokenUsdPrice;
-    const stepBaseSupplyApr =
-      lastEntry.supplyApr.base - secondLastEntry.supplyApr.base;
-    const stepRewardSupplyApr =
-      lastEntry.supplyApr.reward - secondLastEntry.supplyApr.reward;
-    const stepNetSupplyApr =
-      lastEntry.supplyApr.net - secondLastEntry.supplyApr.net;
-    const stepBaseBorrowApr =
-      lastEntry.borrowApr.base - secondLastEntry.borrowApr.base;
-    const stepRewardBorrowApr =
-      lastEntry.borrowApr.reward - secondLastEntry.borrowApr.reward;
-    const stepNetBorrowApr =
-      lastEntry.borrowApr.net - secondLastEntry.borrowApr.net;
-
-    for (let i = 1; i < keyDelta + 1; i++) {
-      data.push({
-        key: lastEntry.key + i,
-        timestamp: lastEntry.timestamp + stepTimestamp * i,
-        baseBorrowIndex:
-          lastEntry.baseBorrowIndex + stepBaseBorrowIndex * BigInt(i),
-        baseSupplyIndex:
-          lastEntry.baseSupplyIndex + stepBaseSupplyIndex * BigInt(i),
-        trackingBorrowIndex:
-          lastEntry.trackingBorrowIndex + stepTrackingBorrowIndex * BigInt(i),
-        trackingSupplyIndex:
-          lastEntry.trackingSupplyIndex + stepTrackingSupplyIndex * BigInt(i),
-        baseUsdExchangeRate:
-          lastEntry.baseUsdExchangeRate + stepBaseUsdExchangeRate * BigInt(i),
-        rewardTokenUsdPrice:
-          lastEntry.rewardTokenUsdPrice + stepRewardTokenPriceUsd * i,
-        collateralAssetUsdExchangeRates:
-          lastEntry.collateralAssetUsdExchangeRates.map((item, i) => ({
-            assetAddress: item.assetAddress,
-            usdExchangeRate:
-              (item.usdExchangeRate -
-                secondLastEntry.collateralAssetUsdExchangeRates[i]
-                  .usdExchangeRate) /
-              BigInt(keyDelta),
-          })),
-        supplyApr: {
-          base: lastEntry.supplyApr.base + stepBaseSupplyApr * i,
-          reward: lastEntry.supplyApr.reward + stepRewardSupplyApr * i,
-          net: lastEntry.supplyApr.net + stepNetSupplyApr,
-        },
-        borrowApr: {
-          base: lastEntry.borrowApr.base + stepBaseBorrowApr * i,
-          reward: lastEntry.borrowApr.reward + stepRewardBorrowApr * i,
-          net: lastEntry.borrowApr.net + stepNetBorrowApr,
-        },
-      });
-      numExtrapolated += 1;
-    }
-  }
-
-  if (numExtrapolated > 5) {
-    console.warn(
-      "extrapolate - extrapolated more than 5 points",
-      numExtrapolated,
-    );
-  }
-
-  // Clamp to expected length, could still be shorter
-  return data.slice(Math.max(data.length - expectedLength, 0));
 }
 
 // Cache here instead of on fetch (fetch is still cached) to avoid doing the data transformations every time

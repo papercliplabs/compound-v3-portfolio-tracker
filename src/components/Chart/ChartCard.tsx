@@ -5,6 +5,7 @@ import { formatNumber } from "@/utils/format";
 import clsx from "clsx";
 import { Suspense } from "react";
 import { Skeleton } from "../ui/skeleton";
+import { extractNestedValue } from "@/utils/extractNestedValue";
 
 interface ChartCardProps<
   DataEntry extends { timestamp: number },
@@ -22,7 +23,7 @@ export default function ChartCard<
 >({ ...props }: ChartCardProps<T, P>) {
   const baseSuspenseKey = props.name + JSON.stringify(props.queryArgs);
   return (
-    <Card className="flex flex-col gap-3">
+    <Card className="flex flex-1 flex-col gap-3">
       <div className="flex flex-col">
         <TitlePopover title={props.name}>
           {props.popoverDescription}
@@ -102,12 +103,4 @@ async function ChartWrapper<T extends { timestamp: number }, P extends any[]>({
       <TimeSeriesChart data={data} dataKey={dataKey} unit={unit} {...props} />
     </div>
   );
-}
-
-function extractNestedValue<O>(obj: object, keyPath: string): O {
-  let intermediate = obj;
-  for (let key of keyPath.split(".")) {
-    intermediate = (intermediate as any)[key];
-  }
-  return intermediate as any as O;
 }

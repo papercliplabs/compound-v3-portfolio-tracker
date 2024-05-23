@@ -1,11 +1,15 @@
 "use client";
 import { tailwindFullTheme } from "@/theme/tailwindFullTheme";
+import { extractNestedValue } from "@/utils/extractNestedValue";
 import { formatNumber, formatTimestamp } from "@/utils/format";
 import { DataGranularity, NestedKeyOf, Unit } from "@/utils/types";
+import { useMemo } from "react";
 import {
   Area,
   CartesianGrid,
   ComposedChart,
+  Label,
+  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -32,11 +36,25 @@ export default function TimeSeriesChart<T extends { timestamp: number }>({
   unit,
   style,
 }: TimeSeriesChartProps<T>) {
+  // const average = useMemo(() => {
+  //   const sum = data
+  //     .map((entry) => extractNestedValue<number>(entry, dataKey))
+  //     .reduce((sum, val) => sum + val, 0);
+
+  //   return sum / data.length;
+  // }, [data, dataKey]);
+
   return (
     <ResponsiveContainer width="100%" height="100%">
       <ComposedChart data={data} margin={{ right: 0 }}>
         <defs>
-          <linearGradient id="color" x1="0" y1="0" x2="0" y2="1">
+          <linearGradient
+            id={`color-${style.lineColor}`}
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="1"
+          >
             <stop offset="5%" stopColor={style.lineColor} stopOpacity={0.3} />
             <stop offset="95%" stopColor={style.lineColor} stopOpacity={0} />
           </linearGradient>
@@ -67,7 +85,9 @@ export default function TimeSeriesChart<T extends { timestamp: number }>({
           stroke={style.lineColor}
           strokeWidth={2}
           fillOpacity={1}
-          fill={style.areaGradient ? "url(#color)" : "#00000000"}
+          fill={
+            style.areaGradient ? `url(#color-${style.lineColor})` : "#00000000"
+          }
         />
         <Tooltip
           position={{ y: 0 }} // Set to the top of chart
@@ -86,6 +106,19 @@ export default function TimeSeriesChart<T extends { timestamp: number }>({
             boxShadow: tailwindFullTheme.theme.boxShadow[1],
           }}
         />
+        {/* <ReferenceLine
+          y={average}
+          stroke={tailwindFullTheme.theme.colors.content.secondary}
+          strokeWidth={1}
+          className="bg-red-500"
+          label={{
+            value: "HI",
+            className:
+              "w-[40px] h-[40px] shadow-01 p-4 bg-red-500 -translate-y-[20px] text-red-300",
+            
+            
+          }}
+        /> */}
       </ComposedChart>
     </ResponsiveContainer>
   );

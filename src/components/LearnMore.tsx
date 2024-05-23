@@ -6,7 +6,7 @@ export default function LearnMore() {
   return (
     <>
       <Popover>
-        <PopoverTrigger>
+        <PopoverTrigger asChild>
           <Button variant="secondary" size="icon">
             <Question size={16} className="fill-black" />
           </Button>

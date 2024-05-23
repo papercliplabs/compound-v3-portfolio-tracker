@@ -48,7 +48,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} antialiased`}>
+      <body className={`${inter.variable} overflow-x-hidden antialiased`}>
         <WalletProvider>
           <div className="grid h-screen min-h-screen w-full grid-rows-[min-content_1fr] overflow-x-hidden">
             <Header />
