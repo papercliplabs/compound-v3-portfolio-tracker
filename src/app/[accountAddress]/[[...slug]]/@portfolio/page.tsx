@@ -35,7 +35,6 @@ export default async function PortfolioPage({
 
   return (
     <>
-      <h1>All Positions</h1>
       <Suspense fallback={null} key={accountAddress + "positions-at-risk"}>
         <PositionsAtRisk accountAddress={accountAddress} />
       </Suspense>

@@ -18,7 +18,7 @@ export default function AccountAvatar({ address, size }: AccountAvatarProps) {
   const width = useMemo(() => {
     const sizeInternal =
       size == "dynamic" ? (screenSize == "lg" ? "lg" : "sm") : size;
-    return sizeInternal == "sm" ? 20 : 64;
+    return sizeInternal == "sm" ? 28 : 64;
   }, [size, screenSize]);
 
   return ensAvatarQuery.isLoading ? (

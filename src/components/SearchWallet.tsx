@@ -49,8 +49,8 @@ export function SearchWallet() {
       ref={formRef}
     >
       <Input
-        placeholder={"Search wallet address or ENS name"}
-        className="max-w-[400px] grow"
+        placeholder={"Search address or ENS name"}
+        className="max-w-[400px] grow text-[16px]"
         required
         type="text"
         name={ADDRESS_OR_ENS_FORM_NAME}

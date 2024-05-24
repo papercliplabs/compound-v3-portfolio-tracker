@@ -18,7 +18,7 @@ export default function NavHeader({
             <AccountName address={accountAddress} />
           </h2>
         </Suspense>
-        <div className="body-md text-content-secondary hidden md:flex">
+        <div className="body-md text-content-secondary hidden lg:flex">
           <AccountName address={accountAddress} disableEns />
         </div>
       </div>

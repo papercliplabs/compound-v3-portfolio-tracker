@@ -51,9 +51,9 @@ const CONFIGS: Record<SupportedNetwork, ChainConfig> = {
       fallback: undefined,
     },
     icon: PolygonIcon,
-    // subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/deployments/id/QmZ99VBAHWhZN3QcQoeBJ1hqehqCEpRzTzAgwN8Ry17DNB`,
+    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/deployments/id/QmZ99VBAHWhZN3QcQoeBJ1hqehqCEpRzTzAgwN8Ry17DNB`,
     // subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/subgraphs/id/AaFtUWKfFdj2x8nnE3RxTSJkHwGHvawH3VWFBykCGzLs`,
-    subgraphUrl: `https://api.thegraph.com/subgraphs/id/QmZ99VBAHWhZN3QcQoeBJ1hqehqCEpRzTzAgwN8Ry17DNB`, // From The Graph team
+    // subgraphUrl: `https://api.thegraph.com/subgraphs/id/QmZ99VBAHWhZN3QcQoeBJ1hqehqCEpRzTzAgwN8Ry17DNB`, // From The Graph team
   },
   base: {
     chain: base,

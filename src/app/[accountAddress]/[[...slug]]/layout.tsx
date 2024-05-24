@@ -1,7 +1,9 @@
 import Nav from "@/components/Nav";
 import NavDrawer from "@/components/Nav/NavDrawer";
 import { TimeSelector } from "@/components/TimeSelector";
+import { TitleBar } from "@/components/TitleBar";
 import { Card } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { SupportedNetwork, getNetworkConfig } from "@/utils/configs";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
@@ -40,7 +42,7 @@ export default function Layout({
   }
 
   return (
-    <div className="flex h-full flex-col justify-between md:flex-row">
+    <div className="flex h-full flex-row justify-between overflow-y-hidden">
       <Nav
         accountAddress={accountAddress}
         selectedPositionParams={
@@ -52,13 +54,36 @@ export default function Layout({
             : undefined
         }
       />
-      <div className="flex h-full min-w-0 grow flex-col justify-start gap-4 border-l px-4 pb-[132px] pt-8 md:px-16 md:pb-14 md:pt-14">
-        <Card>
-          <TimeSelector />
-        </Card>
-        <Suspense fallback="LOADING!!!">
-          {isPosition ? position : portfolio}
-        </Suspense>
+      <div className="flex h-full min-w-0 grow flex-col overflow-y-scroll overscroll-none border-l">
+        <div
+          className="shadow-1 sticky top-0 z-10 px-4 py-2  backdrop-blur-[6px] md:px-16"
+          style={{
+            backgroundImage: `linear-gradient(180deg, white, rgb(255, 255, 255, 0.6))`,
+          }}
+        >
+          <TitleBar
+            positionParams={
+              isPosition
+                ? {
+                    network: network as SupportedNetwork,
+                    marketAddress: getAddress(marketAddressString!),
+                    accountAddress: accountAddress,
+                  }
+                : undefined
+            }
+          />
+        </div>
+        <div className="flex min-w-0 grow flex-col justify-start gap-4 px-4 pb-32 pt-4 md:px-16 md:pt-8 lg:pb-12">
+          <Suspense
+            fallback={Array(5)
+              .fill(0)
+              .map((_, i) => (
+                <Skeleton className="shadow-1 h-[277px] w-full" key={i} />
+              ))}
+          >
+            {isPosition ? position : portfolio}
+          </Suspense>
+        </div>
       </div>
     </div>
   );

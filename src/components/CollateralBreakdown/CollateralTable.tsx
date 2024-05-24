@@ -16,7 +16,7 @@ export default function CollateralTable({
   data: AugmentedCollateralDataEntry[];
 }) {
   return (
-    <Table className="w-full max-w-[400px]">
+    <Table className="w-full max-w-[700px]">
       <TableHeader>
         <TableRow className="text-caption-md text-content-secondary font-semibold">
           <TableHead className="w-[100px]">Collateral</TableHead>

@@ -2,7 +2,6 @@ import { PositionActivityTable } from "@/components/ActivityTable";
 import ChartCard from "@/components/Chart/ChartCard";
 import { CollateralBreakdown } from "@/components/CollateralBreakdown";
 import HealthFactor from "@/components/HealthFactor";
-import { PositionTitle } from "@/components/PositionTitle";
 import TitlePopover from "@/components/TitlePopover";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -55,15 +54,6 @@ export default async function Position({
 
   return (
     <>
-      <Suspense
-        fallback={<Skeleton className="h-[44px] w-full max-w-[400px]" />}
-      >
-        <PositionTitle
-          accountAddress={accountAddress}
-          network={network}
-          marketAddress={marketAddress}
-        />
-      </Suspense>
       <ChartCard
         query={getPositionHistoricalDataCached}
         queryArgs={[

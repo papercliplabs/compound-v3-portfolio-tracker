@@ -4,11 +4,11 @@ import { SearchWallet } from "@/components/SearchWallet";
 import Image from "next/image";
 import Link from "next/link";
 
-const DEMO_ADDRESS = "0x2b2E894f08F1BF8C93a82297c347EbdC8717d99a"; // TODO: get a better one
+const DEMO_ADDRESS = "0x3c9ea5c4fec2a77e23dd82539f4414266fe8f757"; // TODO: get a better one
 
 export default function NoAddressPage() {
   return (
-    <div className="m-auto flex h-full w-full max-w-[450px] flex-col items-center justify-between px-4 pb-[30px] pt-[120px] text-center">
+    <div className="m-auto flex h-full w-full max-w-[450px] flex-col items-center justify-between px-4 pb-24 pt-[100px] text-center md:pb-[30px]">
       <div className="flex flex-col gap-10">
         <h1>Track your Compound v3 portfolio in one place.</h1>
         <div className="flex w-full flex-col items-center justify-center gap-4">
