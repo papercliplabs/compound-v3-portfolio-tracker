@@ -43,7 +43,7 @@ async function getPositionAccountingSnapshots({
       positionId,
     },
   });
-  const snapshots = positionSnapshotResp.position?.positionAccountingSnapshots;
+  const snapshots = positionSnapshotResp?.position?.positionAccountingSnapshots;
 
   if (!snapshots || snapshots.length == 0) {
     console.error(

@@ -38,7 +38,7 @@ export async function getMarketsForAccount({
   const markets: Market[] = [];
   for (let i = 0; i < networks.length; i++) {
     const response = responses[i];
-    for (let position of response.account?.positions ?? []) {
+    for (let position of response?.account?.positions ?? []) {
       markets.push({
         address: getAddress(position.market.id),
         network: networks[i],

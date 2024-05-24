@@ -70,11 +70,15 @@ export default function TimeSeriesChart<T extends { timestamp: number }>({
       const yAxisDomainMin = Math.min(...valuesWithinRange);
       const yAxisDomainMax = Math.max(...valuesWithinRange);
 
+      const yRange = yAxisDomainMax - yAxisDomainMin;
+
       return {
         valuesWithinRange,
         xAxisDomainMin,
-        yAxisDomainMin,
-        yAxisDomainMax,
+
+        // Add a bit more margin to avoid cutting off lines around the top and bottom
+        yAxisDomainMin: yAxisDomainMin - yRange * 0.02,
+        yAxisDomainMax: yAxisDomainMax + yRange * 0.02,
       };
     }, [data, timeSelectorData.rangeS]);
 
@@ -85,7 +89,7 @@ export default function TimeSeriesChart<T extends { timestamp: number }>({
 
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <ComposedChart data={data} margin={{ right: 15, top: 2, bottom: 2 }}>
+      <ComposedChart data={data} margin={{ right: 15 }}>
         <defs>
           <linearGradient
             id={`color-${style.lineColor}`}

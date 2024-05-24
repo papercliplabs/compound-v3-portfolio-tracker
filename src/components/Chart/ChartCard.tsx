@@ -15,7 +15,6 @@ interface ChartCardProps<
   popoverDescription: string;
   query: (...args: P) => Promise<DataEntry[] | undefined>;
   queryArgs: P;
-  hideIfSupply?: boolean;
 }
 
 export default async function ChartCard<
@@ -23,18 +22,6 @@ export default async function ChartCard<
   P extends any[],
 >({ ...props }: ChartCardProps<T, P>) {
   const baseSuspenseKey = props.name + JSON.stringify(props.queryArgs);
-
-  if (props.hideIfSupply) {
-    const data = await props.query(...props.queryArgs);
-    if (
-      (data &&
-        data.length > 0 &&
-        (data[data.length - 1] as any)["balanceUsd"]) ??
-      0 >= 0
-    ) {
-      return null;
-    }
-  }
 
   return (
     <Card className="flex h-fit w-full flex-col gap-3">

@@ -31,7 +31,7 @@ async function getMarketRewardConfig({
     },
   });
 
-  if (!rewardQueryResp.market?.rewardConfiguration) {
+  if (!rewardQueryResp?.market?.rewardConfiguration) {
     console.error(
       "getMarketHistoricalData - no reward config for ",
       network,
@@ -53,7 +53,7 @@ async function getMarketRewardConfig({
       },
     });
 
-    rewardTokenDecimals = tokenQueryResp.token?.decimals ?? 18;
+    rewardTokenDecimals = tokenQueryResp?.token?.decimals ?? 18;
   }
 
   return {

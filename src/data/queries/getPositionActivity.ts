@@ -1,10 +1,11 @@
 "use server";
 import { SupportedNetwork } from "@/utils/configs";
-import { Address, Hex, getAddress } from "viem";
+import { Address, Hex, formatUnits, getAddress } from "viem";
 import { querySubgraph } from "../dataUtils";
 import { graphql } from "../graphql/generated";
 import { unstable_cache } from "next/cache";
 import { DEFAULT_REVALIDATION_TIME_S } from "../graphql/graphQLFetch";
+import { formatNumber } from "@/utils/format";
 
 export type ActivityType =
   | "supply-base" // lend, repay, or transfer to
@@ -20,6 +21,7 @@ export interface Activity {
   txnHash: Hex;
   tokenAddress: Address;
   tokenSymbol: string;
+  amountFormatted: string;
   amountUsd: number;
 }
 
@@ -44,7 +46,7 @@ async function getPositionActivity({
     },
   });
 
-  const position = queryResp.position;
+  const position = queryResp?.position;
 
   if (!position) {
     console.error(
@@ -129,8 +131,10 @@ const query = graphql(/* GraphQL */ `
           token {
             address
             symbol
+            decimals
           }
         }
+        amount
         amountUsd
       }
       withdrawBaseInteractions(first: 1000) {
@@ -142,8 +146,10 @@ const query = graphql(/* GraphQL */ `
           token {
             address
             symbol
+            decimals
           }
         }
+        amount
         amountUsd
       }
 
@@ -156,8 +162,10 @@ const query = graphql(/* GraphQL */ `
           token {
             address
             symbol
+            decimals
           }
         }
+        amount
         amountUsd
       }
 
@@ -170,8 +178,10 @@ const query = graphql(/* GraphQL */ `
           token {
             address
             symbol
+            decimals
           }
         }
+        amount
         amountUsd
       }
 
@@ -184,8 +194,10 @@ const query = graphql(/* GraphQL */ `
           token {
             address
             symbol
+            decimals
           }
         }
+        amount
         amountUsd
       }
       withdrawCollateralInteractions(first: 1000) {
@@ -197,8 +209,10 @@ const query = graphql(/* GraphQL */ `
           token {
             address
             symbol
+            decimals
           }
         }
+        amount
         amountUsd
       }
       transferFromCollateralInteractions(first: 1000) {
@@ -210,8 +224,10 @@ const query = graphql(/* GraphQL */ `
           token {
             address
             symbol
+            decimals
           }
         }
+        amount
         amountUsd
       }
       transferToCollateralInteractions(first: 1000) {
@@ -223,8 +239,10 @@ const query = graphql(/* GraphQL */ `
           token {
             address
             symbol
+            decimals
           }
         }
+        amount
         amountUsd
       }
 
@@ -237,8 +255,10 @@ const query = graphql(/* GraphQL */ `
           token {
             address
             symbol
+            decimals
           }
         }
+        amount
         amountUsd
       }
 
@@ -250,7 +270,9 @@ const query = graphql(/* GraphQL */ `
         asset: token {
           address
           symbol
+          decimals
         }
+        amount
         amountUsd
       }
     }
@@ -265,15 +287,37 @@ function mapInteractionsToActivity({
   interactions: {
     transaction: { hash: string; timestamp: string };
     asset:
-      | { token: { address: string; symbol: string } }
-      | { address: string; symbol: string }; // Rewards doesn't have asset
+      | {
+          token: {
+            address: string;
+            symbol: string;
+            decimals?: number | null;
+          };
+        }
+      | {
+          address: string;
+          symbol: string;
+          decimals?: number | null;
+        }; // Rewards doesn't have asset
+    amount: string;
     amountUsd: string;
   }[];
 }): Activity[] {
   return interactions.map((interaction) => {
-    const token: { address: string; symbol: string } =
-      (interaction.asset as { token: { address: string; symbol: string } })
-        .token != undefined
+    const token: {
+      address: string;
+      symbol: string;
+      decimals?: number | null;
+    } =
+      (
+        interaction.asset as {
+          token: {
+            address: string;
+            symbol: string;
+            decimals?: number | null;
+          };
+        }
+      ).token != undefined
         ? (interaction.asset as any).token
         : interaction.asset;
     return {
@@ -282,6 +326,11 @@ function mapInteractionsToActivity({
       txnHash: interaction.transaction.hash as Hex,
       tokenAddress: getAddress(token.address),
       tokenSymbol: token.symbol,
+      amountFormatted: token.decimals
+        ? formatNumber(
+            Number(formatUnits(BigInt(interaction.amount), token.decimals)),
+          )
+        : "UNKNOWN",
       amountUsd: Number(interaction.amountUsd),
     } as Activity;
   });

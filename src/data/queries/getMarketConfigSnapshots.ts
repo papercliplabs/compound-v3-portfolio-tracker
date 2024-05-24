@@ -36,7 +36,7 @@ async function getMarketConfigSnapshots({
     },
   });
 
-  const snapshots = queryResp.market?.configurationSnapshots;
+  const snapshots = queryResp?.market?.configurationSnapshots;
 
   if (!snapshots) {
     console.error(

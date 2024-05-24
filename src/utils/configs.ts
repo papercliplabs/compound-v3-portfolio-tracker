@@ -51,8 +51,9 @@ const CONFIGS: Record<SupportedNetwork, ChainConfig> = {
       fallback: undefined,
     },
     icon: PolygonIcon,
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/deployments/id/QmZ99VBAHWhZN3QcQoeBJ1hqehqCEpRzTzAgwN8Ry17DNB`,
+    // subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/deployments/id/QmZ99VBAHWhZN3QcQoeBJ1hqehqCEpRzTzAgwN8Ry17DNB`,
     // subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/subgraphs/id/AaFtUWKfFdj2x8nnE3RxTSJkHwGHvawH3VWFBykCGzLs`,
+    subgraphUrl: `https://api.thegraph.com/subgraphs/id/QmZ99VBAHWhZN3QcQoeBJ1hqehqCEpRzTzAgwN8Ry17DNB`, // From The Graph team
   },
   base: {
     chain: base,
@@ -91,7 +92,8 @@ const CONFIGS: Record<SupportedNetwork, ChainConfig> = {
       fallback: undefined,
     },
     icon: ScrollIcon,
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/subgraphs/id/6aRGn6noEdin1krLfYTnLMYaCoTujL7cHekARE4Ndxng`,
+    // subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/subgraphs/id/6aRGn6noEdin1krLfYTnLMYaCoTujL7cHekARE4Ndxng`,
+    subgraphUrl: `https://api.thegraph.com/subgraphs/id/QmNUqEQXxmUp5jmsYTLVaLauMPpWL33x6UC7Lijg7VHkYP`, // From The Graph team
   },
 };
 

@@ -1,12 +1,10 @@
 import { SupportedNetwork } from "@/utils/configs";
 import { Address } from "viem";
 import { Activity, getPositionActivityCached } from "./getPositionActivity";
-import { getMarketsForAccountCached } from "./getMarketsForAccount";
+import { Market, getMarketsForAccountCached } from "./getMarketsForAccount";
 
 export interface PortfolioActivity extends Activity {
-  network: SupportedNetwork;
-  marketAddress: Address;
-  baseTokenSymbol: string;
+  market: Market;
 }
 
 interface GetPortfolioActivityParams {
@@ -35,10 +33,8 @@ export async function getPortfolioActivity({
 
     for (let entry of activity) {
       portfolioActivity.push({
-        network: market.network,
-        marketAddress: market.address,
-        baseTokenSymbol: market.baseTokenSymbol,
         ...entry,
+        market,
       });
     }
   }

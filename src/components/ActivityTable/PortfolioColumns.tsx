@@ -22,11 +22,10 @@ import ExternalLink from "../ExternalLink";
 import { Button } from "../ui/button";
 import Token from "../Token";
 
-export const Columns: ColumnDef<PortfolioActivity>[] = [
+export const PortfolioColumns: ColumnDef<PortfolioActivity>[] = [
   {
     accessorKey: "type",
     header: ({ table }) => (
-      // TODO(spennyp): Add "Type to the seelctor"
       <Select
         onValueChange={(value) =>
           table
@@ -37,7 +36,7 @@ export const Columns: ColumnDef<PortfolioActivity>[] = [
         }
         value={(table.getColumn("type")?.getFilterValue() as string) ?? "all"}
       >
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger className="w-fit max-w-[100px] md:max-w-[300px]">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
@@ -60,14 +59,12 @@ export const Columns: ColumnDef<PortfolioActivity>[] = [
     accessorKey: "marketAddress",
     header: "Market",
     cell: ({ row }) => {
-      // TODO(spennyp): this is the token symbol, but not the market
-      const symbol = row.original.tokenSymbol;
-      const network = row.original.network;
-
+      const symbol = row.original.market.baseTokenSymbol;
+      const network = row.original.market.network;
       return (
-        <div className="flex h-full flex-row items-center gap-1">
+        <div className="flex h-full flex-row items-center gap-1 lg:min-w-[200px]">
           <Token symbol={symbol} network={network} size={30} showNetworkIcon />
-          <div>
+          <div className="hidden lg:flex">
             {symbol} • {getNetworkConfig(network).chain.name}
           </div>
         </div>
@@ -75,21 +72,20 @@ export const Columns: ColumnDef<PortfolioActivity>[] = [
     },
   },
   {
-    accessorKey: "amountUsd",
-    header: "Amount (USD)",
+    accessorKey: "amountFormatted",
+    header: () => <div style={{ textAlign: "right" }}>Amount</div>,
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amountUsd"));
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
-
-      return formatted;
+      const amount = parseFloat(row.getValue("amountFormatted"));
+      return (
+        <div className="min-w-[100px] text-end">
+          {amount} {row.original.tokenSymbol}
+        </div>
+      );
     },
   },
   {
     accessorKey: "timestamp",
-    header: "Age",
+    header: () => <div style={{ textAlign: "right" }}>Age</div>,
     cell: ({ row }) => {
       const timestamp = parseFloat(row.getValue("timestamp"));
       const now = new Date();
@@ -122,22 +118,24 @@ export const Columns: ColumnDef<PortfolioActivity>[] = [
         }
       }
 
-      return val + " agos";
+      return <div className="min-w-[100px] text-end">{val} ago</div>;
     },
   },
   {
     accessorKey: "txnHash",
-    header: "Txn",
+    header: () => <div style={{ textAlign: "right" }}>Txn</div>,
     cell: ({ row }) => {
       const explorerUrl =
-        getNetworkConfig(row.original.network).chain.blockExplorers?.default
-          .url +
+        getNetworkConfig(row.original.market.network).chain.blockExplorers
+          ?.default.url +
         "/tx/" +
         row.original.txnHash;
       return (
-        <ExternalLink href={explorerUrl}>
-          <Button variant="secondary">View</Button>
-        </ExternalLink>
+        <div className="flex w-full min-w-[80px] flex-row justify-end">
+          <ExternalLink href={explorerUrl}>
+            <Button variant="secondary">View</Button>
+          </ExternalLink>
+        </div>
       );
     },
   },

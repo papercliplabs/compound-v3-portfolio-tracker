@@ -62,7 +62,7 @@ async function getMarketHistoricalAccounting({
         first: HOURLY_DATA_MAX_NUM_POINTS,
       },
     });
-    marketData = data.market?.hourlyMarketAccounting.map(
+    marketData = data?.market?.hourlyMarketAccounting.map(
       mapHistoricalEntryToData,
     );
 
@@ -76,7 +76,7 @@ async function getMarketHistoricalAccounting({
         first: DAILY_DATA_MAX_NUM_POINTS,
       },
     });
-    marketData = data.market?.dailyMarketAccounting.map(
+    marketData = data?.market?.dailyMarketAccounting.map(
       mapHistoricalEntryToData,
     );
 
@@ -90,7 +90,7 @@ async function getMarketHistoricalAccounting({
         first: WEEKLY_DATA_MAX_NUM_POINTS,
       },
     });
-    marketData = data.market?.weeklyMarketAccounting.map(
+    marketData = data?.market?.weeklyMarketAccounting.map(
       mapHistoricalEntryToData,
     );
 
@@ -108,12 +108,14 @@ async function getMarketHistoricalAccounting({
       marketAddress: marketAddress.toLowerCase(),
     },
   });
-  const currentAccountingEntry = mapHistoricalEntryToData({
-    key: (expectedLastKey + 1).toString(), // Take as the next key, this will introduce a slight interpolation error if previous point is missing
-    timestamp: Math.floor(Date.now() / 1000).toString(),
-    accounting: currentData.market!.accounting,
-  });
-  marketData?.push(currentAccountingEntry);
+  if (currentData?.market) {
+    const currentAccountingEntry = mapHistoricalEntryToData({
+      key: (expectedLastKey + 1).toString(), // Take as the next key, this will introduce a slight interpolation error if previous point is missing
+      timestamp: Math.floor(Date.now() / 1000).toString(),
+      accounting: currentData.market.accounting,
+    });
+    marketData?.push(currentAccountingEntry);
+  }
 
   return marketData && marketData.length > 2
     ? interpolate(marketData)

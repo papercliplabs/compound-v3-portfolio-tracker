@@ -23,6 +23,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "../ui/button";
+import { ArrowLeft, ArrowRight } from "@phosphor-icons/react/dist/ssr";
+import clsx from "clsx";
+import ExternalLink from "../ExternalLink";
 
 export const selectItems: { value: ActivityType; name: string }[] = [
   { value: "supply-base", name: "Supply Base" },
@@ -57,14 +60,18 @@ export default function ClientActivityTable<TData, TValue>({
   });
 
   return (
-    <Card>
-      <Table>
+    <>
+      <Table className="pt-3">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
+            <TableRow key={headerGroup.id} className="pb-2">
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id}>
+                  <TableHead
+                    key={header.id}
+                    className="text-caption-md text-content-primary font-semibold"
+                    style={{ width: header.column.getSize() }}
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -85,7 +92,10 @@ export default function ClientActivityTable<TData, TValue>({
                 data-state={row.getIsSelected() && "selected"}
               >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
+                  <TableCell
+                    key={cell.id}
+                    style={{ width: cell.column.getSize() }}
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
@@ -100,22 +110,34 @@ export default function ClientActivityTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <div className="flex items-center justify-center gap-3 py-4">
         <Button
           variant="ghost"
+          className={clsx(
+            "h-8 w-8 p-0",
+            table.getCanPreviousPage() && "border-border-primary border",
+          )}
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
-          Previous
+          <ArrowLeft size={16} />
         </Button>
+        <div>
+          Page {table.getState().pagination.pageIndex + 1} or{" "}
+          {table.getPageCount()}
+        </div>
         <Button
           variant="ghost"
+          className={clsx(
+            "h-8 w-8 p-0",
+            table.getCanNextPage() && "border-border-primary border",
+          )}
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >
-          Next
+          <ArrowRight size={16} />
         </Button>
       </div>
-    </Card>
+    </>
   );
 }

@@ -8,9 +8,15 @@ type QuerySubgraphParams<Result, Variables> = {
 export async function querySubgraph<Result, Variables>({
   network,
   ...queryParams
-}: QuerySubgraphParams<Result, Variables>) {
-  return graphQLFetch({
-    url: getNetworkConfig(network).subgraphUrl,
-    ...queryParams,
-  });
+}: QuerySubgraphParams<Result, Variables>): Promise<Result | undefined> {
+  try {
+    return graphQLFetch({
+      url: getNetworkConfig(network).subgraphUrl,
+      ...queryParams,
+    });
+  } catch (e) {
+    // Allow site to try to recover with missing data...
+    console.error(e);
+    return undefined;
+  }
 }

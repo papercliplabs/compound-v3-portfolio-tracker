@@ -40,11 +40,12 @@ export async function PositionTitle({
       <Badge>
         {position.summary.balanceUsd >= 0 ? "Lending" : "Borrowing"}
       </Badge>
-      {position.summary.healthFactor < AT_RISK_HEALTH_FACTOR_THRESHOLD && (
-        <Badge variant="warning" className="flex flex-row gap-1">
-          At risk <Warning size={12} weight="bold" />
-        </Badge>
-      )}
+      {position.summary.balanceUsd < 0 &&
+        position.summary.healthFactor < AT_RISK_HEALTH_FACTOR_THRESHOLD && (
+          <Badge variant="warning" className="flex flex-row gap-1">
+            At risk <Warning size={12} weight="bold" />
+          </Badge>
+        )}
     </div>
   );
 }

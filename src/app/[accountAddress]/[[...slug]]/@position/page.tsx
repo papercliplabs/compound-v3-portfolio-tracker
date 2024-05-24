@@ -1,20 +1,16 @@
-import Chart from "@/components/Chart";
+import { PositionActivityTable } from "@/components/ActivityTable";
 import ChartCard from "@/components/Chart/ChartCard";
 import { PositionTitle } from "@/components/PositionTitle";
-import Token from "@/components/Token";
-import { Badge } from "@/components/ui/badge";
+import TitlePopover from "@/components/TitlePopover";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getPositionHistoricalDataCached } from "@/data/queries/getPositionHistoricalData";
 import { getPositionForAccount } from "@/data/queries/getPositionsForAccount";
 import { tailwindFullTheme } from "@/theme/tailwindFullTheme";
-import { SupportedNetwork, getNetworkConfig } from "@/utils/configs";
-import {
-  AT_RISK_HEALTH_FACTOR_THRESHOLD,
-  DATA_FOR_TIME_SELECTOR,
-} from "@/utils/constants";
+import { SupportedNetwork } from "@/utils/configs";
+import { DATA_FOR_TIME_SELECTOR } from "@/utils/constants";
 import { TimeSelection } from "@/utils/types";
-import { Warning } from "@phosphor-icons/react/dist/ssr";
+import clsx from "clsx";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { Address } from "viem";
@@ -38,6 +34,19 @@ export default async function Position({
     accountAddress,
     slug: [network, marketAddress],
   } = params;
+
+  const positionSummary = await getPositionForAccount({
+    network,
+    accountAddress,
+    marketAddress,
+  });
+
+  // Sanity check, but layout already performs this
+  if (!positionSummary) {
+    redirect(`/${params.accountAddress}`);
+  }
+
+  const isBorrowing = positionSummary.summary.balanceUsd < 0;
 
   const timeSelector = (searchParams.timeSelector ?? "MAX") as TimeSelection;
   const granularity = DATA_FOR_TIME_SELECTOR[timeSelector].granularity;
@@ -73,7 +82,8 @@ export default async function Position({
           areaGradient: true,
         }}
       />
-      <Suspense fallback={null}>
+      {/* TODO: custom card for health factor */}
+      {isBorrowing && (
         <ChartCard
           query={getPositionHistoricalDataCached}
           queryArgs={[
@@ -88,16 +98,19 @@ export default async function Position({
           popoverDescription="TODO"
           dataKey="healthFactor"
           timeSelection={timeSelector}
-          unit="$"
           style={{
             lineColor: tailwindFullTheme.theme.colors.data.series2,
             areaGradient: true,
           }}
-          hideIfSupply
         />
-      </Suspense>
+      )}
 
-      <div className="flex w-full flex-col gap-4 md:flex-row">
+      <div
+        className={clsx(
+          "flex w-full flex-col gap-4 ",
+          isBorrowing ? "flex-col md:flex-row" : "flex-col",
+        )}
+      >
         <ChartCard
           query={getPositionHistoricalDataCached}
           queryArgs={[
@@ -140,6 +153,20 @@ export default async function Position({
           }}
         />
       </div>
+      {/* TODO: collateral breakdown */}
+      <Card className="gap-3">
+        <TitlePopover title="Transactions">TODO</TitlePopover>
+        <Suspense
+          fallback={<Skeleton className="h-[300px] w-full" />}
+          key={accountAddress}
+        >
+          <PositionActivityTable
+            network={network}
+            marketAddress={marketAddress}
+            accountAddress={accountAddress}
+          />
+        </Suspense>
+      </Card>
     </>
   );
 }

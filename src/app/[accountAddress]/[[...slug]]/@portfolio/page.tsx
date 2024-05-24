@@ -8,9 +8,11 @@ import { TimeSelection } from "@/utils/types";
 import { DATA_FOR_TIME_SELECTOR } from "@/utils/constants";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ActivityTable } from "@/components/ActivityTable";
+import { PortfolioActivityTable } from "@/components/ActivityTable";
 import ChartCard from "@/components/Chart/ChartCard";
 import PositionsAtRisk from "@/components/PositionsAtRisk";
+import { Card } from "@/components/ui/card";
+import TitlePopover from "@/components/TitlePopover";
 
 export default async function PortfolioPage({
   params,
@@ -77,12 +79,15 @@ export default async function PortfolioPage({
           areaGradient: false,
         }}
       />
-      <Suspense
-        fallback={<Skeleton className="h-[300px] w-full" />}
-        key={accountAddress}
-      >
-        <ActivityTable accountAddress={accountAddress} />
-      </Suspense>
+      <Card className="gap-3">
+        <TitlePopover title="Transactions">TODO</TitlePopover>
+        <Suspense
+          fallback={<Skeleton className="h-[300px] w-full" />}
+          key={accountAddress}
+        >
+          <PortfolioActivityTable accountAddress={accountAddress} />
+        </Suspense>
+      </Card>
     </>
   );
 }
