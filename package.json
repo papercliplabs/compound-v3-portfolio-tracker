@@ -34,6 +34,7 @@
     "next": "^14.2.2",
     "react": "^18",
     "react-dom": "^18",
+    "react-gauge-component": "^1.2.21",
     "react-hook-form": "^7.51.5",
     "recharts": "^2.12.1",
     "tailwind-merge": "^2.2.1",

@@ -7,6 +7,8 @@ import { forwardRef } from "react";
 import { twMerge } from "tailwind-merge";
 import { Address } from "viem";
 import Token from "../Token";
+import { Warning } from "@phosphor-icons/react/dist/ssr";
+import { tailwindFullTheme } from "@/theme/tailwindFullTheme";
 
 export interface NavPositionLinkProps {
   accountAddress: Address;
@@ -16,6 +18,7 @@ export interface NavPositionLinkProps {
   balanceUsd: number;
   utilization: number;
   apr: number;
+  atRisk: boolean;
   small?: boolean;
 }
 
@@ -26,6 +29,7 @@ export function NavPositionLink({
   balanceUsd,
   utilization,
   apr,
+  atRisk,
   small,
 }: NavPositionLinkProps) {
   return (
@@ -54,9 +58,17 @@ export function NavPositionLink({
             small ? "flex-row items-center gap-2" : "flex-col",
           )}
         >
-          <span className="text-body text-content-primary whitespace-nowrap font-semibold">
+          <span className="text-body text-content-primary flex flex-row items-center whitespace-nowrap font-semibold">
             {market.baseTokenSymbol} •{" "}
             {getNetworkConfig(market.network).chain.name}
+            {atRisk && (
+              <Warning
+                size={12}
+                weight="bold"
+                className="ml-2"
+                fill={tailwindFullTheme.theme.colors.semantic.warning}
+              />
+            )}
           </span>
           {balanceUsd < 0 && (
             <span className="caption-md text-content-secondary">

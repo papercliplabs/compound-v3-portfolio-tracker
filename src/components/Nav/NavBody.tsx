@@ -10,6 +10,7 @@ import {
   NavPositionLink,
   NavPositionLinkProps,
 } from "./NavPositionLink";
+import { AT_RISK_HEALTH_FACTOR_THRESHOLD } from "@/utils/constants";
 
 export async function NavBody({
   accountAddress,
@@ -54,6 +55,9 @@ export async function NavBody({
       active: market.address == selectedPositionParams?.marketAddress,
       balanceUsd: lastEntry.balanceUsd,
       utilization: lastEntry.utilization,
+      atRisk:
+        lastEntry.balanceUsd < 0 &&
+        lastEntry.healthFactor < AT_RISK_HEALTH_FACTOR_THRESHOLD,
       apr: avgNetApr,
     };
 

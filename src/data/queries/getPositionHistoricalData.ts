@@ -37,7 +37,12 @@ export interface PositionDataEntry {
   profitAndLossUsd: number; // baseBalanceUsd - netDepositsUsd + rewardsUsd - collateralLiquidatedUsd
 
   // Collateral related
-  collateral: { assetAddress: Address; balanceUsd: number }[];
+  collateral: {
+    assetAddress: Address;
+    assetSymbol: string;
+    balanceUsd: number;
+  }[];
+  totalCollateralUsd: number;
   borrowCapUsd: number;
   liquidationThresholdUsd: number;
 
@@ -131,6 +136,7 @@ async function aggregatePositionHistoricalData(
       rewardsAccruedUsd: 0,
       profitAndLossUsd: 0,
       collateral: [],
+      totalCollateralUsd: 0,
       borrowCapUsd: 0,
       liquidationThresholdUsd: 0,
       utilization: 0,
@@ -264,6 +270,7 @@ async function aggregatePositionHistoricalData(
 
           positionEntry.collateral.push({
             assetAddress: positionCollateralBalance.assetAddress,
+            assetSymbol: positionCollateralBalance.assetSymbol,
             balanceUsd: collateralBalanceUsd,
           });
           positionEntry.borrowCapUsd +=
@@ -272,6 +279,11 @@ async function aggregatePositionHistoricalData(
             collateralBalanceUsd * config.liquidateCollateralFactor;
         }
       }
+
+      positionEntry.totalCollateralUsd = positionEntry.collateral.reduce(
+        (acc, e) => acc + e.balanceUsd,
+        0,
+      );
 
       positionEntry.utilization =
         positionEntry.balanceUsd >= 0

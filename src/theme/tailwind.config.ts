@@ -5,9 +5,9 @@ const config = {
   prefix: "",
   theme: {
     screens: {
-      sm: "735px",
-      md: "950px",
-      lg: "1200px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
     },
     extend: {
       colors: {
@@ -34,7 +34,7 @@ const config = {
           critical: "#DF1B41",
         },
         data: {
-          series1: "#1D8CD2",
+          series1: "#1C86EC",
           series2: "#FB9318",
           series3: "#AD4796",
           series4: "#5547AD",

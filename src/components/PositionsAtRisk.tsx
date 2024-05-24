@@ -26,7 +26,7 @@ export default async function PositionsAtRisk({
 
   return (
     <Card className="text-semantic-warning animate-in flex flex-row items-center gap-2 border-[#FFD3BB] bg-[#FFE5D6]">
-      <Warning size={16} className="min-w-[16px]" />
+      <Warning size={16} className="min-w-[16px]" weight="bold" />
       <div className="text-body whitespace-nowrap font-semibold">
         Positions at risk:
       </div>
@@ -40,6 +40,7 @@ export default async function PositionsAtRisk({
               balanceUsd={position.summary.balanceUsd}
               utilization={position.summary.utilization}
               apr={position.summary.apr.net}
+              atRisk={false} // Not using here, already known
               small={true}
               key={i}
             />

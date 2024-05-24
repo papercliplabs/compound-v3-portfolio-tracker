@@ -1,5 +1,7 @@
 import { PositionActivityTable } from "@/components/ActivityTable";
 import ChartCard from "@/components/Chart/ChartCard";
+import { CollateralBreakdown } from "@/components/CollateralBreakdown";
+import HealthFactor from "@/components/HealthFactor";
 import { PositionTitle } from "@/components/PositionTitle";
 import TitlePopover from "@/components/TitlePopover";
 import { Card } from "@/components/ui/card";
@@ -82,29 +84,19 @@ export default async function Position({
           areaGradient: true,
         }}
       />
-      {/* TODO: custom card for health factor */}
       {isBorrowing && (
-        <ChartCard
-          query={getPositionHistoricalDataCached}
-          queryArgs={[
-            {
-              network,
-              marketAddress,
-              accountAddress,
-              granularity,
-            },
-          ]}
-          name="Health Factor"
-          popoverDescription="TODO"
-          dataKey="healthFactor"
-          timeSelection={timeSelector}
-          style={{
-            lineColor: tailwindFullTheme.theme.colors.data.series2,
-            areaGradient: true,
-          }}
-        />
+        <Card>
+          <TitlePopover title="Health Factor">TODO</TitlePopover>
+          <Suspense fallback={<Skeleton className="h-[400px] w-full" />}>
+            <HealthFactor
+              network={network}
+              marketAddress={marketAddress}
+              accountAddress={accountAddress}
+              timeSelector={timeSelector}
+            />
+          </Suspense>
+        </Card>
       )}
-
       <div
         className={clsx(
           "flex w-full flex-col gap-4 ",
@@ -153,7 +145,16 @@ export default async function Position({
           }}
         />
       </div>
-      {/* TODO: collateral breakdown */}
+      {isBorrowing && (
+        <Card>
+          <TitlePopover title="Collateral Breakdown">TODO</TitlePopover>
+          <CollateralBreakdown
+            network={network}
+            marketAddress={marketAddress}
+            accountAddress={accountAddress}
+          />
+        </Card>
+      )}
       <Card className="gap-3">
         <TitlePopover title="Transactions">TODO</TitlePopover>
         <Suspense

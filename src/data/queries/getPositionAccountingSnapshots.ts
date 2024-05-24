@@ -5,6 +5,7 @@ import { querySubgraph } from "../dataUtils";
 import { unstable_cache } from "next/cache";
 import { DEFAULT_REVALIDATION_TIME_S } from "../graphql/graphQLFetch";
 import { Address, getAddress } from "viem";
+import { assert } from "console";
 
 export interface PositionAccountingSnapshot {
   timestamp: number;
@@ -17,6 +18,7 @@ export interface PositionAccountingSnapshot {
   cumulativeGasUsedUsd: number;
   collateralAssetBalances: {
     assetAddress: Address;
+    assetSymbol: string;
     balance: bigint;
   }[];
 }
@@ -74,6 +76,7 @@ async function getPositionAccountingSnapshots({
     collateralAssetBalances: snapshot.accounting.collateralBalances.map(
       (item) => ({
         assetAddress: getAddress(item.collateralToken.token.address),
+        assetSymbol: item.collateralToken.token.symbol,
         balance: BigInt(item.balance),
       }),
     ),
@@ -103,6 +106,7 @@ const snapshotQuery = graphql(/* GraphQL */ `
             collateralToken {
               token {
                 address
+                symbol
               }
             }
             balance
