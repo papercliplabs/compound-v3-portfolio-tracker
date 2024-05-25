@@ -18,7 +18,7 @@ interface CollateralPieChartProps {
 export function CollateralPieChart({ data }: CollateralPieChartProps) {
   return (
     <>
-      <ResponsiveContainer width="100%" height="100%" className="p-[6px]">
+      <ResponsiveContainer width="100%" height="100%" className="p-[6px] ">
         <PieChart>
           <Pie
             data={data}
@@ -29,9 +29,18 @@ export function CollateralPieChart({ data }: CollateralPieChartProps) {
             innerRadius="75%"
             dataKey="balanceUsd"
             nameKey="assetSymbol"
+            rootTabIndex={-1}
+            className="outline-none"
           >
             {data.map((entry, i) => {
-              return <Cell key={`cell-${i}`} fill={entry.color} />;
+              return (
+                <Cell
+                  key={`cell-${i}`}
+                  fill={entry.color}
+                  tabIndex={-1}
+                  className="outline-none"
+                />
+              );
             })}
             <Label
               content={() => {

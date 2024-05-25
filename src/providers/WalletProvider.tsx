@@ -41,7 +41,10 @@ export default function WalletProvider({
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider
           avatar={({ address }) => (
-            <AccountAvatar address={getAddress(address)} size="lg" />
+            <AccountAvatar
+              address={getAddress(address)}
+              className="h-[64px] w-[64px]"
+            />
           )}
         >
           {children}

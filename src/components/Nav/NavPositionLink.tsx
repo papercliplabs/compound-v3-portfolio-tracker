@@ -9,6 +9,7 @@ import { Address } from "viem";
 import Token from "../Token";
 import { Warning } from "@phosphor-icons/react/dist/ssr";
 import { tailwindFullTheme } from "@/theme/tailwindFullTheme";
+import UtilizationRing from "../UtilizationRing";
 
 export interface NavPositionLinkProps {
   accountAddress: Address;
@@ -45,20 +46,20 @@ export function NavPositionLink({
         size={small ? 20 : 32}
         showNetworkIcon
       />
-      <div
-        className={clsx(
-          "flex w-full flex-row justify-between",
-          small && "hidden md:flex",
-        )}
-      >
+      <div className={clsx("flex w-full flex-row justify-between")}>
         <div
           className={clsx(
-            "flex",
+            "flex ",
             balanceUsd < 0 ? "justify-between" : "justify-center",
-            small ? "flex-row items-center gap-2" : "flex-col",
+            small ? "flex-row gap-2" : "flex-col",
           )}
         >
-          <span className="text-body text-content-primary flex flex-row items-center whitespace-nowrap font-semibold">
+          <span
+            className={clsx(
+              "text-body text-content-primary flex flex-row items-center whitespace-nowrap font-semibold",
+              small && "hidden md:flex",
+            )}
+          >
             {market.baseTokenSymbol} •{" "}
             {getNetworkConfig(market.network).chain.name}
             {atRisk && (
@@ -71,7 +72,10 @@ export function NavPositionLink({
             )}
           </span>
           {balanceUsd < 0 && (
-            <span className="caption-md text-content-secondary">
+            <span className="caption-md text-content-secondary flex flex-row items-center gap-1">
+              <div className="h-[14px] w-[14px]">
+                <UtilizationRing value={utilization} />{" "}
+              </div>
               {formatNumber(utilization, "%", 2)} {!small && "utilized"}
             </span>
           )}

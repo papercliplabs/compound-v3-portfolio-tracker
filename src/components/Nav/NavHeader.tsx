@@ -11,7 +11,10 @@ export default function NavHeader({
 }) {
   return (
     <div className="flex flex-row items-center gap-4 pb-[18px] md:pb-0">
-      <AccountAvatar address={accountAddress} size="dynamic" />
+      <AccountAvatar
+        address={accountAddress}
+        className="h-[32px] w-[32px] lg:h-[64px] lg:w-[64px]"
+      />
       <div className="flex h-full flex-col justify-center md:justify-between">
         <Suspense fallback={<Skeleton className="h-[30px] w-full shrink" />}>
           <h2 className="shrink">

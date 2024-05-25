@@ -10,7 +10,7 @@ export default function LearnMore() {
       <Popover>
         <PopoverTrigger asChild>
           <Button variant="secondary" size="icon">
-            <Question size={16} className="fill-black" />
+            <Question size={16} className="fill-black" weight="bold" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="max-w-[1000px]">

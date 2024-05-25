@@ -133,7 +133,9 @@ export const PortfolioColumns: ColumnDef<PortfolioActivity>[] = [
       return (
         <div className="flex w-full min-w-[80px] flex-row justify-end">
           <ExternalLink href={explorerUrl}>
-            <Button variant="secondary">View</Button>
+            <Button variant="secondary" tabIndex={-1}>
+              View
+            </Button>
           </ExternalLink>
         </div>
       );

@@ -96,7 +96,7 @@ export default function ConnectWallet({
                 >
                   <AccountAvatar
                     address={getAddress(account.address)}
-                    size="sm"
+                    className="h-[20px] w-[20px]"
                   />
                   {(screenSize == "lg" || !responsive) && account.displayName}
                 </Button>
