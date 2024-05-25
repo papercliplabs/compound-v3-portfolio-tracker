@@ -22,7 +22,7 @@ export default function ConnectWallet({
   const screenSize = useScreenSize();
 
   useEffect(() => {
-    // Only start watching 1s after load to prevent immediate navigation from reconnect
+    // Only start watching 2s after load to prevent immediate navigation from reconnect
     const timeout = setTimeout(() => {
       // Redirect to correct page when the account changes
       watchAccount(config, {
@@ -38,7 +38,7 @@ export default function ConnectWallet({
           }
         },
       });
-    }, 1000);
+    }, 2000);
 
     return () => clearTimeout(timeout);
   });

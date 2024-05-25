@@ -13,11 +13,11 @@ export default function NavHeader({
     <div className="flex flex-row items-center gap-4 pb-[18px] md:pb-0">
       <AccountAvatar
         address={accountAddress}
-        className="h-[32px] w-[32px] lg:h-[64px] lg:w-[64px]"
+        className="h-[32px] w-[32px] shrink-0 lg:h-[64px] lg:w-[64px]"
       />
-      <div className="flex h-full flex-col justify-center md:justify-between">
+      <div className="flex h-full min-w-0 flex-col justify-center md:justify-between">
         <Suspense fallback={<Skeleton className="h-[30px] w-full shrink" />}>
-          <h2 className="shrink">
+          <h2 className="shrink overflow-hidden text-ellipsis">
             <AccountName address={accountAddress} />
           </h2>
         </Suspense>
