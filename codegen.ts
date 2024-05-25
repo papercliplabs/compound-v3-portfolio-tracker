@@ -1,7 +1,5 @@
 import type { CodegenConfig } from "@graphql-codegen/cli";
 import { loadEnvConfig } from "@next/env";
-import { GraphQLScalarType } from "graphql";
-import { GraphQLBigInt, BigIntResolver } from "graphql-scalars";
 loadEnvConfig(process.cwd());
 
 // Paths relative to project root

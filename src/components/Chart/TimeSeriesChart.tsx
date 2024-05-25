@@ -80,7 +80,7 @@ export default function TimeSeriesChart<T extends { timestamp: number }>({
         yAxisDomainMin: yAxisDomainMin - yRange * 0.02,
         yAxisDomainMax: yAxisDomainMax + yRange * 0.02,
       };
-    }, [data, timeSelectorData.rangeS]);
+    }, [data, timeSelectorData.rangeS, dataKey]);
 
   const average = useMemo(() => {
     const sum = valuesWithinRange.reduce((sum, val) => sum + val, 0);
