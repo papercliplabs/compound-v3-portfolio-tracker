@@ -48,7 +48,7 @@ export default async function PortfolioPage({
         unit="$"
         style={{
           lineColor: tailwindFullTheme.theme.colors.data.series1,
-          areaGradient: true,
+          areaGradient: false,
         }}
       />
       <ChartCard

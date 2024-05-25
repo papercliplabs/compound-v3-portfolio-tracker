@@ -71,7 +71,7 @@ export default async function Position({
         unit="$"
         style={{
           lineColor: tailwindFullTheme.theme.colors.data.series1,
-          areaGradient: true,
+          areaGradient: false,
         }}
       />
       {isBorrowing && (
