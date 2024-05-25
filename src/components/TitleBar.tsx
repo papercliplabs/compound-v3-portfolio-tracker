@@ -17,7 +17,7 @@ interface TitleBarProps {
   };
 }
 
-export async function TitleBar({ positionParams }: TitleBarProps) {
+export function TitleBar({ positionParams }: TitleBarProps) {
   return (
     <div className="flex flex-row items-center justify-between">
       {positionParams ? (

@@ -15,7 +15,7 @@ export interface NavProps {
   };
 }
 
-export default async function Nav({
+export default function Nav({
   accountAddress,
   selectedPositionParams,
 }: NavProps) {

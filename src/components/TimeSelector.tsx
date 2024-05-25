@@ -13,6 +13,8 @@ import { CalendarBlank } from "@phosphor-icons/react/dist/ssr";
 import { tailwindFullTheme } from "@/theme/tailwindFullTheme";
 import { DATA_FOR_TIME_SELECTOR } from "@/utils/constants";
 import { useScreenSize } from "@/hooks/useScreenSize";
+import { useEffect, useState } from "react";
+import { PrefetchKind } from "next/dist/client/components/router-reducer/router-reducer-types";
 
 export function TimeSelector() {
   const options = Object.entries(DATA_FOR_TIME_SELECTOR).map(
@@ -22,19 +24,35 @@ export function TimeSelector() {
   const router = useRouter();
   const pathname = usePathname();
   const screenSize = useScreenSize();
+  const [optimisticallySelected, setOptimisticallySelected] = useState<
+    TimeSelection | undefined
+  >(undefined);
 
   const selected = (searchParams.get("timeSelector") ?? "MAX") as TimeSelection;
+
+  useEffect(() => {
+    // Prefetch all routes to reduce loading time on time selector change
+    for (let option of options) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("timeSelector", option.selector);
+      router.prefetch(pathname + "?" + params.toString(), {
+        kind: PrefetchKind.AUTO,
+      });
+    }
+  });
 
   return (
     <Select
       onValueChange={(value: string) => {
+        setOptimisticallySelected(value as TimeSelection);
         const params = new URLSearchParams(searchParams.toString());
         params.set("timeSelector", value);
         router.push(pathname + "?" + params.toString(), {
           scroll: false,
         });
       }}
-      value={selected}
+      // Optimistically update this value to help remove the delay from server response
+      value={optimisticallySelected ?? selected}
     >
       <SelectTrigger className="w-fit">
         {screenSize != "sm" && (

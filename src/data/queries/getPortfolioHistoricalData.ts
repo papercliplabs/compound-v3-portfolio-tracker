@@ -93,15 +93,15 @@ async function aggregatePortfolioData(
     // Divide out to get average for apr
     portfolioDataEntry.avgApr.base = safeDiv(
       portfolioDataEntry.avgApr.base,
-      portfolioDataEntry.balanceUsd,
+      Math.abs(portfolioDataEntry.balanceUsd),
     );
     portfolioDataEntry.avgApr.reward = safeDiv(
       portfolioDataEntry.avgApr.reward,
-      portfolioDataEntry.balanceUsd,
+      Math.abs(portfolioDataEntry.balanceUsd),
     );
     portfolioDataEntry.avgApr.net = safeDiv(
       portfolioDataEntry.avgApr.net,
-      portfolioDataEntry.balanceUsd,
+      Math.abs(portfolioDataEntry.balanceUsd),
     );
 
     portfolioHistoricalData.push(portfolioDataEntry);

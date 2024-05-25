@@ -83,7 +83,12 @@ export function NavPositionLink({
         {!small && (
           <div className="flex flex-col items-end">
             <span>${formatNumber(Math.abs(balanceUsd))}</span>
-            <span className="caption-md text-content-secondary">
+            <span
+              className={clsx(
+                "caption-md text-content-secondary",
+                apr > 0 ? "text-semantic-success" : "text-semantic-critical",
+              )}
+            >
               {formatNumber(apr, "%")} APR (7D)
             </span>
           </div>

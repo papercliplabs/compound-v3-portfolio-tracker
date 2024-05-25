@@ -22,7 +22,9 @@ export default function NavHeader({
           </h2>
         </Suspense>
         <div className="body-md text-content-secondary hidden lg:flex">
-          <AccountName address={accountAddress} disableEns />
+          <Suspense fallback={<Skeleton className="h-[30px] w-full shrink" />}>
+            <AccountName address={accountAddress} disableEns />
+          </Suspense>
         </div>
       </div>
     </div>

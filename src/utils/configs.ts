@@ -84,7 +84,7 @@ const CONFIGS: Record<SupportedNetwork, ChainConfig> = {
       fallback: undefined,
     },
     icon: ScrollIcon,
-    subgraphUrl: `https://api.thegraph.com/subgraphs/id/QmNUqEQXxmUp5jmsYTLVaLauMPpWL33x6UC7Lijg7VHkYP`, // From The Graph team
+    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/deployments/id/QmNUqEQXxmUp5jmsYTLVaLauMPpWL33x6UC7Lijg7VHkYP`,
   },
 };
 

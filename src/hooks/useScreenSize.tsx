@@ -1,3 +1,4 @@
+"use client";
 import { tailwindFullTheme } from "@/theme/tailwindFullTheme";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";

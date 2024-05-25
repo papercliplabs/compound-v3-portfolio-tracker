@@ -8,8 +8,8 @@ import { usePathname } from "next/navigation";
 import { getAddress } from "viem";
 import AccountAvatar from "./AccountAvatar";
 import { useEffect } from "react";
-import { useScreenSize } from "@/hooks/useScreenSize";
 import { Wallet } from "@phosphor-icons/react/dist/ssr";
+import clsx from "clsx";
 
 export default function ConnectWallet({
   responsive,
@@ -19,7 +19,6 @@ export default function ConnectWallet({
   const router = useRouter();
   const config = useConfig();
   const pathname = usePathname();
-  const screenSize = useScreenSize();
 
   useEffect(() => {
     // Only start watching 2s after load to prevent immediate navigation from reconnect
@@ -71,11 +70,16 @@ export default function ConnectWallet({
               if (!connected) {
                 return (
                   <Button onClick={openConnectModal}>
-                    {screenSize == "lg" || !responsive ? (
-                      "Connect Wallet"
-                    ) : (
+                    <span
+                      className={clsx(responsive ? "hidden lg:flex" : "flex")}
+                    >
+                      Connect Wallet
+                    </span>
+                    <span
+                      className={clsx(responsive ? "flex lg:hidden" : "hidden")}
+                    >
                       <Wallet width={20} height={20} className="p-0" />
-                    )}
+                    </span>
                   </Button>
                 );
               }
@@ -98,7 +102,11 @@ export default function ConnectWallet({
                     address={getAddress(account.address)}
                     className="h-[20px] w-[20px]"
                   />
-                  {(screenSize == "lg" || !responsive) && account.displayName}
+                  <span
+                    className={clsx(responsive ? "hidden lg:flex" : "flex")}
+                  >
+                    {account.displayName}
+                  </span>
                 </Button>
               );
             })()}

@@ -56,7 +56,7 @@ export function SearchWallet() {
             ? "Address or ENS"
             : "Search for address or ENS name"
         }
-        className="max-w-[400px] grow text-[16px]"
+        className="max-w-[450px] grow text-[16px]"
         required
         type="text"
         name={ADDRESS_OR_ENS_FORM_NAME}
