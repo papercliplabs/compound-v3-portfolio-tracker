@@ -7,6 +7,7 @@ import { getAddressForEnsName } from "@/data/getEns";
 import { useFormStatus } from "react-dom";
 import { CircleNotch } from "@phosphor-icons/react/dist/ssr";
 import { useRouter } from "next/navigation";
+import { useScreenSize } from "@/hooks/useScreenSize";
 
 const ADDRESS_OR_ENS_FORM_NAME = "addressOrEns";
 
@@ -14,6 +15,7 @@ export function SearchWallet() {
   const formRef = useRef<HTMLFormElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
+  const screenSize = useScreenSize();
 
   async function onSubmit(formData: FormData) {
     const addressOrEns = formData
@@ -49,7 +51,11 @@ export function SearchWallet() {
       ref={formRef}
     >
       <Input
-        placeholder={"Search address or ENS name"}
+        placeholder={
+          screenSize == "sm"
+            ? "Address or ENS"
+            : "Search for address or ENS name"
+        }
         className="max-w-[400px] grow text-[16px]"
         required
         type="text"

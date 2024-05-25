@@ -64,8 +64,8 @@ export default async function Position({
             granularity,
           },
         ]}
-        name="Base asset balance"
-        popoverDescription="TODO"
+        name="Base Asset Balance"
+        popoverDescription="Balance of the positions base assets. A positive value means lending where a negative means borrowing"
         dataKey="balanceUsd"
         timeSelection={timeSelector}
         unit="$"
@@ -76,7 +76,12 @@ export default async function Position({
       />
       {isBorrowing && (
         <Card>
-          <TitlePopover title="Health Factor">TODO</TitlePopover>
+          <TitlePopover title="Health Factor">
+            The health factor is a single number that indicates a borrowing
+            position{"'"}s health. It is the ratio of the liquidation threshold
+            to borrowing amount. When it drops below 1 the position is
+            liquidatable.
+          </TitlePopover>
           <Suspense fallback={<Skeleton className="h-[400px] w-full" />}>
             <HealthFactor
               network={network}
@@ -104,7 +109,7 @@ export default async function Position({
             },
           ]}
           name="Profit & Loss"
-          popoverDescription="TODO"
+          popoverDescription="Realized and unrealized profit and loss of the position. This includes interest, liquidation losses, rewards, gas fees, and accounts for asset price fluctuation versus USD."
           dataKey="profitAndLossUsd"
           timeSelection={timeSelector}
           unit="$"
@@ -123,8 +128,8 @@ export default async function Position({
               granularity,
             },
           ]}
-          name="APR"
-          popoverDescription="TODO"
+          name="Annual Percent Rate"
+          popoverDescription="The net annual percent rate (APR) for the position including rewards. This will equal the markets net supply or borrow APR."
           dataKey="apr.net"
           timeSelection={timeSelector}
           unit="%"
@@ -137,7 +142,10 @@ export default async function Position({
       </div>
       {isBorrowing && (
         <Card>
-          <TitlePopover title="Collateral Breakdown">TODO</TitlePopover>
+          <TitlePopover title="Collateral Breakdown">
+            Breakdown of the positions collateral balances. The collateral ratio
+            is the ratio of the collateral to borrowed value.
+          </TitlePopover>
           <CollateralBreakdown
             network={network}
             marketAddress={marketAddress}
@@ -146,7 +154,10 @@ export default async function Position({
         </Card>
       )}
       <Card className="gap-3">
-        <TitlePopover title="Transactions">TODO</TitlePopover>
+        <TitlePopover title="Transactions">
+          All position transactions including base and collateral deposits and
+          withdrawals, liquidations, and rewards claimed.
+        </TitlePopover>
         <Suspense
           fallback={<Skeleton className="h-[300px] w-full" />}
           key={accountAddress}

@@ -53,7 +53,7 @@ export default function RootLayout({
       >
         <WalletProvider>
           <Header />
-          <main className="bg-background-surface mx-auto h-screen w-screen max-w-[2560px] overflow-y-hidden pt-16">
+          <main className="bg-background-surface mx-auto h-dvh w-screen max-w-[2560px] overflow-y-hidden pt-16">
             {children}
           </main>
           <Analytics />

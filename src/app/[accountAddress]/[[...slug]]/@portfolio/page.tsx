@@ -41,8 +41,8 @@ export default async function PortfolioPage({
       <ChartCard
         query={getPortfolioHistoricalData}
         queryArgs={[{ accountAddress, granularity }]}
-        name="Base asset balance"
-        popoverDescription="TODO"
+        name="Base Asset Balance"
+        popoverDescription="Sum of the base asset balances for all your Compound v3 positions across all chains. A positive value means net lending where a negative means net borrowing."
         dataKey="balanceUsd"
         timeSelection={timeSelector}
         unit="$"
@@ -54,8 +54,8 @@ export default async function PortfolioPage({
       <ChartCard
         query={getPortfolioHistoricalData}
         queryArgs={[{ accountAddress, granularity }]}
-        name="Profit and loss"
-        popoverDescription="TODO"
+        name="Profit & Loss"
+        popoverDescription="Sum of the realized and unrealized profit and loss for all your Compound v3 positions across all chains. This includes interest, liquidation losses, rewards, gas fees, and accounts for asset price fluctuation versus USD."
         dataKey="profitAndLossUsd"
         timeSelection={timeSelector}
         unit="$"
@@ -67,8 +67,8 @@ export default async function PortfolioPage({
       <ChartCard
         query={getPortfolioHistoricalData}
         queryArgs={[{ accountAddress, granularity }]}
-        name="APR"
-        popoverDescription="TODO"
+        name="Annual Percentage Rate"
+        popoverDescription="Weighted average of annual percentage rates (APRs) for all your Compound v3 position across all chains, including rewards. A negative value means borrowing costs exceed lending earnings."
         dataKey="avgApr.net"
         timeSelection={timeSelector}
         unit="%"
@@ -79,7 +79,10 @@ export default async function PortfolioPage({
         }}
       />
       <Card className="gap-3">
-        <TitlePopover title="Transactions">TODO</TitlePopover>
+        <TitlePopover title="Transactions">
+          All portfolio transactions including base and collateral deposits and
+          withdrawals, liquidations, and rewards claimed.
+        </TitlePopover>
         <Suspense
           fallback={<Skeleton className="h-[300px] w-full" />}
           key={accountAddress}

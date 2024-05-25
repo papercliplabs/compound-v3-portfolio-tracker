@@ -63,7 +63,7 @@ export async function PositionTitle({
         {position.market.baseTokenSymbol} •{" "}
         {getNetworkConfig(position.market.network).chain.name}
       </h3>
-      <div className="hidden md:flex">
+      <div className="hidden gap-2 md:flex">
         <Badge>
           {position.summary.balanceUsd >= 0 ? "Lending" : "Borrowing"}
         </Badge>

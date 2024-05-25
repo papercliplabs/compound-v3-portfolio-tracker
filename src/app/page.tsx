@@ -8,7 +8,7 @@ const DEMO_ADDRESS = "0x3c9ea5c4fec2a77e23dd82539f4414266fe8f757"; // TODO: get 
 
 export default function NoAddressPage() {
   return (
-    <div className="m-auto flex h-full w-full max-w-[450px] flex-col items-center justify-between px-4 pb-24 pt-[100px] text-center md:pb-[30px]">
+    <div className="m-auto flex h-full w-full max-w-[450px] flex-col items-center justify-between px-4 pb-[30px] pt-[20dvh] text-center">
       <div className="flex flex-col gap-10">
         <h1>Track your Compound v3 portfolio in one place.</h1>
         <div className="flex w-full flex-col items-center justify-center gap-4">
