@@ -10,6 +10,7 @@ import Token from "../Token";
 import { Warning } from "@phosphor-icons/react/dist/ssr";
 import { tailwindFullTheme } from "@/theme/tailwindFullTheme";
 import UtilizationRing from "../UtilizationRing";
+import { Badge } from "../ui/badge";
 
 export interface NavPositionLinkProps {
   accountAddress: Address;
@@ -37,7 +38,7 @@ export function NavPositionLink({
     <NavItem
       active={active}
       href={`/${accountAddress}/${market.network}/${market.address}`}
-      small
+      small={small}
       className={small ? "bg-white" : ""}
     >
       <Token
@@ -80,19 +81,22 @@ export function NavPositionLink({
             </span>
           )}
         </div>
-        {!small && (
-          <div className="flex flex-col items-end">
-            <span>${formatNumber(Math.abs(balanceUsd))}</span>
-            <span
-              className={clsx(
-                "caption-md text-content-secondary",
-                apr > 0 ? "text-semantic-success" : "text-semantic-critical",
-              )}
-            >
-              {formatNumber(apr, "%")} APR (7D)
-            </span>
-          </div>
-        )}
+        {!small &&
+          (balanceUsd == 0 ? (
+            <Badge>Closed</Badge>
+          ) : (
+            <div className="flex flex-col items-end">
+              <span>${formatNumber(Math.abs(balanceUsd))}</span>
+              <span
+                className={clsx(
+                  "caption-md text-content-secondary",
+                  apr > 0 ? "text-semantic-success" : "text-semantic-critical",
+                )}
+              >
+                {formatNumber(apr, "%")} APR (7D)
+              </span>
+            </div>
+          ))}
       </div>
     </NavItem>
   );
@@ -111,10 +115,10 @@ export const NavItem = forwardRef<
       ref={ref}
       href={href}
       className={twMerge(
-        "flex flex-row items-center rounded-md bg-transparent",
-        small ? "gap-[6px] px-2 py-1" : "h-[48px] w-full gap-[10px] px-4 py-2",
+        " flex flex-row items-center rounded-md bg-transparent",
+        small ? "gap-[6px] px-2 py-1" : "w-full gap-[10px] px-4 py-2",
         active
-          ? "bg-background-surface md:bg-white"
+          ? "bg-background-surface shadow-1 md:bg-white"
           : "hover:bg-background-surface/30 bg-transparent md:hover:bg-white/30",
         className,
       )}

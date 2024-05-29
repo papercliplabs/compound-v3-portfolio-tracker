@@ -22,10 +22,12 @@ export default function NavDrawer({ children }: { children: ReactNode }) {
       setActiveSnapPoint={setSnap}
       modal={false}
       fadeFromIndex={0}
+      noBodyStyles
+      // disablePreventScroll={true}
     >
       <Drawer.Portal>
         <Drawer.Content
-          className="shadow-2 border-b-none border-border-primary fixed left-0 right-0 mx-[-1px] flex flex-col gap-3 rounded-t-[12px] border bg-white px-4 py-5 lg:hidden"
+          className="shadow-2 border-b-none border-border-primary fixed bottom-0 left-0 right-0 mx-[-1px] flex flex-col gap-3 rounded-t-[12px] border bg-white px-4 py-5  lg:hidden"
           style={{ height: `${OPEN_SNAP * 100}%`, top: 30 }}
           autoFocus={false}
           onFocus={() => ref.current?.blur()} // Prevent initial focus

@@ -22,7 +22,7 @@ export default async function PortfolioPage({
   searchParams: { timeSelector?: string };
 }) {
   const { accountAddress } = params;
-  const timeSelector = (searchParams.timeSelector ?? "MAX") as TimeSelection;
+  const timeSelector = (searchParams.timeSelector ?? "3M") as TimeSelection;
   const granularity = DATA_FOR_TIME_SELECTOR[timeSelector].granularity;
 
   const markets = await getMarketsForAccountCached({
@@ -48,7 +48,7 @@ export default async function PortfolioPage({
         unit="$"
         style={{
           lineColor: tailwindFullTheme.theme.colors.data.series1,
-          areaGradient: false,
+          areaGradient: true,
         }}
       />
       <ChartCard

@@ -71,14 +71,21 @@ export async function NavBody({
   }
 
   return (
-    <div className="flex flex-col gap-3 overflow-auto">
+    <div
+      className="flex flex-col gap-3 overflow-auto pb-16"
+      data-vaul-no-drag=""
+    >
       <NavItem
         href={`/${accountAddress}`}
         active={!selectedPositionParams}
         className="justify-between"
       >
-        <div className="flex flex-row gap-4">
-          <Stack size={16} className="stroke-content-primary" weight="bold" />
+        <div className="flex flex-row items-center gap-4">
+          <Stack
+            size={40}
+            className="stroke-content-primary border-border-primary rounded-[9px] border p-2"
+            weight="fill"
+          />
           All Positions
         </div>
         {formatNumber(totalBalanceUsd, "$")}

@@ -43,6 +43,8 @@ export default function TimeSeriesChart<T extends { timestamp: number }>({
 }: TimeSeriesChartProps<T>) {
   const screenSize = useScreenSize();
 
+  // console.log("DATA", data);
+
   const numXAxisTicks = useMemo(() => {
     return screenSize == "lg" ? NUM_X_AXIS_TICKS_LG : NUM_X_AXIS_TICKS_SM;
   }, [screenSize]);
@@ -64,7 +66,7 @@ export default function TimeSeriesChart<T extends { timestamp: number }>({
         : minTimestamp;
 
       const valuesWithinRange = data
-        .filter((d) => d.timestamp > xAxisDomainMin)
+        .filter((d) => d.timestamp >= xAxisDomainMin)
         .map((d) => extractNestedValue<number>(d, dataKey));
 
       const yAxisDomainMin = Math.min(...valuesWithinRange);
@@ -136,6 +138,7 @@ export default function TimeSeriesChart<T extends { timestamp: number }>({
           fill={
             style.areaGradient ? `url(#color-${style.lineColor})` : "#00000000"
           }
+          baseValue={yAxisDomainMin}
         />
         <Tooltip
           position={{ y: 0 }} // Set to the top of chart

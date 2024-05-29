@@ -10,7 +10,6 @@ import {
 } from "@tanstack/react-table";
 
 import { ActivityType } from "@/data/queries/getPositionActivity";
-import { Card } from "../ui/card";
 
 import { useState } from "react";
 
@@ -25,11 +24,10 @@ import {
 import { Button } from "../ui/button";
 import { ArrowLeft, ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import clsx from "clsx";
-import ExternalLink from "../ExternalLink";
 
 export const selectItems: { value: ActivityType; name: string }[] = [
-  { value: "supply-base", name: "Supply Base" },
-  { value: "withdraw-base", name: "Withdraw Base" },
+  { value: "supply-base", name: "Supply Base Asset" },
+  { value: "withdraw-base", name: "Withdraw Base Asset" },
   { value: "supply-collateral", name: "Supply Collateral" },
   { value: "withdraw-collateral", name: "Withdraw Collateral" },
   { value: "absorb-debt", name: "Absorb Debt" },

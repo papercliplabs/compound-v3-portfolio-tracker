@@ -49,7 +49,7 @@ export default async function Position({
 
   const isBorrowing = positionSummary.summary.balanceUsd < 0;
 
-  const timeSelector = (searchParams.timeSelector ?? "MAX") as TimeSelection;
+  const timeSelector = (searchParams.timeSelector ?? "3M") as TimeSelection;
   const granularity = DATA_FOR_TIME_SELECTOR[timeSelector].granularity;
 
   return (
@@ -71,7 +71,7 @@ export default async function Position({
         unit="$"
         style={{
           lineColor: tailwindFullTheme.theme.colors.data.series1,
-          areaGradient: false,
+          areaGradient: true,
         }}
       />
       {isBorrowing && (
@@ -80,7 +80,7 @@ export default async function Position({
             The health factor is a single number that indicates a borrowing
             position{"'"}s health. It is the ratio of the liquidation threshold
             to borrowing amount. When it drops below 1 the position is
-            liquidatable.
+            liquidatable. If no value is shown, the position is not borrowing.
           </TitlePopover>
           <Suspense fallback={<Skeleton className="h-[400px] w-full" />}>
             <HealthFactor

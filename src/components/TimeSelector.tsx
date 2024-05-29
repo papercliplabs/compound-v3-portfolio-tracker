@@ -28,7 +28,7 @@ export function TimeSelector() {
     TimeSelection | undefined
   >(undefined);
 
-  const selected = (searchParams.get("timeSelector") ?? "MAX") as TimeSelection;
+  const selected = (searchParams.get("timeSelector") ?? "3M") as TimeSelection;
 
   useEffect(() => {
     // Prefetch all routes to reduce loading time on time selector change

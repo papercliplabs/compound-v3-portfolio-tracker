@@ -7,7 +7,7 @@ import { Suspense } from "react";
 import { Skeleton } from "../ui/skeleton";
 import { extractNestedValue } from "@/utils/extractNestedValue";
 
-interface ChartCardProps<
+export interface ChartCardProps<
   DataEntry extends { timestamp: number },
   P extends any[],
 > extends Omit<TimeSeriesChartProps<DataEntry>, "data"> {

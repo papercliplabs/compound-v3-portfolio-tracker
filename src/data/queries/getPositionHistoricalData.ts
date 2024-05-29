@@ -170,7 +170,9 @@ async function aggregatePositionHistoricalData(
     if (
       marketEntry.timestamp < Number(positionAccountingSnapshots[0].timestamp)
     ) {
-      // Do nothing, filling in 0's before first interaction
+      // Do nothing, filling single 0 before first interaction
+      positionHistoricalData[0] = positionEntry;
+      continue;
     } else {
       const positionAccountingSnapshot =
         positionAccountingSnapshots[currentPositionSnapshotIndex];
