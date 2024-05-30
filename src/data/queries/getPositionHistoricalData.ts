@@ -34,7 +34,10 @@ export interface PositionDataEntry {
   balanceUsd: number;
   rewardsAccrued: bigint; // In reward token (for debugging)
   rewardsAccruedUsd: number;
-  profitAndLossUsd: number; // baseBalanceUsd - netDepositsUsd + rewardsUsd - collateralLiquidatedUsd
+  profitAndLossUsd: {
+    withoutRewards: number; // baseBalanceUsd - netDepositsUsd - collateralLiquidatedUsd
+    withRewards: number; // baseBalanceUsd - netDepositsUsd + rewardsUsd - collateralLiquidatedUsd
+  };
 
   // Collateral related
   collateral: {
@@ -134,7 +137,10 @@ async function aggregatePositionHistoricalData(
       balanceUsd: 0,
       rewardsAccrued: BigInt(0),
       rewardsAccruedUsd: 0,
-      profitAndLossUsd: 0,
+      profitAndLossUsd: {
+        withoutRewards: 0,
+        withRewards: 0,
+      },
       collateral: [],
       totalCollateralUsd: 0,
       borrowCapUsd: 0,
@@ -230,13 +236,16 @@ async function aggregatePositionHistoricalData(
           ),
         ) * marketEntry.rewardTokenUsdPrice;
 
-      positionEntry.profitAndLossUsd =
+      positionEntry.profitAndLossUsd.withoutRewards =
         positionEntry.balanceUsd -
         (positionAccountingSnapshot.cumulativeBaseSuppliedUsd -
-          positionAccountingSnapshot.cumulativeBaseWithdrawUsd) +
-        positionEntry.rewardsAccruedUsd -
+          positionAccountingSnapshot.cumulativeBaseWithdrawUsd) -
         positionAccountingSnapshot.cumulativeCollateralLiquidatedUsd -
         positionAccountingSnapshot.cumulativeGasUsedUsd;
+
+      positionEntry.profitAndLossUsd.withRewards =
+        positionEntry.profitAndLossUsd.withoutRewards +
+        positionEntry.rewardsAccruedUsd;
 
       for (let positionCollateralBalance of positionAccountingSnapshot.collateralAssetBalances) {
         const exchangeRate = marketEntry.collateralAssetUsdExchangeRates.find(

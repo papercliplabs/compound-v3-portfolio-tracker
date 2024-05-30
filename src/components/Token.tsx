@@ -27,6 +27,8 @@ const TOKEN_ICONS: Record<string, StaticImport> = {
   ETH: ETH,
   WETH: ETH,
   LDO: LDO,
+  stETH: LDO,
+  wstETH: LDO,
   LINK: LINK,
   MATIC: MATIC,
   MATICx: MATICx,

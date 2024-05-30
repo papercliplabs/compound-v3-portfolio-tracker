@@ -33,6 +33,7 @@ export async function NavBody({
 
   const lendPositionProps: NavPositionLinkProps[] = [];
   const borrowPositionProps: NavPositionLinkProps[] = [];
+  const closedPositionProps: NavPositionLinkProps[] = [];
 
   let totalBalanceUsd = 0;
   for (let i = 0; i < markets.length; i++) {
@@ -61,7 +62,9 @@ export async function NavBody({
       apr: avgNetApr,
     };
 
-    if (navPositionLinkProps.balanceUsd > 0) {
+    if (navPositionLinkProps.balanceUsd == 0) {
+      closedPositionProps.push(navPositionLinkProps);
+    } else if (navPositionLinkProps.balanceUsd > 0) {
       lendPositionProps.push(navPositionLinkProps);
     } else {
       borrowPositionProps.push(navPositionLinkProps);
@@ -112,6 +115,19 @@ export async function NavBody({
             <Separator className="shrink" />
           </div>
           {lendPositionProps.map((props, i) => (
+            <NavPositionLink {...props} key={i} />
+          ))}{" "}
+        </>
+      )}
+      {closedPositionProps.length > 0 && (
+        <>
+          <div className="flex w-full flex-row items-center gap-1">
+            <span className="caption-md text-content-secondary text-nowrap">
+              CLOSED ({closedPositionProps.length})
+            </span>
+            <Separator className="shrink" />
+          </div>
+          {closedPositionProps.map((props, i) => (
             <NavPositionLink {...props} key={i} />
           ))}{" "}
         </>

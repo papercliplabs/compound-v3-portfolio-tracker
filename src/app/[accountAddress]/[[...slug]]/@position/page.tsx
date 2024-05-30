@@ -1,5 +1,6 @@
 import { PositionActivityTable } from "@/components/ActivityTable";
 import ChartCard from "@/components/Chart/ChartCard";
+import ToggleChartCard from "@/components/Chart/ToggleChartCard";
 import { CollateralBreakdown } from "@/components/CollateralBreakdown";
 import HealthFactor from "@/components/HealthFactor";
 import TitlePopover from "@/components/TitlePopover";
@@ -98,7 +99,7 @@ export default async function Position({
           isBorrowing ? "flex-col md:flex-row" : "flex-col",
         )}
       >
-        <ChartCard
+        <ToggleChartCard
           query={getPositionHistoricalDataCached}
           queryArgs={[
             {
@@ -110,7 +111,10 @@ export default async function Position({
           ]}
           name="Profit & Loss"
           popoverDescription="Realized and unrealized profit and loss of the position. This includes interest, liquidation losses, rewards, gas fees, and accounts for asset price fluctuation versus USD."
-          dataKey="profitAndLossUsd"
+          toggleName="Include COMP"
+          togglePopoverDescription="Toggle to include COMP reward token distribution."
+          dataKeyToggleOn="profitAndLossUsd.withRewards"
+          dataKeyToggleOff="profitAndLossUsd.withoutRewards"
           timeSelection={timeSelector}
           unit="$"
           style={{
@@ -118,7 +122,7 @@ export default async function Position({
             areaGradient: false,
           }}
         />
-        <ChartCard
+        <ToggleChartCard
           query={getPositionHistoricalDataCached}
           queryArgs={[
             {
@@ -128,9 +132,12 @@ export default async function Position({
               granularity,
             },
           ]}
-          name="Annual Percent Rate"
+          name="APR"
           popoverDescription="The net annual percent rate (APR) for the position including rewards. This will equal the markets net supply or borrow APR."
-          dataKey="apr.net"
+          toggleName="Include COMP"
+          togglePopoverDescription="Toggle to include COMP reward token distribution."
+          dataKeyToggleOn="apr.net"
+          dataKeyToggleOff="apr.base"
           timeSelection={timeSelector}
           unit="%"
           showAverage

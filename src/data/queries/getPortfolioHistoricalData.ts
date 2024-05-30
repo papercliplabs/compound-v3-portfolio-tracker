@@ -14,7 +14,7 @@ interface PortfolioDataEntry {
   timestamp: number; // time since unix epoch
 
   balanceUsd: number;
-  profitAndLossUsd: number;
+  profitAndLossUsd: { withoutRewards: number; withRewards: number };
   avgApr: { base: number; reward: number; net: number };
 }
 
@@ -62,7 +62,10 @@ async function aggregatePortfolioData(
       key: 0,
       timestamp: 0,
       balanceUsd: 0,
-      profitAndLossUsd: 0,
+      profitAndLossUsd: {
+        withoutRewards: 0,
+        withRewards: 0,
+      },
       avgApr: { base: 0, reward: 0, net: 0 },
     };
 
@@ -74,8 +77,12 @@ async function aggregatePortfolioData(
         portfolioDataEntry.timestamp = responseEntry.timestamp;
         portfolioDataEntry.balanceUsd =
           portfolioDataEntry.balanceUsd + responseEntry.balanceUsd;
-        portfolioDataEntry.profitAndLossUsd =
-          portfolioDataEntry.profitAndLossUsd + responseEntry.profitAndLossUsd;
+        portfolioDataEntry.profitAndLossUsd.withoutRewards =
+          portfolioDataEntry.profitAndLossUsd.withoutRewards +
+          responseEntry.profitAndLossUsd.withoutRewards;
+        portfolioDataEntry.profitAndLossUsd.withRewards =
+          portfolioDataEntry.profitAndLossUsd.withRewards +
+          responseEntry.profitAndLossUsd.withRewards;
         portfolioDataEntry.avgApr = {
           base:
             portfolioDataEntry.avgApr.base +
