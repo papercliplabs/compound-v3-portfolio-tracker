@@ -13,6 +13,7 @@ import ChartCard from "@/components/Chart/ChartCard";
 import PositionsAtRisk from "@/components/PositionsAtRisk";
 import { Card } from "@/components/ui/card";
 import TitlePopover from "@/components/TitlePopover";
+import ToggleChartCard from "@/components/Chart/ToggleChartCard";
 
 export default async function PortfolioPage({
   params,
@@ -51,12 +52,15 @@ export default async function PortfolioPage({
           areaGradient: true,
         }}
       />
-      <ChartCard
+      <ToggleChartCard
         query={getPortfolioHistoricalData}
         queryArgs={[{ accountAddress, granularity }]}
         name="Profit & Loss"
         popoverDescription="Sum of the realized and unrealized profit and loss for all your Compound v3 positions across all chains. This includes interest, liquidation losses, rewards, gas fees, and accounts for asset price fluctuation versus USD."
-        dataKey="profitAndLossUsd"
+        toggleName="Include COMP"
+        togglePopoverDescription="Toggle to include COMP reward token distribution."
+        dataKeyToggleOn="profitAndLossUsd.withRewards"
+        dataKeyToggleOff="profitAndLossUsd.withoutRewards"
         timeSelection={timeSelector}
         unit="$"
         style={{
@@ -64,12 +68,15 @@ export default async function PortfolioPage({
           areaGradient: false,
         }}
       />
-      <ChartCard
+      <ToggleChartCard
         query={getPortfolioHistoricalData}
         queryArgs={[{ accountAddress, granularity }]}
-        name="Annual Percentage Rate"
+        name="APR"
         popoverDescription="Weighted average of annual percentage rates (APRs) for all your Compound v3 position across all chains, including rewards. A negative value means borrowing costs exceed lending earnings."
-        dataKey="avgApr.net"
+        toggleName="Include COMP"
+        togglePopoverDescription="Toggle to include COMP reward token distribution."
+        dataKeyToggleOn="avgApr.net"
+        dataKeyToggleOff="avgApr.base"
         timeSelection={timeSelector}
         unit="%"
         showAverage

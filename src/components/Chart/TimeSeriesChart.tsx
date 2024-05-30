@@ -5,23 +5,23 @@ import { DATA_FOR_TIME_SELECTOR } from "@/utils/constants";
 import { extractNestedValue } from "@/utils/extractNestedValue";
 import { formatNumber, formatTimestamp } from "@/utils/format";
 import { NestedKeyOf, TimeSelection, Unit } from "@/utils/types";
-import { useMemo, useRef } from "react";
+import { useMemo } from "react";
 import {
   Area,
   CartesianGrid,
   ComposedChart,
-  Label,
   ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
+import { BaseDataEntry } from "./types";
 
 const NUM_X_AXIS_TICKS_LG = 5;
 const NUM_X_AXIS_TICKS_SM = 3;
 
-export interface TimeSeriesChartProps<DataEntry extends { timestamp: number }> {
+export interface TimeSeriesChartProps<DataEntry extends BaseDataEntry> {
   data: DataEntry[];
   dataKey: NestedKeyOf<DataEntry>;
   timeSelection: TimeSelection;
@@ -33,17 +33,15 @@ export interface TimeSeriesChartProps<DataEntry extends { timestamp: number }> {
   };
 }
 
-export default function TimeSeriesChart<T extends { timestamp: number }>({
+export default function TimeSeriesChart<DataEntry extends BaseDataEntry>({
   data,
   dataKey,
   timeSelection,
   unit,
   showAverage,
   style,
-}: TimeSeriesChartProps<T>) {
+}: TimeSeriesChartProps<DataEntry>) {
   const screenSize = useScreenSize();
-
-  // console.log("DATA", data);
 
   const numXAxisTicks = useMemo(() => {
     return screenSize == "lg" ? NUM_X_AXIS_TICKS_LG : NUM_X_AXIS_TICKS_SM;
