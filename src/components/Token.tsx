@@ -36,6 +36,7 @@ const TOKEN_ICONS: Record<string, StaticImport> = {
   rETH: rETH,
   UNI: UNI,
   USDC: USDC,
+  USDbC: USDC,
   USDT: USDT,
   WBTC: WBTC,
   wstMATIC: wstMATIC,
