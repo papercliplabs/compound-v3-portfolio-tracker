@@ -53,7 +53,9 @@ export async function NavBody({
     const navPositionLinkProps: NavPositionLinkProps = {
       accountAddress,
       market,
-      active: market.address == selectedPositionParams?.marketAddress,
+      active:
+        market.address == selectedPositionParams?.marketAddress &&
+        market.network == selectedPositionParams?.network,
       balanceUsd: lastEntry.balanceUsd,
       utilization: lastEntry.utilization,
       atRisk:
