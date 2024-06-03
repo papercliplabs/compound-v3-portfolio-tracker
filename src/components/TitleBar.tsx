@@ -25,7 +25,7 @@ export function TitleBar({ positionParams }: TitleBarProps) {
           <PositionTitle {...positionParams} />
         </Suspense>
       ) : (
-        <h3>All Position</h3>
+        <h3>All Positions</h3>
       )}
       <TimeSelector />
     </div>
