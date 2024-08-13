@@ -1,5 +1,6 @@
 import { GraphQLError } from "graphql";
 import { TypedDocumentString } from "./generated/graphql";
+import { UrlWithFallback } from "@/utils/configs";
 
 export const DEFAULT_REVALIDATION_TIME_S = 100;
 
@@ -43,4 +44,22 @@ export async function graphQLFetch<Result, Variables>({
   }
 
   return result.data;
+}
+
+export async function graphQLFetchWithFallback<Result, Variables>({
+  urlWithFallback,
+  ...params
+}: Omit<GraphQLFetchParams<Result, Variables>, "url"> & {
+  urlWithFallback: UrlWithFallback;
+}): Promise<Result> {
+  try {
+    return await graphQLFetch({ url: urlWithFallback.primary, ...params });
+  } catch (e) {
+    if (urlWithFallback.fallback != undefined) {
+      console.log("Graphql primary failed, trying fallback...", e);
+      return await graphQLFetch({ url: urlWithFallback.fallback, ...params });
+    } else {
+      throw new Error(`Error with no fallback provided - ${e}`);
+    }
+  }
 }

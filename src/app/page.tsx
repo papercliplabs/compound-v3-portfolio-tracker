@@ -4,7 +4,7 @@ import { SearchWallet } from "@/components/SearchWallet";
 import Image from "next/image";
 import Link from "next/link";
 
-const DEMO_ADDRESS = "0x00CD2ff07447e2372549AC54Fba8548BEf968687";
+const DEMO_ADDRESS = "0x3f8D3E6936be6FE92144E65232791816aB994829";
 
 export default function NoAddressPage() {
   return (

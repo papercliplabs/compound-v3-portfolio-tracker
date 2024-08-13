@@ -1,5 +1,9 @@
 import { getNetworkConfig, SupportedNetwork } from "@/utils/configs";
-import { GraphQLFetchParams, graphQLFetch } from "./graphql/graphQLFetch";
+import {
+  GraphQLFetchParams,
+  graphQLFetch,
+  graphQLFetchWithFallback,
+} from "./graphql/graphQLFetch";
 
 type QuerySubgraphParams<Result, Variables> = {
   network: SupportedNetwork;
@@ -10,8 +14,8 @@ export async function querySubgraph<Result, Variables>({
   ...queryParams
 }: QuerySubgraphParams<Result, Variables>): Promise<Result | undefined> {
   try {
-    return graphQLFetch({
-      url: getNetworkConfig(network).subgraphUrl,
+    return graphQLFetchWithFallback({
+      urlWithFallback: getNetworkConfig(network).subgraphUrl,
       ...queryParams,
     });
   } catch (e) {
