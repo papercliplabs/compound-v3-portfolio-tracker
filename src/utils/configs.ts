@@ -24,11 +24,16 @@ export type SupportedNetwork =
   | "optimism"
   | "scroll";
 
+export interface UrlWithFallback {
+  primary: string;
+  fallback?: string;
+}
+
 interface ChainConfig {
   chain: Chain;
-  rpcUrl: { primary: string; fallback?: string };
+  rpcUrl: UrlWithFallback;
   icon: StaticImport;
-  subgraphUrl: string;
+  subgraphUrl: UrlWithFallback;
 }
 
 const CONFIGS: Record<SupportedNetwork, ChainConfig> = {
@@ -39,7 +44,11 @@ const CONFIGS: Record<SupportedNetwork, ChainConfig> = {
       // fallback: "https://eth.llamarpc.com	",
     },
     icon: MainnetIcon,
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/deployments/id/Qma9vGcUHz6pUeRTcHzU64yuS4i4dBxKh3TKKrXY3ckNas`,
+    subgraphUrl: {
+      primary: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/deployments/id/Qma9vGcUHz6pUeRTcHzU64yuS4i4dBxKh3TKKrXY3ckNas`,
+      fallback:
+        "https://api.studio.thegraph.com/query/35078/compound-v3-mainnet/v1.0.0",
+    },
   },
   polygon: {
     chain: polygon,
@@ -48,7 +57,11 @@ const CONFIGS: Record<SupportedNetwork, ChainConfig> = {
       fallback: undefined,
     },
     icon: PolygonIcon,
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/deployments/id/QmZ99VBAHWhZN3QcQoeBJ1hqehqCEpRzTzAgwN8Ry17DNB`,
+    subgraphUrl: {
+      primary: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/deployments/id/QmZ99VBAHWhZN3QcQoeBJ1hqehqCEpRzTzAgwN8Ry17DNB`,
+      fallback:
+        "https://api.studio.thegraph.com/query/35078/compound-v3-polygon/v1.0.0",
+    },
   },
   base: {
     chain: base,
@@ -57,7 +70,11 @@ const CONFIGS: Record<SupportedNetwork, ChainConfig> = {
       fallback: undefined,
     },
     icon: BaseIcon,
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/deployments/id/QmRh4sEASxtLi2Ue1sTTmVGRZoNYCcqkc4e64uersku9Dr`,
+    subgraphUrl: {
+      primary: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/deployments/id/QmRh4sEASxtLi2Ue1sTTmVGRZoNYCcqkc4e64uersku9Dr`,
+      fallback:
+        "https://api.studio.thegraph.com/query/35078/compound-v3-base/v1.0.0",
+    },
   },
   arbitrum: {
     chain: arbitrum,
@@ -66,7 +83,11 @@ const CONFIGS: Record<SupportedNetwork, ChainConfig> = {
       fallback: undefined,
     },
     icon: ArbitrumIcon,
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/deployments/id/Qmf9RaehDVfju5Qba2sSY3hdzA2Zwc7NW8dx5yG4wjEHor`,
+    subgraphUrl: {
+      primary: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/deployments/id/Qmf9RaehDVfju5Qba2sSY3hdzA2Zwc7NW8dx5yG4wjEHor`,
+      fallback:
+        "https://api.studio.thegraph.com/query/35078/compound-v3-arbitrum/v1.0.0",
+    },
   },
   optimism: {
     chain: optimism,
@@ -75,7 +96,11 @@ const CONFIGS: Record<SupportedNetwork, ChainConfig> = {
       fallback: undefined,
     },
     icon: OptimismIcon,
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/deployments/id/QmQgSu3HHPD2NjKHVe4gmzzLzS9pnSDgrUhu4RiBpHuqJ1`,
+    subgraphUrl: {
+      primary: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/deployments/id/QmQgSu3HHPD2NjKHVe4gmzzLzS9pnSDgrUhu4RiBpHuqJ1`,
+      fallback:
+        "https://api.studio.thegraph.com/query/35078/compound-v3-optimism/v1.0.0",
+    },
   },
   scroll: {
     chain: scroll,
@@ -84,7 +109,11 @@ const CONFIGS: Record<SupportedNetwork, ChainConfig> = {
       fallback: undefined,
     },
     icon: ScrollIcon,
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/deployments/id/QmNUqEQXxmUp5jmsYTLVaLauMPpWL33x6UC7Lijg7VHkYP`,
+    subgraphUrl: {
+      primary: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/deployments/id/QmNUqEQXxmUp5jmsYTLVaLauMPpWL33x6UC7Lijg7VHkYP`,
+      fallback:
+        "https://api.studio.thegraph.com/query/35078/compound-v3-scroll/v1.0.0",
+    },
   },
 };
 
