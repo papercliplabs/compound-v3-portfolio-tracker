@@ -84,7 +84,7 @@ const CONFIGS: Record<SupportedNetwork, ChainConfig> = {
     },
     icon: ArbitrumIcon,
     subgraphUrl: {
-      primary: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/deployments/id/Qmf9RaehDVfju5Qba2sSY3hdzA2Zwc7NW8dx5yG4wjEHor`,
+      primary: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/deployments/id/QmQuCY9bwTF13ZkPdpgy7MZKHYVyqnoV4yXc3XcrZCdMPE`,
       fallback:
         "https://api.studio.thegraph.com/query/35078/compound-v3-arbitrum/v1.0.0",
     },
@@ -97,7 +97,7 @@ const CONFIGS: Record<SupportedNetwork, ChainConfig> = {
     },
     icon: OptimismIcon,
     subgraphUrl: {
-      primary: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/deployments/id/QmQgSu3HHPD2NjKHVe4gmzzLzS9pnSDgrUhu4RiBpHuqJ1`,
+      primary: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/deployments/id/QmZ8YRjekYzR5hPh4hVprNdznNA6rEn1D2nLNp8fVVgQgj`,
       fallback:
         "https://api.studio.thegraph.com/query/35078/compound-v3-optimism/v1.0.0",
     },
@@ -110,7 +110,7 @@ const CONFIGS: Record<SupportedNetwork, ChainConfig> = {
     },
     icon: ScrollIcon,
     subgraphUrl: {
-      primary: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/deployments/id/QmNUqEQXxmUp5jmsYTLVaLauMPpWL33x6UC7Lijg7VHkYP`,
+      primary: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.SUBGRAPH_API_KEY!}/deployments/id/QmZsJTBX6LLXxSUeXFdQsLSYRtrNzMZctpbeaZc4AjYGsT`,
       fallback:
         "https://api.studio.thegraph.com/query/35078/compound-v3-scroll/v1.0.0",
     },
