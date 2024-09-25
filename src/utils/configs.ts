@@ -30,6 +30,7 @@ export interface UrlWithFallback {
 }
 
 interface ChainConfig {
+  chainName: string;
   chain: Chain;
   rpcUrl: UrlWithFallback;
   icon: StaticImport;
@@ -38,6 +39,7 @@ interface ChainConfig {
 
 const CONFIGS: Record<SupportedNetwork, ChainConfig> = {
   mainnet: {
+    chainName: "Ethereum",
     chain: mainnet,
     rpcUrl: {
       primary: process.env.MAINNET_RPC_URL!,
@@ -51,6 +53,7 @@ const CONFIGS: Record<SupportedNetwork, ChainConfig> = {
     },
   },
   polygon: {
+    chainName: "Polygon",
     chain: polygon,
     rpcUrl: {
       primary: process.env.POLYGON_RPC_URL!,
@@ -64,6 +67,7 @@ const CONFIGS: Record<SupportedNetwork, ChainConfig> = {
     },
   },
   base: {
+    chainName: "Base",
     chain: base,
     rpcUrl: {
       primary: process.env.BASE_RPC_URL!,
@@ -77,6 +81,7 @@ const CONFIGS: Record<SupportedNetwork, ChainConfig> = {
     },
   },
   arbitrum: {
+    chainName: "Arbitrum",
     chain: arbitrum,
     rpcUrl: {
       primary: process.env.ARBITRUM_RPC_URL!,
@@ -90,6 +95,7 @@ const CONFIGS: Record<SupportedNetwork, ChainConfig> = {
     },
   },
   optimism: {
+    chainName: "Optimism",
     chain: optimism,
     rpcUrl: {
       primary: process.env.OPTIMISM_RPC_URL!,
@@ -103,6 +109,7 @@ const CONFIGS: Record<SupportedNetwork, ChainConfig> = {
     },
   },
   scroll: {
+    chainName: "Scroll",
     chain: scroll,
     rpcUrl: {
       primary: process.env.SCROLL_RPC_URL!,

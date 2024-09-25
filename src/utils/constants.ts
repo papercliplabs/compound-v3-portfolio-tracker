@@ -6,6 +6,8 @@ export const SECONDS_PER_WEEK = 604800;
 export const SECONDS_PER_MONTH = 2600640;
 export const SECONDS_PER_YEAR = 31207680;
 
+export const DEMO_ADDRESS = "0xfe99cc4664a939f826dbeb545c1aad4c89ee737a";
+
 export const DATA_FOR_TIME_SELECTOR: Record<
   TimeSelection,
   { granularity: DataGranularity; rangeS: number | undefined; name: string }

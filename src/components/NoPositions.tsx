@@ -2,6 +2,8 @@ import Image from "next/image";
 import { Card } from "./ui/card";
 import { Info } from "@phosphor-icons/react/dist/ssr";
 import ExternalLink from "./ExternalLink";
+import Link from "next/link";
+import { DEMO_ADDRESS } from "@/utils/constants";
 
 export function NoPositions() {
   return (
@@ -11,6 +13,12 @@ export function NoPositions() {
         <h1>This account does not have any Compound v3 positions.</h1>
         <span className="text-caption-md text-content-secondary">
           Try searching for another account.
+        </span>
+        <span className="text-caption-md text-content-secondary">
+          Not sure what to expect?{" "}
+          <Link href={`/${DEMO_ADDRESS}`} className="text-semantic-brand">
+            View Demo
+          </Link>
         </span>
       </div>
       <Card className="flex flex-row items-center">

@@ -25,12 +25,14 @@ export default async function PositionsAtRisk({
   }
 
   return (
-    <Card className="text-semantic-warning animate-in flex flex-row items-center gap-2 border-[#FFD3BB] bg-[#FFE5D6]">
-      <Warning size={16} className="min-w-[16px]" weight="bold" />
-      <div className="text-body whitespace-nowrap font-semibold">
-        Positions at risk:
+    <Card className="text-semantic-warning animate-in flex flex-col gap-2 border-[#FFD3BB] bg-[#FFE5D6] md:flex-row md:items-center">
+      <div className="flex gap-2">
+        <Warning size={16} className="min-w-[16px]" weight="bold" />
+        <div className="text-body whitespace-nowrap font-semibold">
+          Positions at risk:
+        </div>
       </div>
-      <div className="flex flex-row gap-2 overflow-x-auto">
+      <div className="flex w-full flex-row gap-2 overflow-x-auto">
         {atRiskPositions.map((position, i) => {
           return (
             <NavPositionLink

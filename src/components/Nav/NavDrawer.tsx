@@ -17,18 +17,17 @@ export default function NavDrawer({ children }: { children: ReactNode }) {
     <Drawer.Root
       open={true}
       dismissible={false}
-      snapPoints={[CLOSED_SNAP, OPEN_SNAP]}
+      modal={false}
       activeSnapPoint={snap}
       setActiveSnapPoint={setSnap}
-      modal={false}
-      fadeFromIndex={0}
+      snapPoints={[CLOSED_SNAP, OPEN_SNAP]}
       noBodyStyles
-      // disablePreventScroll={true}
     >
+      {/* <Drawer.Overlay className="fixed inset-0 z-[5] bg-black/50" /> */}
       <Drawer.Portal>
         <Drawer.Content
-          className="shadow-2 border-b-none border-border-primary fixed bottom-0 left-0 right-0 mx-[-1px] flex flex-col gap-3 rounded-t-[12px] border bg-white px-4 py-5  lg:hidden"
-          style={{ height: `${OPEN_SNAP * 100}%`, top: 30 }}
+          className="shadow-2 border-b-none border-border-primary fixed bottom-0 left-0 right-0 z-10 mx-[-1px] flex max-h-[97%] flex-col gap-3 rounded-t-[12px] border bg-white  px-4 py-5 lg:hidden"
+          // style={{ height: `${OPEN_SNAP * 100}%` }}
           autoFocus={false}
           onFocus={() => ref.current?.blur()} // Prevent initial focus
           ref={ref}

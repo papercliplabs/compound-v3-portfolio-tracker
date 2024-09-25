@@ -1,10 +1,10 @@
 import ConnectWallet from "@/components/ConnectWallet";
+import ConnectWalletOrViewPortfolio from "@/components/ConnectWalletOrViewPortfolio";
 import ExternalLink from "@/components/ExternalLink";
 import { SearchWallet } from "@/components/SearchWallet";
+import { DEMO_ADDRESS } from "@/utils/constants";
 import Image from "next/image";
 import Link from "next/link";
-
-const DEMO_ADDRESS = "0x3f8D3E6936be6FE92144E65232791816aB994829";
 
 export default function NoAddressPage() {
   return (
@@ -14,7 +14,7 @@ export default function NoAddressPage() {
         <div className="flex w-full flex-col items-center justify-center gap-4">
           <SearchWallet />
           <span className="text-caption-md text-content-secondary">or</span>
-          <ConnectWallet />
+          <ConnectWalletOrViewPortfolio />
           <span className="text-caption-md text-content-secondary">
             Not sure what to expect?{" "}
             <Link href={`/${DEMO_ADDRESS}`} className="text-semantic-brand">

@@ -56,7 +56,7 @@ export default function Layout({
       />
       <div className="flex h-full min-w-0 grow flex-col overflow-y-scroll overscroll-none border-l">
         <div
-          className="shadow-1 sticky top-0 z-10 px-4 py-2  backdrop-blur-[6px] md:px-16"
+          className="sticky top-0 z-[4] px-4 py-2 shadow-sm backdrop-blur-[6px] md:px-16"
           style={{
             backgroundImage: `linear-gradient(180deg, white, rgb(255, 255, 255, 0.6))`,
           }}

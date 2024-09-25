@@ -15,8 +15,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Compound v3 User Portfolio Tracker",
-  description: "Tracker to help Compound users understand their portfolio.",
+  title: "Ollio",
+  description: "Compound v3 multichain portfolio tracker.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_URL!),
   keywords: [
     "ethereum",
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 
 function Header() {
   return (
-    <header className="shadow-1 fixed top-0 z-[2] grid h-16 w-full grid-cols-[minmax(max-content,0.3fr)_1fr_minmax(max-content,0.3fr)] flex-row items-center justify-between gap-4 bg-white px-4 py-2 md:px-10">
+    <header className="fixed top-0 z-[2] grid h-16 w-full grid-cols-[minmax(max-content,0.3fr)_1fr_minmax(max-content,0.3fr)] flex-row items-center justify-between gap-4 bg-white px-4 py-2  md:px-10">
       <HeaderHomeButton />
       <SearchWallet />
       <div className="flex  flex-row items-center justify-end gap-2">
