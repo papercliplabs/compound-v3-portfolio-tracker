@@ -10,7 +10,7 @@ import {
   DAILY_DATA_MAX_NUM_POINTS,
   WEEKLY_DATA_MAX_NUM_POINTS,
 } from "../dataConstants";
-import { Address, getAddress } from "viem";
+import { Address, getAddress, isAddressEqual } from "viem";
 import {
   SECONDS_PER_DAY,
   SECONDS_PER_HOUR,
@@ -400,14 +400,21 @@ function interpolate(data: MarketAccountingEntry[]): MarketAccountingEntry[] {
           rewardTokenUsdPrice:
             lastEntry.rewardTokenUsdPrice + stepRewardTokenPriceUsd * i,
           collateralAssetUsdExchangeRates:
-            entry.collateralAssetUsdExchangeRates.map((item, i) => ({
-              assetAddress: item.assetAddress,
-              usdExchangeRate:
-                (item.usdExchangeRate -
-                  lastEntry.collateralAssetUsdExchangeRates[i]
-                    .usdExchangeRate) /
-                BigInt(keyDelta),
-            })),
+            entry.collateralAssetUsdExchangeRates.map((item) => {
+              const lastEntryExchangeRate =
+                lastEntry.collateralAssetUsdExchangeRates.find((val) =>
+                  isAddressEqual(val.assetAddress, item.assetAddress),
+                );
+
+              return {
+                assetAddress: item.assetAddress,
+                usdExchangeRate: lastEntryExchangeRate
+                  ? (item.usdExchangeRate -
+                      lastEntryExchangeRate.usdExchangeRate) /
+                    BigInt(keyDelta)
+                  : item.usdExchangeRate,
+              };
+            }),
           supplyApr: {
             base: lastEntry.supplyApr.base + stepBaseSupplyApr * i,
             reward: lastEntry.supplyApr.reward + stepRewardSupplyApr * i,
