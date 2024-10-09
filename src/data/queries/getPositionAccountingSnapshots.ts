@@ -12,7 +12,9 @@ export interface PositionAccountingSnapshot {
   basePrincipal: bigint;
   baseTrackingAccrued: bigint;
   baseTrackingIndex: bigint;
+  cumulativeBaseSupplied: bigint;
   cumulativeBaseSuppliedUsd: number;
+  cumulativeBaseWithdrawn: bigint;
   cumulativeBaseWithdrawUsd: number;
   cumulativeCollateralLiquidatedUsd: number;
   cumulativeGasUsedUsd: number;
@@ -63,8 +65,12 @@ async function getPositionAccountingSnapshots({
     basePrincipal: BigInt(snapshot.accounting.basePrincipal),
     baseTrackingAccrued: BigInt(snapshot.accounting.baseTrackingAccrued),
     baseTrackingIndex: BigInt(snapshot.accounting.baseTrackingIndex),
+    cumulativeBaseSupplied: BigInt(snapshot.accounting.cumulativeBaseSupplied),
     cumulativeBaseSuppliedUsd: Number(
       snapshot.accounting.cumulativeBaseSuppliedUsd,
+    ),
+    cumulativeBaseWithdrawn: BigInt(
+      snapshot.accounting.cumulativeBaseWithdrawn,
     ),
     cumulativeBaseWithdrawUsd: Number(
       snapshot.accounting.cumulativeBaseWithdrawnUsd,
@@ -98,7 +104,9 @@ const snapshotQuery = graphql(/* GraphQL */ `
           basePrincipal
           baseTrackingAccrued
           baseTrackingIndex
+          cumulativeBaseSupplied
           cumulativeBaseSuppliedUsd
+          cumulativeBaseWithdrawn
           cumulativeBaseWithdrawnUsd
           cumulativeCollateralLiquidatedUsd
           cumulativeGasUsedUsd

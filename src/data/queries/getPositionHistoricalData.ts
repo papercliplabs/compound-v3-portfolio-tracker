@@ -236,10 +236,28 @@ async function aggregatePositionHistoricalData(
           ),
         ) * marketEntry.rewardTokenUsdPrice;
 
+      // Get cumulative, and convert to USD at today's price (rather than cumulativeUsd's which are at the price of each interaction)
+      const cumulativeBaseSuppliedUsd =
+        Number(
+          safeDiv(
+            positionAccountingSnapshot.cumulativeBaseSupplied *
+              BigInt(USD_DECIMALS_SCALER),
+            marketEntry.baseUsdExchangeRate,
+          ),
+        ) / USD_DECIMALS_SCALER;
+
+      const cumulativeBaseWithdrawnUsd =
+        Number(
+          safeDiv(
+            positionAccountingSnapshot.cumulativeBaseWithdrawn *
+              BigInt(USD_DECIMALS_SCALER),
+            marketEntry.baseUsdExchangeRate,
+          ),
+        ) / USD_DECIMALS_SCALER;
+
       positionEntry.profitAndLossUsd.withoutRewards =
         positionEntry.balanceUsd -
-        (positionAccountingSnapshot.cumulativeBaseSuppliedUsd -
-          positionAccountingSnapshot.cumulativeBaseWithdrawUsd) -
+        (cumulativeBaseSuppliedUsd - cumulativeBaseWithdrawnUsd) -
         positionAccountingSnapshot.cumulativeCollateralLiquidatedUsd -
         positionAccountingSnapshot.cumulativeGasUsedUsd;
 
